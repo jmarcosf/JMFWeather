@@ -12,26 +12,40 @@ package com.utad.marcos.jorge.jmfweather.db;
 import android.provider.BaseColumns;
 
 /**************************************************************/
-/*                                                            */ 
-/*                                                            */ 
-/* CWeatherDBContract Class                                   */ 
-/*                                                            */ 
-/*                                                            */ 
+/*                                                            */
+/*                                                            */
+/*                                                            */
+/* CWeatherDBContract Class                                   */
+/*                                                            */
+/*                                                            */
+/*                                                            */
 /**************************************************************/
 public class CWeatherDBContract
 {
 	/*********************************************************/
-	/*                                                       */ 
-	/* CBlogDBContract.CBlogDbContract()                     */ 
-	/* private constructor: no instances allowed             */ 
-	/*                                                       */ 
+	/*                                                       */
+	/*                                                       */
+	/* Class Constructors                                    */
+	/*                                                       */
+	/*                                                       */
+	/*********************************************************/
+	/*                                                       */
+	/* CBlogDBContract.CBlogDbContract()                     */
+	/* private constructor: no instances allowed             */
+	/*                                                       */
 	/*********************************************************/
 	private CWeatherDBContract() {}
 	
 	/*********************************************************/
-	/*                                                       */ 
-	/* CWeatherDBContract.CCityTable()                       */ 
-	/*                                                       */ 
+	/*                                                       */
+	/*                                                       */
+	/* Database Schema Classes                               */
+	/*                                                       */
+	/*                                                       */
+	/*********************************************************/
+	/*                                                       */
+	/* CCWeatherDBContract.CCityTable()                      */
+	/*                                                       */
 	/*********************************************************/
 	public static abstract class CCityTable implements BaseColumns
 	{
@@ -41,13 +55,14 @@ public class CWeatherDBContract
 		public static final String COLUMN_NAME_LATITUDE					= "Latitude";
 		public static final String COLUMN_NAME_LONGITUDE					= "Longitude";
 		public static final String COLUMN_NAME_POPULATION					= "Population";
+		public static final String COLUMN_NAME_REGION					= "Region";
 		public static final String COLUMN_NAME_URL						= "Url";
 	}
 	
 	/*********************************************************/
-	/*                                                       */ 
-	/* CWeatherDBContract.CConditionTable()                  */ 
-	/*                                                       */ 
+	/*                                                       */
+	/* CWeatherDBContract.CConditionTable()                  */
+	/*                                                       */
 	/*********************************************************/
 	public static abstract class CConditionTable implements BaseColumns
 	{
@@ -71,9 +86,9 @@ public class CWeatherDBContract
 	}
 	
 	/*********************************************************/
-	/*                                                       */ 
-	/* CWeatherDBContract.CForecastTable()                   */ 
-	/*                                                       */ 
+	/*                                                       */
+	/* CWeatherDBContract.CForecastTable()                   */
+	/*                                                       */
 	/*********************************************************/
 	public static abstract class CForecastTable implements BaseColumns
 	{

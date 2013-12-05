@@ -16,7 +16,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**************************************************************/
 /*                                                            */ 
 /*                                                            */ 
+/*                                                            */ 
 /* CWeatherDBHelper Class                                     */ 
+/*                                                            */ 
 /*                                                            */ 
 /*                                                            */ 
 /**************************************************************/
@@ -37,6 +39,7 @@ public static final int		DATABASE_VERSION	= 1;
 		CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE					+ 	" TEXT, " +
 		CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE					+ 	" TEXT, " +
 		CWeatherDBContract.CCityTable.COLUMN_NAME_POPULATION					+ 	" LONG, " +
+		CWeatherDBContract.CCityTable.COLUMN_NAME_REGION						+ 	" TEXT, " +
 		CWeatherDBContract.CCityTable.COLUMN_NAME_URL						+ 	" TEXT"   +
 	" );";
 
@@ -44,7 +47,7 @@ public static final int		DATABASE_VERSION	= 1;
 		CWeatherDBContract.CConditionTable.TABLE_NAME + 
 	" (" +
 		CWeatherDBContract.CConditionTable._ID								+	" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		CWeatherDBContract.CConditionTable.COLUMN_NAME_CITY_ID					+ 	" INTEGER, " 	+
+		CWeatherDBContract.CConditionTable.COLUMN_NAME_CITY_ID					+ 	" INTEGER UNIQUE, " +
 		CWeatherDBContract.CConditionTable.COLUMN_NAME_CLOUD_COVERAGE			+ 	" INTEGER, " 	+
 		CWeatherDBContract.CConditionTable.COLUMN_NAME_OBSERVATION_TIME			+ 	" LONG, " 	+
 		CWeatherDBContract.CConditionTable.COLUMN_NAME_PRESSURE				+ 	" INTEGER, " 	+
@@ -97,6 +100,12 @@ public static final int		DATABASE_VERSION	= 1;
 		
 	/*********************************************************/
 	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Constructors                                    */ 
+	/*                                                       */ 
+	/*                                                       */ 
+	/*********************************************************/
+	/*                                                       */ 
 	/* CWeatherDBHelper.CWeatherDBHelper()                   */ 
 	/*                                                       */ 
 	/*********************************************************/
@@ -105,6 +114,12 @@ public static final int		DATABASE_VERSION	= 1;
 	     super( context, DATABASE_NAME, null, DATABASE_VERSION );
      }
 
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* SQLiteOpenHelper Override Methods                     */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */
 	/* CWeatherDBHelper.onCreate()                           */

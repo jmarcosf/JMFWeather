@@ -31,7 +31,9 @@ import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 /**************************************************************/
 /*                                                            */ 
 /*                                                            */ 
+/*                                                            */ 
 /* CWorldWeatherApi Class                                     */ 
+/*                                                            */ 
 /*                                                            */ 
 /*                                                            */ 
 /**************************************************************/
@@ -47,6 +49,12 @@ private Charset 			m_Charset;
 private HttpURLConnection	m_Connection;
 private InputStream 		m_InputStream;
 
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Constructors                                    */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CWorldWeatherApi.CWorldWeatherApi()                   */ 
@@ -70,6 +78,12 @@ private InputStream 		m_InputStream;
 	
 	/*********************************************************/
 	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Methods                                         */ 
+	/*                                                       */ 
+	/*                                                       */ 
+	/*********************************************************/
+	/*                                                       */ 
 	/* CWorldWeatherApi.SearchCity()                         */ 
 	/*                                                       */ 
 	/*********************************************************/
@@ -91,6 +105,7 @@ private InputStream 		m_InputStream;
 			CityList.add( City );
 		}
 
+		Close();
 		return CityList; 
 	}
 
@@ -127,6 +142,7 @@ private InputStream 		m_InputStream;
 			ForecastList.add( Forecast );
 		}
 
+		Close();
 		return ForecastList; 
 	}
 
@@ -192,5 +208,4 @@ private InputStream 		m_InputStream;
 		if( m_InputStream != null ) m_InputStream.close();
 		if( m_Connection != null ) m_Connection.disconnect();
 	}
-
 }

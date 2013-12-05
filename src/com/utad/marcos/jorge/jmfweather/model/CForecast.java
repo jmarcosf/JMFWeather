@@ -23,7 +23,9 @@ import android.annotation.SuppressLint;
 /**************************************************************/
 /*                                                            */ 
 /*                                                            */ 
+/*                                                            */ 
 /* CForecast Class                                            */ 
+/*                                                            */ 
 /*                                                            */ 
 /*                                                            */ 
 /**************************************************************/
@@ -46,6 +48,12 @@ private String		m_WindDirectionCompass;
 private String		m_WeatherDescription;
 private int		m_MinTemperatureFahrenheit;
 
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Constructors                                    */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CForecast.CForecast()                                 */ 
@@ -101,6 +109,12 @@ private int		m_MinTemperatureFahrenheit;
 		m_MinTemperatureFahrenheit = jsonObject.getInt( "tempMin_F" );
 	}
 	
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Methods                                         */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CForecast getters                                     */ 

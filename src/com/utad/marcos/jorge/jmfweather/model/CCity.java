@@ -13,10 +13,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.database.Cursor;
+
+import com.utad.marcos.jorge.jmfweather.db.CWeatherDBContract;
+
 /**************************************************************/
 /*                                                            */ 
 /*                                                            */ 
+/*                                                            */ 
 /* CCity Class                                                */ 
+/*                                                            */ 
 /*                                                            */ 
 /*                                                            */ 
 /**************************************************************/
@@ -32,6 +38,12 @@ private String		m_Region;
 private String		m_WeatherUrl;
 private CCondition	m_CurrentCondition;
 
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Constructors                                    */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CCity.CCity()                                         */ 
@@ -52,7 +64,7 @@ private CCondition	m_CurrentCondition;
 	
 	/*********************************************************/
 	/*                                                       */ 
-	/* CCity.CCity() JSON Object constructor                 */ 
+	/* CCity.CCity()                                         */ 
 	/*                                                       */ 
 	/*********************************************************/
 	public CCity( JSONObject jsonObject ) throws JSONException
@@ -75,7 +87,32 @@ private CCondition	m_CurrentCondition;
 		JSONArray weatherUrlArray = jsonObject.getJSONArray( "weatherUrl" );
 		m_WeatherUrl = weatherUrlArray.getJSONObject( 0 ).getString( "value" );
 	}
+
+	/*********************************************************/
+	/*                                                       */ 
+	/* CCity.CCity()                                         */ 
+	/*                                                       */ 
+	/*********************************************************/
+	public CCity( Cursor cursor )
+	{
+		this( -1, null, null, null, null,0,  null, null );
+
+		this.m_Id = cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CCityTable._ID ) );
+		this.m_Name = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CCityTable.COLUMN_NAME_NAME ) );
+		this.m_Country = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CCityTable.COLUMN_NAME_COUNTRY ) );
+		this.m_Latitude = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE ) );
+		this.m_Longitude = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE ) );
+		this.m_Population = cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CCityTable.COLUMN_NAME_POPULATION ) );
+		this.m_Region = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CCityTable.COLUMN_NAME_REGION ) );
+		this.m_WeatherUrl = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CCityTable.COLUMN_NAME_URL ) );
+	}	
 	
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Methods                                         */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CCity getters                                         */ 

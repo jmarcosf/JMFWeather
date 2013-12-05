@@ -21,7 +21,9 @@ import org.json.JSONObject;
 /**************************************************************/
 /*                                                            */ 
 /*                                                            */ 
+/*                                                            */ 
 /* CForecastList Class                                        */ 
+/*                                                            */ 
 /*                                                            */ 
 /*                                                            */ 
 /**************************************************************/
@@ -30,6 +32,12 @@ public class CForecastList
 private	ArrayList< CForecast > 		m_ForecastList;
 private	TreeMap< Long, CForecast> 	m_ForecastMap;
 
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Constructors                                    */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CForecastList.CForecastList()                         */ 
@@ -58,6 +66,12 @@ private	TreeMap< Long, CForecast> 	m_ForecastMap;
 		}
 	}
 
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Methods                                         */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CForecastList.getters()                               */ 

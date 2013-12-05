@@ -10,18 +10,26 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather.model;
 
-import android.annotation.SuppressLint;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.database.Cursor;
+import android.text.format.Time;
+
+import com.utad.marcos.jorge.jmfweather.db.CWeatherDBContract;
+
 /**************************************************************/
 /*                                                            */ 
 /*                                                            */ 
+/*                                                            */ 
 /* CCondition Class                                           */ 
+/*                                                            */ 
 /*                                                            */ 
 /*                                                            */ 
 /**************************************************************/
@@ -45,6 +53,12 @@ private int		m_WindSpeedKmph;
 private int		m_WeatherCode;
 private String		m_WeatherDescription;
 
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Constructors                                    */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CCondition.CCondition()                               */ 
@@ -83,7 +97,7 @@ private String		m_WeatherDescription;
 		this( 0, (Date)null, 0, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, null );
 		
 		m_CloudCoverPercentage = jsonObject.getInt( "cloudcover" );
-		SimpleDateFormat DateFormat = new SimpleDateFormat( "HH:mm" );
+		SimpleDateFormat DateFormat = new SimpleDateFormat( "HH:mm a" );
 		m_ObservationTime = DateFormat.parse( jsonObject.getString( "observation_time" ) );
 		m_Pressure = jsonObject.getInt( "pressure" );
 		m_TemperatureCelsius = jsonObject.getInt( "temp_C" );
@@ -101,7 +115,44 @@ private String		m_WeatherDescription;
 		JSONArray descriptionArray = jsonObject.getJSONArray( "weatherDesc" );
 		m_WeatherDescription = descriptionArray.getJSONObject( 0 ).getString( "value" );
 	}
+	
+	/*********************************************************/
+	/*                                                       */ 
+	/* CCondition.Condition()                                */ 
+	/*                                                       */ 
+	/*********************************************************/
+	public CCondition( Cursor cursor )
+	{
+		this( 0, (Date)null, 0, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, null );
 
+		this.m_Id = cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CConditionTable._ID ) );
+		this.m_CityId = cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_CITY_ID ) );
+		this.m_CloudCoverPercentage = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_CLOUD_COVERAGE ) );
+		if( !cursor.isNull( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_OBSERVATION_TIME ) ) )
+		{
+			this.m_ObservationTime = new Date( cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_OBSERVATION_TIME ) ) );
+		}
+		this.m_Pressure = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_PRESSURE ) );
+		this.m_TemperatureCelsius = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_TEMPERATURE_CELSIUS ) );
+		this.m_Visibility = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_VISIBILITY ) );
+		this.m_TemperatureFahrenheit = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_TEMPERATURE_FAHRENHEIT ) );
+		this.m_WindSpeedMph = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_WIND_SPEED_MPH ) );
+		this.m_Precipitation = cursor.getFloat( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_PRECIPITATION ) );
+		this.m_WindDirectionDegrees = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_WIND_DIRECTION_DEGREES ) );
+		this.m_WindDirectionCompass = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_WIND_DIRECTION_COMPASS ) );
+		this.m_IconUrl = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_ICON_URL ) );
+		this.m_Humidity = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_HUMIDITY ) );
+		this.m_WindSpeedKmph = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_WIND_SPEED_KMPH ) );
+		this.m_WeatherCode = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_WEATHER_CODE ) );
+		this.m_WeatherDescription = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_WEATHER_DESCRIPTION ) );
+	}	
+	
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Methods                                         */ 
+	/*                                                       */ 
+	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CCondition getters                                    */ 

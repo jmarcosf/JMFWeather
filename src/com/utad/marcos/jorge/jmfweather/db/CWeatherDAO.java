@@ -16,11 +16,14 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 import com.utad.marcos.jorge.jmfweather.model.CForecast;
+import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 
 /**************************************************************/
 /*                                                            */ 
 /*                                                            */ 
+/*                                                            */ 
 /* CWeatherDAO Class                                          */ 
+/*                                                            */ 
 /*                                                            */ 
 /*                                                            */ 
 /**************************************************************/
@@ -29,21 +32,33 @@ public class CWeatherDAO
 private CWeatherDBHelper		m_dbHelper;
 private SQLiteDatabase		m_db;
 
-	/********************************************************/
-	/*                                                      */ 
-	/* CWeatherDAO.CWeatherDAO()                            */ 
-	/*                                                      */ 
-	/********************************************************/
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Constructors                                    */ 
+	/*                                                       */ 
+	/*                                                       */ 
+	/*********************************************************/
+	/*                                                       */ 
+	/* CWeatherDAO.CWeatherDAO()                             */ 
+	/*                                                       */ 
+	/*********************************************************/
 	public CWeatherDAO( Context context )
 	{
 		m_dbHelper = new CWeatherDBHelper( context );
 	}
 	
-	/********************************************************/
-	/*                                                      */ 
-	/* CWeatherDAO.insert()                                 */ 
-	/*                                                      */ 
-	/********************************************************/
+	/*********************************************************/
+	/*                                                       */ 
+	/*                                                       */ 
+	/* Class Methods                                         */ 
+	/*                                                       */ 
+	/*                                                       */ 
+	/*********************************************************/
+	/*                                                       */ 
+	/* CWeatherDAO.insert()                                  */ 
+	/*                                                       */ 
+	/*********************************************************/
 	public long insert( CCity City ) 
 	{
 		if( m_db == null || m_db.isReadOnly() )
@@ -61,6 +76,7 @@ private SQLiteDatabase		m_db;
 		CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE, 		City.getLatitude() );
 		CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE,		City.getLongitude() );
 		CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_POPULATION,		City.getPopulation() );
+		CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_REGION, 		City.getRegion() );
 		CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_URL, 			City.getWeatherUrl() );
 
 		try
@@ -98,11 +114,11 @@ private SQLiteDatabase		m_db;
 		return RecordId;
 	}
 
-	/********************************************************/
-	/*                                                      */ 
-	/* CWeatherDAO.insert()                                 */ 
-	/*                                                      */ 
-	/********************************************************/
+	/*********************************************************/
+	/*                                                       */ 
+	/* CWeatherDAO.insert()                                  */ 
+	/*                                                       */ 
+	/*********************************************************/
 	public long insert( CForecast Forecast )
 	{
 		if( m_db == null || m_db.isReadOnly() )
@@ -146,6 +162,22 @@ private SQLiteDatabase		m_db;
 		return m_db.query( CWeatherDBContract.CCityTable.TABLE_NAME, Projection, null, null, null, null, orderBy );                               
 	}
 
+	/*********************************************************/
+	/*                                                       */ 
+	/* CWeatherDAO.selectCityCondition()                     */ 
+	/*                                                       */ 
+	/*********************************************************/
+	public Cursor selectCityCondition( CCity City )
+	{
+		if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
+
+		String[] Projection = { "*" };
+		String Where = CWeatherDBContract.CConditionTable.COLUMN_NAME_CITY_ID + " = ?";
+		String[] WhereArgs = new String[] { "" + City.getId() };
+
+		return m_db.query( CWeatherDBContract.CConditionTable.TABLE_NAME, Projection, Where, WhereArgs, null, null, null );                               
+	}
+	
 	/*********************************************************/
 	/*                                                       */ 
 	/* CWeatherDAO.selectCityForecast()                      */ 
@@ -257,7 +289,7 @@ private SQLiteDatabase		m_db;
 	/* CWeatherDAO.update()                                  */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public int update( CCity City )
+	public int update( CCity City, CForecastList ForecastList )
 	{
 		if( m_db == null || m_db.isReadOnly() )
 		{
@@ -270,6 +302,12 @@ private SQLiteDatabase		m_db;
 		
 		try
 		{
+			deleteCityForecast( City.getId() );
+			for( CForecast Forecast : ForecastList.getForecastList() )
+			{
+				insert( Forecast );
+			}
+			
 			ContentValues ConditionRecord = new ContentValues();
 			ConditionRecord.put( CWeatherDBContract.CConditionTable.COLUMN_NAME_CLOUD_COVERAGE, 			City.getCondition().getCloudCoverPercentage() );
 			ConditionRecord.put( CWeatherDBContract.CConditionTable.COLUMN_NAME_OBSERVATION_TIME,		City.getCondition().getObservationTime() == null ? null : City.getCondition().getObservationTime().getTime() );
@@ -297,6 +335,7 @@ private SQLiteDatabase		m_db;
 			CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE, 		City.getLatitude() );
 			CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE,		City.getLongitude() );
 			CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_POPULATION,		City.getPopulation() );
+			CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_REGION, 		City.getRegion() );
 			CityRecord.put( CWeatherDBContract.CCityTable.COLUMN_NAME_URL, 			City.getWeatherUrl() );
 			
 			String CityWhere = CWeatherDBContract.CCityTable._ID + " = ?";
