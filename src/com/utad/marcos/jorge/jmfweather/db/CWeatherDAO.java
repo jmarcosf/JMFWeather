@@ -56,14 +56,14 @@ private SQLiteDatabase		m_db;
 	/*                                                       */ 
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.insert()                                  */ 
+	/* CWeatherDAO.Insert()                                  */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public long insert( CCity City ) 
+	public long Insert( CCity City ) 
 	{
 		if( m_db == null || m_db.isReadOnly() )
 		{
-			this.close();
+			this.Close();
 			m_db = m_dbHelper.getWritableDatabase();
 		}
 		
@@ -82,7 +82,7 @@ private SQLiteDatabase		m_db;
 		try
 		{
 			RecordId = m_db.insert( CWeatherDBContract.CCityTable.TABLE_NAME, null, CityRecord );
-			if( RecordId == -1 )
+			if( RecordId != -1 )
 			{
 				ContentValues ConditionRecord = new ContentValues();
 				ConditionRecord.put( CWeatherDBContract.CConditionTable.COLUMN_NAME_CITY_ID, 				RecordId );
@@ -116,14 +116,14 @@ private SQLiteDatabase		m_db;
 
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.insert()                                  */ 
+	/* CWeatherDAO.Insert()                                  */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public long insert( CForecast Forecast )
+	public long Insert( CForecast Forecast )
 	{
 		if( m_db == null || m_db.isReadOnly() )
 		{
-			this.close();
+			this.Close();
 			m_db = m_dbHelper.getWritableDatabase();
 		}
 		
@@ -149,10 +149,10 @@ private SQLiteDatabase		m_db;
 
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.selectAllCities()                         */ 
+	/* CWeatherDAO.SelectAllCities()                         */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public Cursor selectAllCities()
+	public Cursor SelectAllCities()
 	{
 		if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
 		
@@ -164,7 +164,7 @@ private SQLiteDatabase		m_db;
 
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.selectCityCondition()                     */ 
+	/* CWeatherDAO.SelectCityCondition()                     */ 
 	/*                                                       */ 
 	/*********************************************************/
 	public Cursor selectCityCondition( CCity City )
@@ -180,7 +180,7 @@ private SQLiteDatabase		m_db;
 	
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.selectCityForecast()                      */ 
+	/* CWeatherDAO.SelectCityForecast()                      */ 
 	/*                                                       */ 
 	/*********************************************************/
 	public Cursor selectCityForecast( CCity City )
@@ -197,14 +197,14 @@ private SQLiteDatabase		m_db;
 	
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.deleteCity()                              */ 
+	/* CWeatherDAO.DeleteCity()                              */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public int deleteCity( long cityId )
+	public int DeleteCity( long cityId )
 	{
 		if( m_db == null || m_db.isReadOnly() )
 		{
-			this.close();
+			this.Close();
 			m_db = m_dbHelper.getWritableDatabase();
 		}
 		
@@ -237,14 +237,14 @@ private SQLiteDatabase		m_db;
 	
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.deleteCityForecast()                      */ 
+	/* CWeatherDAO.DeleteCityForecast()                      */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public int deleteCityForecast( long cityId )
+	public int DeleteCityForecast( long cityId )
 	{
 		if( m_db == null || m_db.isReadOnly() )
 		{
-			this.close();
+			this.Close();
 			m_db = m_dbHelper.getWritableDatabase();
 		}
 		
@@ -255,14 +255,14 @@ private SQLiteDatabase		m_db;
 	
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.deleteAll()                               */ 
+	/* CWeatherDAO.DeleteAll()                               */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public int deleteAll()
+	public int DeleteAll()
 	{
 		if( m_db == null || m_db.isReadOnly() )
 		{
-			this.close();
+			this.Close();
 			m_db = m_dbHelper.getWritableDatabase();
 		}
 		
@@ -286,14 +286,14 @@ private SQLiteDatabase		m_db;
 	
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.update()                                  */ 
+	/* CWeatherDAO.Update()                                  */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public int update( CCity City, CForecastList ForecastList )
+	public int Update( CCity City, CForecastList ForecastList )
 	{
 		if( m_db == null || m_db.isReadOnly() )
 		{
-			this.close();
+			this.Close();
 			m_db = m_dbHelper.getWritableDatabase();
 		}
 		
@@ -302,10 +302,10 @@ private SQLiteDatabase		m_db;
 		
 		try
 		{
-			deleteCityForecast( City.getId() );
+			DeleteCityForecast( City.getId() );
 			for( CForecast Forecast : ForecastList.getForecastList() )
 			{
-				insert( Forecast );
+				Insert( Forecast );
 			}
 			
 			ContentValues ConditionRecord = new ContentValues();
@@ -354,10 +354,10 @@ private SQLiteDatabase		m_db;
 	
 	/*********************************************************/
 	/*                                                       */ 
-	/* CWeatherDAO.close()                                   */ 
+	/* CWeatherDAO.Close()                                   */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public void close()
+	public void Close()
 	{
 		if( m_db != null )
 		{

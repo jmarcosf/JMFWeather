@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--**************************************************************/
+/*                                                               */ 
+/* AndroidManifest.xml                                           */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: Application Android Manifest                     */ 
+/*              JmfWeather Project                               */ 
+/*                                                               */ 
+/***************************************************************-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.utad.com.jorge.marcos.jmfweather"
+    package="com.utad.marcos.jorge.jmfweather"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -8,20 +17,59 @@
         android:minSdkVersion="10"
         android:targetSdkVersion="18" />
 
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Application Permissions                                   */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Application definition                                    */ 
+	/*                                                           */ 
+    /***********************************************************-->
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/app_main_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
+        
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /*                                                       */ 
+	    /* Services                                              */ 
+	    /*                                                       */ 
+		/*                                                       */ 
+	    /*********************************************************/
+	    /*                                                       */ 
+	    /* Weather Retriever Service                             */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <service android:name="com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService" />
+
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /*                                                       */ 
+	    /* Activities                                            */ 
+	    /*                                                       */ 
+		/*                                                       */ 
+	    /*********************************************************/
+	    /*                                                       */ 
+	    /* Main Activity                                         */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <activity
             android:name="com.utad.marcos.jorge.jmfweather.CMainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            
         </activity>
+        
     </application>
 
 </manifest>

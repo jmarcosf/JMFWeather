@@ -23,6 +23,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
@@ -84,6 +85,7 @@ private IWeatherRetrieverListener	m_Listener = null;
 	@Override
 	public void onCreate()
 	{
+	     Log.d( CWeatherRetrieverService.class.getSimpleName(), "onCreate()" );
 		super.onCreate();
 	}
 
@@ -95,6 +97,7 @@ private IWeatherRetrieverListener	m_Listener = null;
 	@Override
 	public IBinder onBind( Intent arg0 )
 	{
+	     Log.d( CWeatherRetrieverService.class.getSimpleName(), "onBind()" );
 		return new CWeatherRetrieverBinder();
 	}
 
@@ -106,6 +109,7 @@ private IWeatherRetrieverListener	m_Listener = null;
 	@Override
 	public int onStartCommand( Intent intent, int flags, int startId )
 	{
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onStartCommand()" );
 		LoadWeather();
 		return START_STICKY;
 	}
@@ -118,6 +122,7 @@ private IWeatherRetrieverListener	m_Listener = null;
 	@Override
 	public boolean onUnbind( Intent intent )
 	{
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onUnbind()" );
 		m_Listener = null;
 		return super.onUnbind( intent );
 	}
@@ -130,6 +135,7 @@ private IWeatherRetrieverListener	m_Listener = null;
 	@Override
 	public void onDestroy()
 	{
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onDestroy()" );
 		super.onDestroy();
 	}
 
@@ -146,6 +152,7 @@ private IWeatherRetrieverListener	m_Listener = null;
 	/*********************************************************/
 	public void setListener( IWeatherRetrieverListener listener )
 	{
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "SetListener()" );
 		this.m_Listener = listener;
 	}
 	
@@ -156,6 +163,7 @@ private IWeatherRetrieverListener	m_Listener = null;
 	/*********************************************************/
 	public boolean LoadWeather()
 	{
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "LoadWeather()" );
 		ConnectivityManager ConnManager = (ConnectivityManager)getSystemService( Context.CONNECTIVITY_SERVICE );
 		NetworkInfo NetInfo = ConnManager.getActiveNetworkInfo();
 
@@ -188,7 +196,8 @@ private IWeatherRetrieverListener	m_Listener = null;
           	CWeatherDAO WeatherDAO = new CWeatherDAO( CWeatherRetrieverService.this );
           	CCityList CityList = new CCityList();
 
-          	Cursor cursor = WeatherDAO.selectAllCities();
+          	Cursor cursor = WeatherDAO.SelectAllCities();
+//          	int count = cursor.getCount();
           	if( cursor.moveToFirst() )
           	{
           		do
@@ -202,7 +211,7 @@ private IWeatherRetrieverListener	m_Listener = null;
      			try
                     {
 	                    CForecastList ForecastList = WorldWeatherApi.getCityWeather( City );
-	                    WeatherDAO.update( City, ForecastList );
+	                    WeatherDAO.Update( City, ForecastList );
                     }
                     catch( IOException exception )
                     {
@@ -218,6 +227,15 @@ private IWeatherRetrieverListener	m_Listener = null;
                     }
      		}
      		
+               try
+               {
+	               WorldWeatherApi.Close();
+	               WeatherDAO.Close();
+               }
+               catch( IOException exception )
+               {
+	               exception.printStackTrace();
+               }
      		return null;
           }
 		

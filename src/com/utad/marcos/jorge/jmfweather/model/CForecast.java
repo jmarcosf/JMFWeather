@@ -92,21 +92,21 @@ private int		m_MinTemperatureFahrenheit;
 		
 		JSONArray iconUrlArray = jsonObject.getJSONArray( "weatherIconUrl" );
 		m_IconUrl = iconUrlArray.getJSONObject( 0 ).getString( "value" );
-		m_MinTemperatureCelsius = jsonObject.getInt( "tempMin_C" );
+		m_MinTemperatureCelsius = jsonObject.getInt( "tempMinC" );
 		m_WindSpeedMph = jsonObject.getInt( "windspeedMiles" );
 		m_WindSpeedKmph = jsonObject.getInt( "windspeedKmph" );
 		m_WindDirection = jsonObject.getString( "winddirection" );
-		m_MaxTemperatureCelsius = jsonObject.getInt( "tempMax_C" );
+		m_MaxTemperatureCelsius = jsonObject.getInt( "tempMaxC" );
 		SimpleDateFormat DateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 		m_ForecastDate = DateFormat.parse( jsonObject.getString( "date" ) );
 		m_WeatherCode = jsonObject.getInt( "weatherCode" );
-		m_MaxTemperatureFahrenheit = jsonObject.getInt( "tempMax_F" );
+		m_MaxTemperatureFahrenheit = jsonObject.getInt( "tempMaxF" );
 		m_Precipitation = (float)jsonObject.getDouble( "precipMM" );
 		m_WindDirectionDegrees = jsonObject.getInt( "winddirDegree" );
 		m_WindDirectionCompass = jsonObject.getString( "winddir16Point" );
 		JSONArray descriptionArray = jsonObject.getJSONArray( "weatherDesc" );
 		m_WeatherDescription = descriptionArray.getJSONObject( 0 ).getString( "value" );
-		m_MinTemperatureFahrenheit = jsonObject.getInt( "tempMin_F" );
+		m_MinTemperatureFahrenheit = jsonObject.getInt( "tempMinF" );
 	}
 	
 	/*********************************************************/

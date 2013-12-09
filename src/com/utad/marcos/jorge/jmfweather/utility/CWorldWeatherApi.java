@@ -43,7 +43,7 @@ private static final int		HTTP_CONNECT_TIMEOUT_MS = 15000; // millisecons
 private static final int		HTTP_READ_TIMEOUT_MS = 10000; // millisecons
 private static final String	WORLD_WEATHER_GET_WEATHER_URL = "http://api.worldweatheronline.com/free/v1/weather.ashx";
 private static final String	WORLD_WEATHER_SEARCH_CITY_URL = "http://api.worldweatheronline.com/free/v1/search.ashx";
-private static final String	WORLD_WEATHER_KEY = "hk3bn55kb4g7hjwhxqghx22g ";
+private static final String	WORLD_WEATHER_KEY = "hk3bn55kb4g7hjwhxqghx22g";
 
 private Charset 			m_Charset;
 private HttpURLConnection	m_Connection;
@@ -109,9 +109,9 @@ private InputStream 		m_InputStream;
 		return CityList; 
 	}
 
-	//http://api.worldweatheronline.com/free/v1/search.ashx?q=London&format=json&key=hk3bn55kb4g7hjwhxqghx22g	
+	//http://api.worldweatheronline.com/free/v1/search.ashx?q=London&format=json&num_of_days=5&key=hk3bn55kb4g7hjwhxqghx22g	
 	//http://api.worldweatheronline.com/free/v1/weather.ashx?q=London&format=json&num_of_days=5&key=hk3bn55kb4g7hjwhxqghx22g
-	//http://api.worldweatheronline.com/free/v1/weather.ashx?q=40.400+-3.683&format=json&key=hk3bn55kb4g7hjwhxqghx22g
+	//http://api.worldweatheronline.com/free/v1/weather.ashx?q=40.400+-3.683&format=json&num_of_days=5&key=hk3bn55kb4g7hjwhxqghx22g
 		
 	/*********************************************************/
 	/*                                                       */ 
@@ -121,7 +121,7 @@ private InputStream 		m_InputStream;
 	public CForecastList getCityWeather( CCity City ) throws IOException, JSONException, ParseException
 	{
 		if( City == null ) return null;
-		String Url = WORLD_WEATHER_GET_WEATHER_URL + "?q=" + City.getLatitude() + "+" + City.getLongitude() + "&format=json&key=" + WORLD_WEATHER_KEY;
+		String Url = WORLD_WEATHER_GET_WEATHER_URL + "?q=" + City.getLatitude() + "+" + City.getLongitude() + "&format=json&num_of_days=5&key=" + WORLD_WEATHER_KEY;
 		Connect( new URL( Url ) );
 		
 		JSONObject jsonResponse = getJSONObject();

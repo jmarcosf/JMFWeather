@@ -32,7 +32,7 @@ public static final int		DATABASE_VERSION	= 1;
 	/*********************************************************/
 	private static final String SQL_JMFWEATHER_CREATE_CITY_TABLE_STMT = "CREATE TABLE " + 
 		CWeatherDBContract.CCityTable.TABLE_NAME + 
-	" (" +
+	" ( " +
 		CWeatherDBContract.CCityTable._ID									+	" INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		CWeatherDBContract.CCityTable.COLUMN_NAME_NAME						+ 	" TEXT, " +
 		CWeatherDBContract.CCityTable.COLUMN_NAME_COUNTRY						+ 	" TEXT, " +
@@ -40,14 +40,15 @@ public static final int		DATABASE_VERSION	= 1;
 		CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE					+ 	" TEXT, " +
 		CWeatherDBContract.CCityTable.COLUMN_NAME_POPULATION					+ 	" LONG, " +
 		CWeatherDBContract.CCityTable.COLUMN_NAME_REGION						+ 	" TEXT, " +
-		CWeatherDBContract.CCityTable.COLUMN_NAME_URL						+ 	" TEXT"   +
+		CWeatherDBContract.CCityTable.COLUMN_NAME_URL						+ 	" TEXT, "   +
+          "UNIQUE( " + CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + ", " + CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " )" +
 	" );";
 
 	private static final String SQL_JMFWEATHER_CREATE_CONDITION_TABLE_STMT = "CREATE TABLE " + 
 		CWeatherDBContract.CConditionTable.TABLE_NAME + 
-	" (" +
+	" ( " +
 		CWeatherDBContract.CConditionTable._ID								+	" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		CWeatherDBContract.CConditionTable.COLUMN_NAME_CITY_ID					+ 	" INTEGER UNIQUE, " +
+		CWeatherDBContract.CConditionTable.COLUMN_NAME_CITY_ID					+ 	" INTEGER UNIQUE REFERENCES " + CWeatherDBContract.CCityTable.TABLE_NAME + ", " +
 		CWeatherDBContract.CConditionTable.COLUMN_NAME_CLOUD_COVERAGE			+ 	" INTEGER, " 	+
 		CWeatherDBContract.CConditionTable.COLUMN_NAME_OBSERVATION_TIME			+ 	" LONG, " 	+
 		CWeatherDBContract.CConditionTable.COLUMN_NAME_PRESSURE				+ 	" INTEGER, " 	+
@@ -67,9 +68,9 @@ public static final int		DATABASE_VERSION	= 1;
 
 	private static final String SQL_JMFWEATHER_CREATE_FORECAST_TABLE_STMT = "CREATE TABLE " + 
 		CWeatherDBContract.CForecastTable.TABLE_NAME + 
-	" (" +
+	" ( " +
 		CWeatherDBContract.CForecastTable._ID								+	" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		CWeatherDBContract.CForecastTable.COLUMN_NAME_CITY_ID					+ 	" INTEGER, " 	+
+		CWeatherDBContract.CForecastTable.COLUMN_NAME_CITY_ID					+ 	" INTEGER REFERENCES " + CWeatherDBContract.CCityTable.TABLE_NAME + ", " +
 		CWeatherDBContract.CForecastTable.COLUMN_NAME_ICON_URL					+ 	" TEXT, "   	+
 		CWeatherDBContract.CForecastTable.COLUMN_NAME_MIN_TEMPERATURE_CELSIUS		+ 	" INTEGER, " 	+
 		CWeatherDBContract.CForecastTable.COLUMN_NAME_WIND_SPEED_MPH			+ 	" INTEGER, "  	+
