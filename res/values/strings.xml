@@ -9,8 +9,7 @@
 /*                                                               */ 
 /***************************************************************-->
 <resources>
-    <string name="app_name">JmfWeather</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="IDS_APP_NAME">JmfWeather</string>
+    <string name="IDS_SETTINGS_STRING">Settings</string>
+    <string name="IDS_EMPTY_STRING"></string>
 </resources>

@@ -28,15 +28,16 @@ import com.utad.marcos.jorge.jmfweather.db.CWeatherDBContract;
 /**************************************************************/
 public class CCity
 {
-private long		m_Id;	
-private String		m_Name;
-private String		m_Country;
-private String		m_Latitude;
-private String		m_Longitude;
-private long		m_Population;
-private String		m_Region;
-private String		m_WeatherUrl;
-private CCondition	m_CurrentCondition;
+private long   		m_Id;	
+private String 		m_Name;
+private String 		m_Country;
+private String 		m_Latitude;
+private String	          m_Longitude;
+private long	       	m_Population;
+private String 		m_Region;
+private String		     m_WeatherUrl;
+private CCondition	     m_CurrentCondition;
+private CForecastList    m_ForecastList;
 
 	/*********************************************************/
 	/*                                                       */ 
@@ -72,25 +73,25 @@ private CCondition	m_CurrentCondition;
 		this( -1, null, null, null, null,0,  null, null );
 
 		JSONArray areaNameArray = jsonObject.getJSONArray( "areaName" );
-		m_Name = areaNameArray.getJSONObject( 0 ).getString( "value" );
+		this.m_Name = areaNameArray.getJSONObject( 0 ).getString( "value" );
 
 		JSONArray countryArray = jsonObject.getJSONArray( "country" );
-		m_Country = countryArray.getJSONObject( 0 ).getString( "value" );
+		this.m_Country = countryArray.getJSONObject( 0 ).getString( "value" );
 		
-		m_Latitude = jsonObject.getString( "latitude" );
-		m_Longitude = jsonObject.getString( "longitude" );
-		m_Population = jsonObject.getLong( "population" );
+		this.m_Latitude = jsonObject.getString( "latitude" );
+		this.m_Longitude = jsonObject.getString( "longitude" );
+		this.m_Population = jsonObject.getLong( "population" );
 
 		JSONArray regionArray = jsonObject.getJSONArray( "region" );
-		m_Region = regionArray.getJSONObject( 0 ).getString( "value" );
+		this.m_Region = regionArray.getJSONObject( 0 ).getString( "value" );
 		
 		JSONArray weatherUrlArray = jsonObject.getJSONArray( "weatherUrl" );
-		m_WeatherUrl = weatherUrlArray.getJSONObject( 0 ).getString( "value" );
+		this.m_WeatherUrl = weatherUrlArray.getJSONObject( 0 ).getString( "value" );
 	}
 
 	/*********************************************************/
 	/*                                                       */ 
-	/* CCity.CCity()                                         */ 
+	/* CCity.CCity() Cursor Constructor                      */ 
 	/*                                                       */ 
 	/*********************************************************/
 	public CCity( Cursor cursor )
@@ -118,20 +119,22 @@ private CCondition	m_CurrentCondition;
 	/* CCity getters                                         */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public long 		getId() 			{ return m_Id; }
-	public String 		getName() 		{ return m_Name; }
-	public String 		getCountry()		{ return m_Country; }
-	public String 		getLatitude()		{ return m_Latitude; }
-	public String 		getLongitude()		{ return m_Longitude; }
-	public long 		getPopulation()	{ return m_Population; }
-	public String		getRegion()		{ return m_Region; }
-	public String 		getWeatherUrl()	{ return m_WeatherUrl; }
-	public CCondition 	getCondition()		{ return m_CurrentCondition; }
+	public long             getId()             { return m_Id; }
+	public String 		    getName()           { return m_Name; }
+	public String           getCountry()        { return m_Country; }
+	public String           getLatitude()       { return m_Latitude; }
+	public String           getLongitude()      { return m_Longitude; }
+	public long             getPopulation()     { return m_Population; }
+	public String		    getRegion()         { return m_Region; }
+	public String           getWeatherUrl()     { return m_WeatherUrl; }
+	public CCondition  	    getCondition()      { return m_CurrentCondition; }
+	public CForecastList    getForecastList()   { return m_ForecastList; }
 
 	/*********************************************************/
 	/*                                                       */ 
 	/* CCity setters                                         */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public void setCurrentCondition( CCondition condition ) { m_CurrentCondition = condition; }
+	public void setCurrentCondition( CCondition Condition ) { m_CurrentCondition = Condition; }
+     public void setForecastList( CForecastList ForecastList ) { m_ForecastList = ForecastList; }
 }

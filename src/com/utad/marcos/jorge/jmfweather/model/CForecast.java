@@ -18,7 +18,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.utad.marcos.jorge.jmfweather.db.CWeatherDBContract;
+
 import android.annotation.SuppressLint;
+import android.database.Cursor;
 
 /**************************************************************/
 /*                                                            */ 
@@ -91,24 +94,54 @@ private int		m_MinTemperatureFahrenheit;
 		this( null, 0, 0, 0, null, 0, (Date)null, 0, 0, 0, 0, null, null, 0 );
 		
 		JSONArray iconUrlArray = jsonObject.getJSONArray( "weatherIconUrl" );
-		m_IconUrl = iconUrlArray.getJSONObject( 0 ).getString( "value" );
-		m_MinTemperatureCelsius = jsonObject.getInt( "tempMinC" );
-		m_WindSpeedMph = jsonObject.getInt( "windspeedMiles" );
-		m_WindSpeedKmph = jsonObject.getInt( "windspeedKmph" );
-		m_WindDirection = jsonObject.getString( "winddirection" );
-		m_MaxTemperatureCelsius = jsonObject.getInt( "tempMaxC" );
+		this.m_IconUrl = iconUrlArray.getJSONObject( 0 ).getString( "value" );
+		this.m_MinTemperatureCelsius = jsonObject.getInt( "tempMinC" );
+		this.m_WindSpeedMph = jsonObject.getInt( "windspeedMiles" );
+		this.m_WindSpeedKmph = jsonObject.getInt( "windspeedKmph" );
+		this.m_WindDirection = jsonObject.getString( "winddirection" );
+		this.m_MaxTemperatureCelsius = jsonObject.getInt( "tempMaxC" );
 		SimpleDateFormat DateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-		m_ForecastDate = DateFormat.parse( jsonObject.getString( "date" ) );
-		m_WeatherCode = jsonObject.getInt( "weatherCode" );
-		m_MaxTemperatureFahrenheit = jsonObject.getInt( "tempMaxF" );
-		m_Precipitation = (float)jsonObject.getDouble( "precipMM" );
-		m_WindDirectionDegrees = jsonObject.getInt( "winddirDegree" );
-		m_WindDirectionCompass = jsonObject.getString( "winddir16Point" );
+		this.m_ForecastDate = DateFormat.parse( jsonObject.getString( "date" ) );
+		this.m_WeatherCode = jsonObject.getInt( "weatherCode" );
+		this.m_MaxTemperatureFahrenheit = jsonObject.getInt( "tempMaxF" );
+		this.m_Precipitation = (float)jsonObject.getDouble( "precipMM" );
+		this.m_WindDirectionDegrees = jsonObject.getInt( "winddirDegree" );
+		this.m_WindDirectionCompass = jsonObject.getString( "winddir16Point" );
 		JSONArray descriptionArray = jsonObject.getJSONArray( "weatherDesc" );
-		m_WeatherDescription = descriptionArray.getJSONObject( 0 ).getString( "value" );
-		m_MinTemperatureFahrenheit = jsonObject.getInt( "tempMinF" );
+		this.m_WeatherDescription = descriptionArray.getJSONObject( 0 ).getString( "value" );
+		this.m_MinTemperatureFahrenheit = jsonObject.getInt( "tempMinF" );
 	}
-	
+
+	/*********************************************************/
+     /*                                                       */ 
+     /* CForecast.Forecast() Cursor Constructor               */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public CForecast( Cursor cursor )
+     {
+          this( null, 0, 0, 0, null, 0, (Date)null, 0, 0, 0, 0, null, null, 0 );
+          
+          this.m_Id = cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CForecastTable._ID ) );
+          this.m_CityId = cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_CITY_ID ) );
+          this.m_IconUrl = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_ICON_URL ) );
+          this.m_MinTemperatureCelsius = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_MIN_TEMPERATURE_CELSIUS ) );
+          this.m_WindSpeedMph = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_WIND_SPEED_MPH ) );
+          this.m_WindSpeedKmph = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_WIND_SPEED_KMPH ) );
+          this.m_WindDirection = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_WIND_DIRECTION ) );
+          this.m_MaxTemperatureCelsius = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_MAX_TEMPERATURE_CELSIUS ) );
+          if( !cursor.isNull( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_FORECAST_DATE ) ) )
+          {
+               this.m_ForecastDate = new Date( cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_FORECAST_DATE ) ) );
+          }
+          this.m_WeatherCode = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_WEATHER_CODE ) );
+          this.m_MaxTemperatureFahrenheit = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_MAX_TEMPERATURE_FAHRENHEIT ) );
+          this.m_Precipitation = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_PRECIPITATION ) );
+          this.m_WindDirectionDegrees = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_WIND_DIRECTION_DEGREES ) );
+          this.m_WindDirectionCompass = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_WIND_DIRECTION_COMPASS ) );
+          this.m_WeatherDescription = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_WEATHER_DESCRIPTION ) );
+          this.m_MinTemperatureFahrenheit = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CForecastTable.COLUMN_NAME_MIN_TEMPERATURE_FAHRENHEIT ) );
+     }    
+     
 	/*********************************************************/
 	/*                                                       */ 
 	/*                                                       */ 

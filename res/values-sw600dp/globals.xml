@@ -1,13 +1,13 @@
 <!--**************************************************************/
 /*                                                               */ 
-/* styles.xml                                                    */ 
+/* globals.xml                                                   */ 
 /* (c)2013 jmarcosf                                              */ 
 /*                                                               */ 
-/* Description: Application v14+ Styles                          */ 
+/* Description: Global 600dp+ Application Definitions            */ 
 /*              JmfWeather Project                               */ 
 /*                                                               */ 
 /***************************************************************-->
 <resources>
-    <style name="IDR_APP_BASE_THEME" parent="android:Theme.Holo.Light.DarkActionBar">
-    </style>
+    <item type="bool" name="g_bTablet">true</item>
 </resources>
+

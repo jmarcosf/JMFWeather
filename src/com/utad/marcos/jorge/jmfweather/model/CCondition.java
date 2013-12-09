@@ -20,7 +20,6 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.database.Cursor;
-import android.text.format.Time;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDBContract;
 
@@ -96,35 +95,35 @@ private String		m_WeatherDescription;
 	{
 		this( 0, (Date)null, 0, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, null );
 		
-		m_CloudCoverPercentage = jsonObject.getInt( "cloudcover" );
+		this.m_CloudCoverPercentage = jsonObject.getInt( "cloudcover" );
 		SimpleDateFormat DateFormat = new SimpleDateFormat( "HH:mm a" );
-		m_ObservationTime = DateFormat.parse( jsonObject.getString( "observation_time" ) );
-		m_Pressure = jsonObject.getInt( "pressure" );
-		m_TemperatureCelsius = jsonObject.getInt( "temp_C" );
-		m_Visibility = jsonObject.getInt( "visibility" );
-		m_TemperatureFahrenheit = jsonObject.getInt( "temp_F" );
-		m_WindSpeedMph = jsonObject.getInt( "windspeedMiles" );
-		m_Precipitation = (float)jsonObject.getDouble( "precipMM" );
-		m_WindDirectionDegrees = jsonObject.getInt( "winddirDegree" );
-		m_WindDirectionCompass = jsonObject.getString( "winddir16Point" );
+		this.m_ObservationTime = DateFormat.parse( jsonObject.getString( "observation_time" ) );
+		this.m_Pressure = jsonObject.getInt( "pressure" );
+		this.m_TemperatureCelsius = jsonObject.getInt( "temp_C" );
+		this.m_Visibility = jsonObject.getInt( "visibility" );
+		this.m_TemperatureFahrenheit = jsonObject.getInt( "temp_F" );
+		this.m_WindSpeedMph = jsonObject.getInt( "windspeedMiles" );
+		this.m_Precipitation = (float)jsonObject.getDouble( "precipMM" );
+		this.m_WindDirectionDegrees = jsonObject.getInt( "winddirDegree" );
+		this.m_WindDirectionCompass = jsonObject.getString( "winddir16Point" );
 		JSONArray iconUrlArray = jsonObject.getJSONArray( "weatherIconUrl" );
-		m_IconUrl = iconUrlArray.getJSONObject( 0 ).getString( "value" );
-		m_Humidity = jsonObject.getInt( "humidity" );
-		m_WindSpeedKmph = jsonObject.getInt( "windspeedKmph" );
-		m_WeatherCode = jsonObject.getInt( "weatherCode" );
+		this.m_IconUrl = iconUrlArray.getJSONObject( 0 ).getString( "value" );
+		this.m_Humidity = jsonObject.getInt( "humidity" );
+		this.m_WindSpeedKmph = jsonObject.getInt( "windspeedKmph" );
+		this.m_WeatherCode = jsonObject.getInt( "weatherCode" );
 		JSONArray descriptionArray = jsonObject.getJSONArray( "weatherDesc" );
-		m_WeatherDescription = descriptionArray.getJSONObject( 0 ).getString( "value" );
+		this.m_WeatherDescription = descriptionArray.getJSONObject( 0 ).getString( "value" );
 	}
 	
 	/*********************************************************/
 	/*                                                       */ 
-	/* CCondition.Condition()                                */ 
+	/* CCondition.Condition() Cursor Constructor             */ 
 	/*                                                       */ 
 	/*********************************************************/
 	public CCondition( Cursor cursor )
 	{
 		this( 0, (Date)null, 0, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, null );
-
+		
 		this.m_Id = cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CConditionTable._ID ) );
 		this.m_CityId = cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_CITY_ID ) );
 		this.m_CloudCoverPercentage = cursor.getInt( cursor.getColumnIndex( CWeatherDBContract.CConditionTable.COLUMN_NAME_CLOUD_COVERAGE ) );

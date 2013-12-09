@@ -1,13 +1,14 @@
 <!--**************************************************************/
 /*                                                               */ 
-/* styles.xml                                                    */ 
+/* colors.xml                                                    */ 
 /* (c)2013 jmarcosf                                              */ 
 /*                                                               */ 
-/* Description: Application v14+ Styles                          */ 
+/* Description: Application Colors                               */ 
 /*              JmfWeather Project                               */ 
 /*                                                               */ 
 /***************************************************************-->
 <resources>
-    <style name="IDR_APP_BASE_THEME" parent="android:Theme.Holo.Light.DarkActionBar">
-    </style>
+    <color name="IDR_COL_APPLICATION_BACKGROUND">#FFEEEEEE</color>
+    <color name="IDR_COL_TRANSLUCENT_BACKGROUND">#80000000</color>
+    <color name="IDR_COL_LVITEM_PRESSED_BACKGROUND">#FFB1D0FF</color>
 </resources>

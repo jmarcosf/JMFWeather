@@ -21,11 +21,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 import com.utad.marcos.jorge.jmfweather.model.CCityList;
 import com.utad.marcos.jorge.jmfweather.model.CCondition;
+import com.utad.marcos.jorge.jmfweather.model.CForecast;
+import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.CWeatherRetrieverBinder;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeatherRetrieverListener;
@@ -41,10 +44,10 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeath
 /**************************************************************/
 public class CMainActivity extends Activity
 {
-     private ServiceConnection   m_ServiceConnection;
-     private CWeatherRetrieverBinder m_Binder;
-
-     private CCityList       m_CityList;
+private ServiceConnection          m_ServiceConnection;
+private CWeatherRetrieverBinder    m_Binder;
+private CCityList                  m_CityList;
+private TextView                   m_Text;
 
      /*********************************************************/
      /*                                                       */
@@ -61,7 +64,12 @@ public class CMainActivity extends Activity
      protected void onCreate( Bundle savedInstanceState )
      {
           super.onCreate( savedInstanceState );
-          setContentView( R.layout.jmfweather_activity_main );
+          setContentView( R.layout.layout_activity_main );
+          
+          m_Text = (TextView)findViewById( R.id.IDC_TXT_MAIN_ACTIVITY_TEXT );
+          m_Text.setText( "Hola don Pepito" );
+          
+          LoadCityList();
      }
 
      /*********************************************************/
@@ -73,7 +81,7 @@ public class CMainActivity extends Activity
      protected void onStart()
      {
           super.onStart();
-          ServiceConnect();
+//          ServiceConnect();
 //          LoadCityList();
      }
 
@@ -85,7 +93,7 @@ public class CMainActivity extends Activity
      @Override
      protected void onStop()
      {
-          ServiceDisconnect();
+//        ServiceDisconnect();
           super.onStop();
      }
 
@@ -97,7 +105,7 @@ public class CMainActivity extends Activity
      @Override
      public boolean onCreateOptionsMenu( Menu menu )
      {
-          getMenuInflater().inflate( R.menu.cmain, menu );
+          getMenuInflater().inflate( R.menu.main_menu, menu );
           return true;
      }
 
@@ -205,19 +213,41 @@ public class CMainActivity extends Activity
 //               City.setCurrentCondition( Condition );
 //               WeatherDAO.Insert( City );
 
-               Cursor cursor = WeatherDAO.SelectAllCities();
-               int count = cursor.getCount();
+               Cursor cityCursor = WeatherDAO.SelectAllCities();
+               int cityCount = cityCursor.getCount();
 
                m_CityList = new CCityList();
-               if( cursor.moveToFirst() )
+               if( cityCursor.moveToFirst() )
                {
                     do
                     {
-                         m_CityList.add( new CCity( cursor ) );
-                    } while( cursor.moveToNext() );
+                         CCity NewCity = new CCity( cityCursor );
+                         Cursor conditionCursor = WeatherDAO.selectCityCondition( NewCity );
+                         int conditionCount = conditionCursor.getCount();
+                         if( conditionCursor.moveToFirst() )
+                         {
+                              CCondition Condition = new CCondition( conditionCursor );
+                              NewCity.setCurrentCondition( Condition );
+                         }
+                         m_CityList.add( NewCity );
+                         
+                         Cursor forecastCursor = WeatherDAO.selectCityForecast( NewCity );
+                         int forecastCount = forecastCursor.getCount();
+                         if( forecastCursor.moveToFirst() )
+                         {
+                              CForecastList ForecastList = new CForecastList();
+                              do
+                              {
+                                   CForecast Forecast = new CForecast( forecastCursor );
+                                   ForecastList.add( Forecast );
+                                   
+                              } while( forecastCursor.moveToNext() );
+                              NewCity.setForecastList( ForecastList );
+                         }
+                    } while( cityCursor.moveToNext() );
                }
 
-               return cursor;
+               return cityCursor;
           }
 
           /*********************************************************/
@@ -228,6 +258,59 @@ public class CMainActivity extends Activity
           @Override
           protected void onPostExecute( Cursor cursor )
           {
+               StringBuffer Buffer = new StringBuffer();
+               for( CCity City : m_CityList.getCityList() )
+               {
+                    Buffer.append( "********************************************" );
+                    Buffer.append( "\nID: " + City.getId() );
+                    Buffer.append( "\nCity: " + City.getName() );
+                    Buffer.append( "\nCountry: " + City.getCountry() );
+                    Buffer.append( "\nLatitude: " + City.getLatitude() );
+                    Buffer.append( "\nLongitude: " + City.getLongitude() );
+                    Buffer.append( "\nPopulation: " + City.getPopulation() );
+                    Buffer.append( "\nRegion: " + City.getRegion() );
+                    Buffer.append( "\nURL: " + City.getWeatherUrl() );
+
+                    Buffer.append( "\n--Current Conditions-------------------------" );
+                    Buffer.append( "\nCloud Cover %: " + City.getCondition().getCloudCoverPercentage() );
+                    Buffer.append( "\nTime: " + City.getCondition().getObservationTime() );
+                    Buffer.append( "\nPressure: " + City.getCondition().getPressure() );
+                    Buffer.append( "\nºC: " + City.getCondition().getTemperatureCelsius() );
+                    Buffer.append( "\nVisibility: " + City.getCondition().getVisibility() );
+                    Buffer.append( "\nºF: " + City.getCondition().getTemperatureFahrenheit() );
+                    Buffer.append( "\nWind Speed MPH: " + City.getCondition().getWindSpeedMph() );
+                    Buffer.append( "\nPrecipitation: " + City.getCondition().getPrecipitation() );
+                    Buffer.append( "\nWind Direction º: " + City.getCondition().getWindDirectionDegrees() );
+                    Buffer.append( "\nWind Direction: " + City.getCondition().getWindDirectionCompass() );
+                    Buffer.append( "\nIcon URL: " + City.getCondition().getIconUrl() );
+                    Buffer.append( "\nHumidity: " + City.getCondition().getHumidity() );
+                    Buffer.append( "\nWind Spped (KMPH): " + City.getCondition().getWindSpeedKmph() );
+                    Buffer.append( "\nCode: " + City.getCondition().getWeatherCode() );
+                    Buffer.append( "\nDescription: " + City.getCondition().getWeatherDescription() );
+                    Buffer.append( "\n" );
+                    
+                    for( CForecast Forecast : City.getForecastList().getForecastList() )
+                    {
+                         Buffer.append( "\n--Forcast------------------------------------" );
+                         Buffer.append( "\nIcon URL: " + Forecast.getIconUrl() );
+                         Buffer.append( "\nMin ºC: " + Forecast.getMinTemperatureCelsius() );
+                         Buffer.append( "\nWind Speed (MPH): " + Forecast.getWindSpeedMph() );
+                         Buffer.append( "\nWind Speed (KMPH): " + Forecast.getWindSpeedKmph() );
+                         Buffer.append( "\nWind Direction: " + Forecast.getWindDirection() );
+                         Buffer.append( "\nMax ºC: " + Forecast.getMaxTemperatureCelsius() );
+                         Buffer.append( "\nDate: " + Forecast.getForecastDate() );
+                         Buffer.append( "\nCode: " + Forecast.getWeatherCode() );
+                         Buffer.append( "\nMax ºF: " + Forecast.getMaxTemperatureFahrenheit() );
+                         Buffer.append( "\nPrecipitation: " + Forecast.getPrecipitation() );
+                         Buffer.append( "\nWind Direction º: " + Forecast.getWindDirectionDegrees() );
+                         Buffer.append( "\nWind Direction Compass: " + Forecast.getWindDirectionCompass() );
+                         Buffer.append( "\nDescription: " + Forecast.getWeatherDescription() );
+                         Buffer.append( "\nMin ºF: " + Forecast.getMinTemperatureFahrenheit() );
+                    }
+               }
+               Buffer.append( "\n********************************************" );
+               m_Text.setText( Buffer ); 
+               
 //               m_WaitClock.setVisibility( View.GONE );
 //               m_Adapter = new CCityListAdapter( CMainActivity.this, cursor );
 //               m_ListView.setAdapter( m_Adapter );
