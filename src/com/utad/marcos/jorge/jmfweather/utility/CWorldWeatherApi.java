@@ -22,11 +22,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 import com.utad.marcos.jorge.jmfweather.model.CCityList;
 import com.utad.marcos.jorge.jmfweather.model.CCondition;
 import com.utad.marcos.jorge.jmfweather.model.CForecast;
 import com.utad.marcos.jorge.jmfweather.model.CForecastList;
+import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 
 /**************************************************************/
 /*                                                            */ 
@@ -90,6 +93,7 @@ private InputStream 		m_InputStream;
 	public CCityList SearchCity( String Name ) throws IOException, JSONException
 	{
 		if( Name == null ) return null;
+          Log.d( CWorldWeatherApi.class.getSimpleName(), "SearchCity(): " + Name );
 		String Url = WORLD_WEATHER_SEARCH_CITY_URL + "?q=" + Name + "&format=json&key=" + WORLD_WEATHER_KEY;
 		Connect( new URL( Url ) );
 		
@@ -117,6 +121,8 @@ private InputStream 		m_InputStream;
 	public CForecastList getCityWeather( CCity City ) throws IOException, JSONException, ParseException
 	{
 		if( City == null ) return null;
+          Log.d( CWorldWeatherApi.class.getSimpleName(), "GetCityWeather() of: " + City.getName() );
+
 		String Url = WORLD_WEATHER_GET_WEATHER_URL + "?q=" + City.getLatitude() + "+" + City.getLongitude() + "&format=json&extra=localObsTime&num_of_days=5&key=" + WORLD_WEATHER_KEY;
 		Connect( new URL( Url ) );
 		

@@ -14,6 +14,8 @@ import java.text.ParseException;
 
 import org.json.JSONException;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +45,11 @@ import com.utad.marcos.jorge.jmfweather.utility.CWorldWeatherApi;
 public class CWeatherRetrieverService extends Service
 {
 private IWeatherRetrieverListener	m_Listener = null;
+
+private static final int PERIODIC_TASK_REQUEST_CODE = 0x4777;
+private static final int PERIODIC_TASK_TRIGGER_TIMEOUT = ( 10 * 1000 );         // 10 Seconds
+//private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 60 * 1000 * 5 );  // Every 5 minutes
+private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        // Every 5 minutes
 
 	/*********************************************************/
 	/*                                                       */
@@ -86,8 +93,20 @@ private IWeatherRetrieverListener	m_Listener = null;
 	public void onCreate()
 	{
 	     Log.d( CWeatherRetrieverService.class.getSimpleName(), "onCreate()" );
-		super.onCreate();
+          super.onCreate();
 	}
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherRetrieverService.onDestroy()                  */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public void onDestroy()
+     {
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onDestroy()" );
+          super.onDestroy();
+     }
 
 	/*********************************************************/
 	/*                                                       */
@@ -98,22 +117,10 @@ private IWeatherRetrieverListener	m_Listener = null;
 	public IBinder onBind( Intent arg0 )
 	{
 	     Log.d( CWeatherRetrieverService.class.getSimpleName(), "onBind()" );
+          StartAlarm( getBaseContext() );
 		return new CWeatherRetrieverBinder();
 	}
 
-	/*********************************************************/
-	/*                                                       */ 
-	/* CWeatherRetrieverService.onStartCommand()             */ 
-	/*                                                       */ 
-	/*********************************************************/
-	@Override
-	public int onStartCommand( Intent intent, int flags, int startId )
-	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onStartCommand()" );
-		LoadWeather();
-		return START_STICKY;
-	}
-	
 	/*********************************************************/
 	/*                                                       */ 
 	/* CWeatherRetrieverService.onUnbind()                   */ 
@@ -123,22 +130,24 @@ private IWeatherRetrieverListener	m_Listener = null;
 	public boolean onUnbind( Intent intent )
 	{
           Log.d( CWeatherRetrieverService.class.getSimpleName(), "onUnbind()" );
+          StopAlarm( getBaseContext() );
 		m_Listener = null;
 		return super.onUnbind( intent );
 	}
 	
-	/*********************************************************/
-	/*                                                       */ 
-	/* CWeatherRetrieverService.onDestroy()                  */ 
-	/*                                                       */ 
-	/*********************************************************/
-	@Override
-	public void onDestroy()
-	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onDestroy()" );
-		super.onDestroy();
-	}
-
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherRetrieverService.onStartCommand()             */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public int onStartCommand( Intent intent, int flags, int startId )
+     {
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onStartCommand()" );
+          LoadWeather();
+          return START_STICKY;
+     }
+     
 	/*********************************************************/
 	/*                                                       */
 	/*                                                       */
@@ -156,6 +165,42 @@ private IWeatherRetrieverListener	m_Listener = null;
 		this.m_Listener = listener;
 	}
 	
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherRetrieverService.getPendingIntent()           */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public static PendingIntent getPendingIntent( Context context )
+     {
+          Intent TaskIntent = new Intent( context, CWeatherRetrieverService.class );
+          PendingIntent pendingIntent = PendingIntent.getService( context, PERIODIC_TASK_REQUEST_CODE, TaskIntent, PendingIntent.FLAG_CANCEL_CURRENT );
+          return pendingIntent;
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherRetrieverService.StartAlarm()                 */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public static void StartAlarm( Context context )
+     {
+          PendingIntent pendingIntent = CWeatherRetrieverService.getPendingIntent( context );
+          AlarmManager alarmManager = (AlarmManager)context.getSystemService( Context.ALARM_SERVICE );
+          alarmManager.setInexactRepeating( AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + PERIODIC_TASK_TRIGGER_TIMEOUT, PERIODIC_TASK_INTERVAL_TIMEOUT, pendingIntent );
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherRetrieverService.StopAlarm()                  */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public static void StopAlarm( Context context )
+     {
+          PendingIntent pendingIntent = CWeatherRetrieverService.getPendingIntent( context );
+          AlarmManager alarmManager = (AlarmManager)context.getSystemService( Context.ALARM_SERVICE );
+          alarmManager.cancel( pendingIntent );
+     }
+      
 	/*********************************************************/
 	/*                                                       */ 
 	/* CWeatherRetrieverService.LoadWeather()                */ 
@@ -167,7 +212,7 @@ private IWeatherRetrieverListener	m_Listener = null;
 		ConnectivityManager ConnManager = (ConnectivityManager)getSystemService( Context.CONNECTIVITY_SERVICE );
 		NetworkInfo NetInfo = ConnManager.getActiveNetworkInfo();
 
-		if( NetInfo != null && NetInfo.isConnected() )
+		if( NetInfo != null && NetInfo.isConnected() && m_Listener != null )
 		{
 			new CInetLoader().execute();
 			return true;
@@ -197,7 +242,6 @@ private IWeatherRetrieverListener	m_Listener = null;
           	CCityList CityList = new CCityList();
 
           	Cursor cursor = WeatherDAO.SelectAllCities();
-//          	int count = cursor.getCount();
           	if( cursor.moveToFirst() )
           	{
           		do

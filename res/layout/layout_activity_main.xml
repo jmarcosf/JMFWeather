@@ -34,7 +34,7 @@
 	        android:layout_height="wrap_content"
 	        android:text="@string/IDS_EMPTY_STRING"
 	        android:fontFamily="Arial"
-	        android:textSize="10sp" />
+	        android:textSize="12sp" />
 	
 	</ScrollView>
 
