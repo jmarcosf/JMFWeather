@@ -119,7 +119,7 @@ private SQLiteDatabase		m_db;
 	/* CWeatherDAO.Insert()                                  */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public long Insert( CForecast Forecast )
+	public long Insert( CForecast Forecast, CCity City )
 	{
 		if( m_db == null || m_db.isReadOnly() )
 		{
@@ -128,7 +128,7 @@ private SQLiteDatabase		m_db;
 		}
 		
 		ContentValues ForecastRecord = new ContentValues();
-		ForecastRecord.put( CWeatherDBContract.CForecastTable.COLUMN_NAME_CITY_ID, 				Forecast.getCityId() );
+		ForecastRecord.put( CWeatherDBContract.CForecastTable.COLUMN_NAME_CITY_ID, 				City.getId() );
 		ForecastRecord.put( CWeatherDBContract.CForecastTable.COLUMN_NAME_ICON_URL, 				Forecast.getIconUrl() );
 		ForecastRecord.put( CWeatherDBContract.CForecastTable.COLUMN_NAME_MIN_TEMPERATURE_CELSIUS, 	Forecast.getMinTemperatureCelsius() );
 		ForecastRecord.put( CWeatherDBContract.CForecastTable.COLUMN_NAME_WIND_SPEED_MPH,			Forecast.getWindSpeedMph() );
@@ -305,7 +305,7 @@ private SQLiteDatabase		m_db;
 			DeleteCityForecast( City.getId() );
 			for( CForecast Forecast : ForecastList.getForecastList() )
 			{
-				Insert( Forecast );
+				Insert( Forecast, City );
 			}
 			
 			ContentValues ConditionRecord = new ContentValues();

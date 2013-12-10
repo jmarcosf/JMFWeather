@@ -109,10 +109,6 @@ private InputStream 		m_InputStream;
 		return CityList; 
 	}
 
-	//http://api.worldweatheronline.com/free/v1/search.ashx?q=London&format=json&num_of_days=5&key=hk3bn55kb4g7hjwhxqghx22g	
-	//http://api.worldweatheronline.com/free/v1/weather.ashx?q=London&format=json&num_of_days=5&key=hk3bn55kb4g7hjwhxqghx22g
-	//http://api.worldweatheronline.com/free/v1/weather.ashx?q=40.400+-3.683&format=json&num_of_days=5&key=hk3bn55kb4g7hjwhxqghx22g
-		
 	/*********************************************************/
 	/*                                                       */ 
 	/* CWorldWeatherApi.getCityWeather()                     */ 
@@ -121,7 +117,7 @@ private InputStream 		m_InputStream;
 	public CForecastList getCityWeather( CCity City ) throws IOException, JSONException, ParseException
 	{
 		if( City == null ) return null;
-		String Url = WORLD_WEATHER_GET_WEATHER_URL + "?q=" + City.getLatitude() + "+" + City.getLongitude() + "&format=json&num_of_days=5&key=" + WORLD_WEATHER_KEY;
+		String Url = WORLD_WEATHER_GET_WEATHER_URL + "?q=" + City.getLatitude() + "+" + City.getLongitude() + "&format=json&extra=localObsTime&num_of_days=5&key=" + WORLD_WEATHER_KEY;
 		Connect( new URL( Url ) );
 		
 		JSONObject jsonResponse = getJSONObject();

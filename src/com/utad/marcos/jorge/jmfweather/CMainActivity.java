@@ -21,6 +21,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
@@ -69,7 +71,15 @@ private TextView                   m_Text;
           m_Text = (TextView)findViewById( R.id.IDC_TXT_MAIN_ACTIVITY_TEXT );
           m_Text.setText( "Hola don Pepito" );
           
-          LoadCityList();
+//        LoadCityList();
+          findViewById( R.id.IDC_BTN_REFRESH ).setOnClickListener( new OnClickListener()
+          {
+               @Override
+               public void onClick( View arg0 )
+               {
+                    LoadCityList();
+               }
+          } );
      }
 
      /*********************************************************/
@@ -81,7 +91,7 @@ private TextView                   m_Text;
      protected void onStart()
      {
           super.onStart();
-//          ServiceConnect();
+          ServiceConnect();
 //          LoadCityList();
      }
 
@@ -93,7 +103,7 @@ private TextView                   m_Text;
      @Override
      protected void onStop()
      {
-//        ServiceDisconnect();
+          ServiceDisconnect();
           super.onStop();
      }
 
@@ -208,9 +218,9 @@ private TextView                   m_Text;
           protected Cursor doInBackground( Void... param )
           {
                CWeatherDAO WeatherDAO = new CWeatherDAO( CMainActivity.this );
-//               CCondition Condition = new CCondition( 0, (Date)null, 0, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, null );
+//               CCondition FirstCondition = new CCondition( 0, (Date)null, 0, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, null );
 //               CCity City = new CCity( 0, "Madrid", "Spain", "40.400", "-3.683", 0, "Madrid", "" );
-//               City.setCurrentCondition( Condition );
+//               City.setCurrentCondition( FirstCondition );
 //               WeatherDAO.Insert( City );
 
                Cursor cityCursor = WeatherDAO.SelectAllCities();
@@ -270,42 +280,48 @@ private TextView                   m_Text;
                     Buffer.append( "\nPopulation: " + City.getPopulation() );
                     Buffer.append( "\nRegion: " + City.getRegion() );
                     Buffer.append( "\nURL: " + City.getWeatherUrl() );
-
-                    Buffer.append( "\n--Current Conditions-------------------------" );
-                    Buffer.append( "\nCloud Cover %: " + City.getCondition().getCloudCoverPercentage() );
-                    Buffer.append( "\nTime: " + City.getCondition().getObservationTime() );
-                    Buffer.append( "\nPressure: " + City.getCondition().getPressure() );
-                    Buffer.append( "\nºC: " + City.getCondition().getTemperatureCelsius() );
-                    Buffer.append( "\nVisibility: " + City.getCondition().getVisibility() );
-                    Buffer.append( "\nºF: " + City.getCondition().getTemperatureFahrenheit() );
-                    Buffer.append( "\nWind Speed MPH: " + City.getCondition().getWindSpeedMph() );
-                    Buffer.append( "\nPrecipitation: " + City.getCondition().getPrecipitation() );
-                    Buffer.append( "\nWind Direction º: " + City.getCondition().getWindDirectionDegrees() );
-                    Buffer.append( "\nWind Direction: " + City.getCondition().getWindDirectionCompass() );
-                    Buffer.append( "\nIcon URL: " + City.getCondition().getIconUrl() );
-                    Buffer.append( "\nHumidity: " + City.getCondition().getHumidity() );
-                    Buffer.append( "\nWind Spped (KMPH): " + City.getCondition().getWindSpeedKmph() );
-                    Buffer.append( "\nCode: " + City.getCondition().getWeatherCode() );
-                    Buffer.append( "\nDescription: " + City.getCondition().getWeatherDescription() );
-                    Buffer.append( "\n" );
                     
-                    for( CForecast Forecast : City.getForecastList().getForecastList() )
+                    if( City.getCondition() != null )
                     {
-                         Buffer.append( "\n--Forcast------------------------------------" );
-                         Buffer.append( "\nIcon URL: " + Forecast.getIconUrl() );
-                         Buffer.append( "\nMin ºC: " + Forecast.getMinTemperatureCelsius() );
-                         Buffer.append( "\nWind Speed (MPH): " + Forecast.getWindSpeedMph() );
-                         Buffer.append( "\nWind Speed (KMPH): " + Forecast.getWindSpeedKmph() );
-                         Buffer.append( "\nWind Direction: " + Forecast.getWindDirection() );
-                         Buffer.append( "\nMax ºC: " + Forecast.getMaxTemperatureCelsius() );
-                         Buffer.append( "\nDate: " + Forecast.getForecastDate() );
-                         Buffer.append( "\nCode: " + Forecast.getWeatherCode() );
-                         Buffer.append( "\nMax ºF: " + Forecast.getMaxTemperatureFahrenheit() );
-                         Buffer.append( "\nPrecipitation: " + Forecast.getPrecipitation() );
-                         Buffer.append( "\nWind Direction º: " + Forecast.getWindDirectionDegrees() );
-                         Buffer.append( "\nWind Direction Compass: " + Forecast.getWindDirectionCompass() );
-                         Buffer.append( "\nDescription: " + Forecast.getWeatherDescription() );
-                         Buffer.append( "\nMin ºF: " + Forecast.getMinTemperatureFahrenheit() );
+                         Buffer.append( "\n--Current Conditions-------------------------" );
+                         Buffer.append( "\nCloud Cover %: " + City.getCondition().getCloudCoverPercentage() );
+                         Buffer.append( "\nTime: " + City.getCondition().getObservationTime() );
+                         Buffer.append( "\nPressure: " + City.getCondition().getPressure() );
+                         Buffer.append( "\nºC: " + City.getCondition().getTemperatureCelsius() );
+                         Buffer.append( "\nVisibility: " + City.getCondition().getVisibility() );
+                         Buffer.append( "\nºF: " + City.getCondition().getTemperatureFahrenheit() );
+                         Buffer.append( "\nWind Speed MPH: " + City.getCondition().getWindSpeedMph() );
+                         Buffer.append( "\nPrecipitation: " + City.getCondition().getPrecipitation() );
+                         Buffer.append( "\nWind Direction º: " + City.getCondition().getWindDirectionDegrees() );
+                         Buffer.append( "\nWind Direction: " + City.getCondition().getWindDirectionCompass() );
+                         Buffer.append( "\nIcon URL: " + City.getCondition().getIconUrl() );
+                         Buffer.append( "\nHumidity: " + City.getCondition().getHumidity() );
+                         Buffer.append( "\nWind Spped (KMPH): " + City.getCondition().getWindSpeedKmph() );
+                         Buffer.append( "\nCode: " + City.getCondition().getWeatherCode() );
+                         Buffer.append( "\nDescription: " + City.getCondition().getWeatherDescription() );
+                         Buffer.append( "\n" );
+                    }
+                    
+                    if( City.getForecastList() != null )
+                    {
+                         for( CForecast Forecast : City.getForecastList().getForecastList() )
+                         {
+                              Buffer.append( "\n--Forcast------------------------------------" );
+                              Buffer.append( "\nIcon URL: " + Forecast.getIconUrl() );
+                              Buffer.append( "\nMin ºC: " + Forecast.getMinTemperatureCelsius() );
+                              Buffer.append( "\nWind Speed (MPH): " + Forecast.getWindSpeedMph() );
+                              Buffer.append( "\nWind Speed (KMPH): " + Forecast.getWindSpeedKmph() );
+                              Buffer.append( "\nWind Direction: " + Forecast.getWindDirection() );
+                              Buffer.append( "\nMax ºC: " + Forecast.getMaxTemperatureCelsius() );
+                              Buffer.append( "\nDate: " + Forecast.getForecastDate() );
+                              Buffer.append( "\nCode: " + Forecast.getWeatherCode() );
+                              Buffer.append( "\nMax ºF: " + Forecast.getMaxTemperatureFahrenheit() );
+                              Buffer.append( "\nPrecipitation: " + Forecast.getPrecipitation() );
+                              Buffer.append( "\nWind Direction º: " + Forecast.getWindDirectionDegrees() );
+                              Buffer.append( "\nWind Direction Compass: " + Forecast.getWindDirectionCompass() );
+                              Buffer.append( "\nDescription: " + Forecast.getWeatherDescription() );
+                              Buffer.append( "\nMin ºF: " + Forecast.getMinTemperatureFahrenheit() );
+                         }
                     }
                }
                Buffer.append( "\n********************************************" );

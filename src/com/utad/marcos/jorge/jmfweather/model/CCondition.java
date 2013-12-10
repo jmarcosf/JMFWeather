@@ -13,6 +13,7 @@ package com.utad.marcos.jorge.jmfweather.model;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,8 +97,8 @@ private String		m_WeatherDescription;
 		this( 0, (Date)null, 0, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, null );
 		
 		this.m_CloudCoverPercentage = jsonObject.getInt( "cloudcover" );
-		SimpleDateFormat DateFormat = new SimpleDateFormat( "HH:mm a" );
-		this.m_ObservationTime = DateFormat.parse( jsonObject.getString( "observation_time" ) );
+		SimpleDateFormat DateFormat = new SimpleDateFormat( "yyyy-MM-dd hh:mm aaa", Locale.US );
+		this.m_ObservationTime = DateFormat.parse( jsonObject.getString( "localObsDateTime" ) );
 		this.m_Pressure = jsonObject.getInt( "pressure" );
 		this.m_TemperatureCelsius = jsonObject.getInt( "temp_C" );
 		this.m_Visibility = jsonObject.getInt( "visibility" );
