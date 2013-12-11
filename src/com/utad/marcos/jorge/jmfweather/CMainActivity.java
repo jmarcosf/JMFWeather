@@ -9,14 +9,15 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
-import java.util.Date;
-
 import android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -70,6 +71,7 @@ private TextView                   m_Text;
           
           m_Text = (TextView)findViewById( R.id.IDC_TXT_MAIN_ACTIVITY_TEXT );
           m_Text.setText( "Hola don Pepito" );
+          
           
 //        LoadCityList();
           findViewById( R.id.IDC_BTN_REFRESH ).setOnClickListener( new OnClickListener()
@@ -323,6 +325,7 @@ private TextView                   m_Text;
                               Buffer.append( "\nMin ºF: " + Forecast.getMinTemperatureFahrenheit() );
                          }
                     }
+                    Buffer.append( "\n********************************************\n\n" );
                }
                Buffer.append( "\n********************************************" );
                m_Text.setText( Buffer ); 

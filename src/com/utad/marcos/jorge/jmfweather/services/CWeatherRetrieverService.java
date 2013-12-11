@@ -20,6 +20,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -117,6 +119,7 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 	public IBinder onBind( Intent arg0 )
 	{
 	     Log.d( CWeatherRetrieverService.class.getSimpleName(), "onBind()" );
+          new CInetLoader().execute( true );
           StartAlarm( getBaseContext() );
 		return new CWeatherRetrieverBinder();
 	}
@@ -200,7 +203,46 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
           AlarmManager alarmManager = (AlarmManager)context.getSystemService( Context.ALARM_SERVICE );
           alarmManager.cancel( pendingIntent );
      }
-      
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherRetrieverService.AddCurrentLocation()         */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public static void AddCurrentLocation( CWorldWeatherApi WorldWeatherApi, CWeatherDAO WeatherDAO, Context context )
+     {
+          LocationManager locationManager = (LocationManager)context.getSystemService( Context.LOCATION_SERVICE );
+          Location location = locationManager.getLastKnownLocation( LocationManager.GPS_PROVIDER );
+          if( location != null )
+          {
+               try
+               {
+                    CCityList CityList = WorldWeatherApi.SearchLocation( "" + location.getLatitude(), "" + location.getLongitude() );
+                    for( CCity City : CityList.getCityList() )
+                    {
+                         if( !WeatherDAO.ExistCity( City ) )
+                         {
+                              CForecastList ForecastList = WorldWeatherApi.getCityWeather( City ); 
+                              WeatherDAO.Insert( City );
+                              WeatherDAO.Insert( ForecastList, City );
+                         }
+                    }
+               }
+               catch( IOException exception )
+               {
+                    exception.printStackTrace();
+               }
+               catch( JSONException exception )
+               {
+                    exception.printStackTrace();
+               }
+               catch( ParseException exception )
+               {
+                    exception.printStackTrace();
+               }
+          }
+     }
+     
 	/*********************************************************/
 	/*                                                       */ 
 	/* CWeatherRetrieverService.LoadWeather()                */ 
@@ -214,7 +256,7 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 
 		if( NetInfo != null && NetInfo.isConnected() && m_Listener != null )
 		{
-			new CInetLoader().execute();
+			new CInetLoader().execute( false );
 			return true;
 		}
 		else	return false;
@@ -227,7 +269,7 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 	/*                                                       */ 
 	/*                                                       */ 
 	/*********************************************************/
-	private class CInetLoader extends AsyncTask< Void, Void, Void >
+	private class CInetLoader extends AsyncTask< Boolean, Void, Void >
 	{
 		/****************************************************/
 		/*                                                  */ 
@@ -235,10 +277,11 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 		/*                                                  */ 
 		/****************************************************/
           @Override
-          protected Void doInBackground( Void... _Void )
+          protected Void doInBackground( Boolean... bAddCurrentLocation )
           {
           	CWorldWeatherApi WorldWeatherApi = new CWorldWeatherApi();
           	CWeatherDAO WeatherDAO = new CWeatherDAO( CWeatherRetrieverService.this );
+          	if( bAddCurrentLocation[ 0 ] ) AddCurrentLocation( WorldWeatherApi, WeatherDAO, CWeatherRetrieverService.this );
           	CCityList CityList = new CCityList();
 
           	Cursor cursor = WeatherDAO.SelectAllCities();
@@ -250,35 +293,37 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
           		} while( cursor.moveToNext() );
           	}
 
-     		for( CCity City : CityList.getCityList() )
-     		{
-     			try
-                    {
+          	try
+          	{
+          		for( CCity City : CityList.getCityList() )
+          		{
 	                    CForecastList ForecastList = WorldWeatherApi.getCityWeather( City );
-	                    WeatherDAO.Update( City, ForecastList );
-                    }
-                    catch( IOException exception )
-                    {
-	                    exception.printStackTrace();
-                    }
-                    catch( JSONException exception )
-                    {
-	                    exception.printStackTrace();
-                    }
-                    catch( ParseException exception )
-                    {
-	                    exception.printStackTrace();
-                    }
-     		}
-     		
-               try
-               {
-	               WorldWeatherApi.Close();
-	               WeatherDAO.Close();
-               }
+    	                    WeatherDAO.Update( City, ForecastList );
+          		}
+          	}
                catch( IOException exception )
                {
 	               exception.printStackTrace();
+               }
+               catch( JSONException exception )
+               {
+                    exception.printStackTrace();
+               }
+               catch( ParseException exception )
+               {
+                    exception.printStackTrace();
+               }
+               finally
+               {
+                    try
+                    {
+                         WorldWeatherApi.Close();
+                    }
+                    catch( IOException exception )
+                    {
+                         exception.printStackTrace();
+                    }
+                    WeatherDAO.Close();
                }
      		return null;
           }

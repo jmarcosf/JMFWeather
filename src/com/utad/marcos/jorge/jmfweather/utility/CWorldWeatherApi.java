@@ -113,6 +113,34 @@ private InputStream 		m_InputStream;
 		return CityList; 
 	}
 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWorldWeatherApi.SearchLocation()                     */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public CCityList SearchLocation( String Latitude, String Longitude ) throws IOException, JSONException
+     {
+          if( Latitude == null || Longitude == null ) return null;
+          Log.d( CWorldWeatherApi.class.getSimpleName(), "SearchLocation(): " + Longitude + "+" + Latitude );
+          String Url = WORLD_WEATHER_SEARCH_CITY_URL + "?q=" + Latitude + "+" + Longitude + "&format=json&num_of_results=1&key=" + WORLD_WEATHER_KEY;
+          Connect( new URL( Url ) );
+          
+          JSONObject jsonResponse = getJSONObject();
+          JSONObject Root = jsonResponse.getJSONObject( "search_api" );
+          JSONArray Entries = Root.getJSONArray( "result" );
+
+          CCityList CityList = new CCityList();
+          for( int i = 0; i < Entries.length(); i++ )
+          {
+               JSONObject jsonObject = Entries.getJSONObject( i );
+               CCity City = new CCity( jsonObject );
+               CityList.add( City );
+          }
+
+          Close();
+          return CityList; 
+     }
+
 	/*********************************************************/
 	/*                                                       */ 
 	/* CWorldWeatherApi.getCityWeather()                     */ 

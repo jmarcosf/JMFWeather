@@ -147,6 +147,56 @@ private SQLiteDatabase		m_db;
 		return m_db.insert( CWeatherDBContract.CForecastTable.TABLE_NAME, null, ForecastRecord );
 	}
 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherDAO.Insert()                                  */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void Insert( CForecastList ForecastList, CCity City )
+     {
+          if( m_db == null || m_db.isReadOnly() )
+          {
+               this.Close();
+               m_db = m_dbHelper.getWritableDatabase();
+          }
+          
+          for( CForecast Forecast : ForecastList.getForecastList() )
+          {
+               Insert( Forecast, City );
+          }
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherDAO.ExistLocation()                           */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public boolean ExistLocation( String Longitude, String Latitude )
+     {
+          if( Longitude == null || Latitude == null ) return false;
+          if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
+          
+          String[] Projection = { "*" };
+
+          String Where = CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " = ? AND " + CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + " = ?";
+          String[] WhereArgs = new String[] { Longitude, Latitude };
+
+          Cursor cursor = m_db.query( CWeatherDBContract.CCityTable.TABLE_NAME, Projection, Where, WhereArgs, null, null, null );
+          cursor.moveToFirst();
+          return ( cursor.getCount() != 0 );
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherDAO.ExistCity()                               */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public boolean ExistCity( CCity City )
+     {
+          if( City == null ) return false;
+          return ExistLocation( City.getLatitude(), City.getLongitude() );
+     }
+
 	/*********************************************************/
 	/*                                                       */ 
 	/* CWeatherDAO.SelectAllCities()                         */ 
