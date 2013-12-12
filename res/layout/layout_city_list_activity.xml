@@ -1,0 +1,43 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* layout_city_list_activity.xml                                 */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: City List Activity Layout                        */ 
+/*              JmfWeather Project                               */ 
+/*                                                               */ 
+/***************************************************************-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent" >
+       
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Listview Layout                                           */ 
+	/*                                                           */ 
+    /***********************************************************-->
+   	<ListView 
+	    android:id="@+id/IDC_LV_CITY_LIST"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" />
+
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Progress Bar Layout                                       */ 
+	/*                                                           */ 
+    /***********************************************************-->
+   	<ProgressBar
+	    android:id="@+id/IDC_PB_WAIT_CLOCK"
+	    android:layout_width="48dp"
+	    android:layout_height="48dp"
+	    android:layout_gravity="center"
+	    android:visibility="gone" />
+
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Network Error Message Layout                              */ 
+	/*                                                           */ 
+    /***********************************************************-->
+   <include layout="@layout/layout_network_error_message" />
+   	    	
+</FrameLayout>

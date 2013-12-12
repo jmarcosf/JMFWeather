@@ -1,0 +1,66 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* layout_city_list_tablet.xml                                   */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: City List Frame Container for Tablets            */ 
+/*              JmfWeather Project                               */ 
+/*                                                               */ 
+/***************************************************************-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Main Content Layout                                       */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+	
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* City ListView Layout                                  */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <ListView
+	        style="@style/IDR_STY_CITY_LISTVIEW_STYLE"
+	        android:id="@+id/IDC_LV_CITY_LIST"
+	        android:layout_width="200dp"
+	        android:layout_height="match_parent" />
+	
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* City Details Fragment Container Layout                */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <FrameLayout
+	        android:id="@+id/IDR_LAY_CITY_CONTAINER"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" />
+	
+	</LinearLayout>
+	
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Progress Bar Layout                                       */ 
+	/*                                                           */ 
+    /***********************************************************-->
+   	<ProgressBar
+	    android:id="@+id/IDC_PB_WAIT_CLOCK"
+	    android:layout_width="48dp"
+	    android:layout_height="48dp"
+	    android:layout_gravity="center"
+	    android:visibility="gone" />
+
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Network Error Message Layout                              */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <include layout="@layout/layout_network_error_message" />
+    
+</FrameLayout>

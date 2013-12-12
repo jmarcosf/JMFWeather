@@ -7,7 +7,7 @@
 /*              JmfWeather Project                               */ 
 /*                                                               */ 
 /***************************************************************-->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<!--**********************************************************/
     /*                                                           */ 
@@ -26,10 +26,39 @@
     <style name="IDR_APP_THEME" parent="IDR_APP_BASE_THEME">
     </style>
 
-</resources>
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Confirmation Activity Theme                               */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <style name="IDR_STY_CONFIRMATION_DIALOG_THEME" parent="@android:style/Theme.Translucent.NoTitleBar">
+    </style>
 
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* City Listview Style                                       */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <style name="IDR_STY_CITY_LISTVIEW_STYLE" parent="@android:style/Widget.ListView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
 
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* City Listview Item Style                                  */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <style name="IDR_STY_CITY_LISTVIEW_ITEM_STYLE">
+        <item name="android:background">@drawable/city_list_item_background</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
 
-
-
+    <style name="IDR_STY_CITY_DETAILS_STYLE">
+        <item name="android:background">@drawable/city_details_background</item>
+        <item name="android:padding">36dp</item>
+    </style>
     
+</resources>

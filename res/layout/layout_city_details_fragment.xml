@@ -1,0 +1,31 @@
+<!--**************************************************************/
+/*                                                               */
+/* layout_city_details_fragment.xml                              */
+/* (c)2013 jmarcosf                                              */
+/*                                                               */
+/* Description: City Details Fragment Layout                     */
+/*              JmfWeather Project                               */
+/*                                                               */
+/***************************************************************-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/IDR_STY_CITY_DETAILS_STYLE"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants" >
+
+	<!--**********************************************************/
+   	/*                                                           */ 
+   	/* City Name                                                 */ 
+	/*                                                           */ 
+   	/***********************************************************-->
+       <TextView
+           android:id="@+id/IDC_TXT_CITY_NAME"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="18sp" />
+
+</RelativeLayout>
+
+
+
+

@@ -12,6 +12,7 @@ package com.utad.marcos.jorge.jmfweather.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.utad.marcos.jorge.jmfweather.model.CCity;
@@ -175,15 +176,11 @@ private SQLiteDatabase		m_db;
      {
           if( Longitude == null || Latitude == null ) return false;
           if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
-          
-          String[] Projection = { "*" };
 
-          String Where = CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " = ? AND " + CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + " = ?";
           String[] WhereArgs = new String[] { Longitude, Latitude };
-
-          Cursor cursor = m_db.query( CWeatherDBContract.CCityTable.TABLE_NAME, Projection, Where, WhereArgs, null, null, null );
-          cursor.moveToFirst();
-          return ( cursor.getCount() != 0 );
+          String Where = CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " = ? AND " + CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + " = ?";
+          long Count = DatabaseUtils.queryNumEntries( m_db, CWeatherDBContract.CCityTable.TABLE_NAME, Where, WhereArgs );          
+          return ( Count != 0 );
      }
 
      /*********************************************************/

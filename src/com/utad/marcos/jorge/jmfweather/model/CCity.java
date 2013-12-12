@@ -61,6 +61,7 @@ private CForecastList    m_ForecastList;
 		this.m_Region = Region;
 		this.m_WeatherUrl = WeatherUrl;
 		this.m_CurrentCondition = null;
+		this.m_ForecastList = null;
 	}
 	
 	/*********************************************************/

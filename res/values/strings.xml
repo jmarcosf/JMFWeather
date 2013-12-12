@@ -11,5 +11,9 @@
 <resources>
     <string name="IDS_APP_NAME">JmfWeather</string>
     <string name="IDS_SETTINGS_STRING">Settings</string>
-    <string name="IDS_EMPTY_STRING"></string>
+    <string name="IDS_SHARE_STRING">Share</string>
+    <string name="IDS_OK_STRING">OK</string>
+    <string name="IDS_CANCEL_STRING">Cancel</string>
+    <string name="IDS_NETWORK_ERROR_MESSAGE">There is not network connectivity.</string>
+    <string name="IDS_RETRY_STRING">Retry</string>
 </resources>

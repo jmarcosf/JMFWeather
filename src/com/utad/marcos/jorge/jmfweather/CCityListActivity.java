@@ -1,9 +1,9 @@
 /**************************************************************/
 /*                                                            */
-/* CMainActivity.java                                         */
+/* CCityListActivity.java                                     */
 /* (c)2013 jmarcosf                                           */
 /*                                                            */
-/* Description: CMainActivity Class                           */
+/* Description: CCityListActivity Class                       */
 /*              JmfWeather Project                            */
 /*                                                            */
 /**************************************************************/
@@ -12,19 +12,19 @@ package com.utad.marcos.jorge.jmfweather;
 import android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
@@ -40,17 +40,20 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeath
 /*                                                            */
 /*                                                            */
 /*                                                            */
-/* CMainActivity Class                                        */
+/* CCityListActivity Class                                    */
 /*                                                            */
 /*                                                            */
 /*                                                            */
 /**************************************************************/
-public class CMainActivity extends Activity
+public class CCityListActivity extends Activity implements OnClickListener, OnItemClickListener
 {
-private ServiceConnection          m_ServiceConnection;
-private CWeatherRetrieverBinder    m_Binder;
-private CCityList                  m_CityList;
-private TextView                   m_Text;
+private   boolean                  m_bTablet = false;
+private   CCityListAdapter         m_Adapter;
+private   ListView                 m_ListView;
+private   ProgressBar              m_WaitClock;
+private   View                     m_NetworkErrorView;
+private   ServiceConnection        m_ServiceConnection;
+private   CWeatherRetrieverBinder  m_Binder;
 
      /*********************************************************/
      /*                                                       */
@@ -60,33 +63,33 @@ private TextView                   m_Text;
      /*                                                       */
      /*********************************************************/
      /*                                                       */
-     /* CMainActivity.onCreate()                              */
+     /* CCityListActivity.onCreate()                          */
      /*                                                       */
      /*********************************************************/
      @Override
      protected void onCreate( Bundle savedInstanceState )
      {
           super.onCreate( savedInstanceState );
-          setContentView( R.layout.layout_activity_main );
+          setContentView( R.layout.layout_city_list_activity );
           
-          m_Text = (TextView)findViewById( R.id.IDC_TXT_MAIN_ACTIVITY_TEXT );
-          m_Text.setText( "Hola don Pepito" );
+          m_bTablet = getResources().getBoolean( R.bool.g_bTablet );
+//          setContentView( m_bTablet ? R.layout.layout_city_list_activity_tablet : R.layout.layout_city_list_activity );
+          setContentView( R.layout.layout_city_list_activity );
           
-          
-//        LoadCityList();
-          findViewById( R.id.IDC_BTN_REFRESH ).setOnClickListener( new OnClickListener()
-          {
-               @Override
-               public void onClick( View arg0 )
-               {
-                    LoadCityList();
-               }
-          } );
+          m_WaitClock = (ProgressBar)findViewById( R.id.IDC_PB_WAIT_CLOCK );
+          m_NetworkErrorView = findViewById( R.id.IDC_LAY_NETWORK_ERROR_MESSAGE );
+
+          m_ListView = (ListView)findViewById( R.id.IDC_LV_CITY_LIST );
+          m_ListView.setChoiceMode( m_bTablet ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE );
+          m_ListView.setOnItemClickListener( this );
+
+          getActionBar().setDisplayHomeAsUpEnabled( true );
+          findViewById( R.id.IDC_BTN_RETRY ).setOnClickListener( this );
      }
 
      /*********************************************************/
      /*                                                       */
-     /* CMainActivity.onStart()                               */
+     /* CCityListActivity.onStart()                           */
      /*                                                       */
      /*********************************************************/
      @Override
@@ -99,7 +102,7 @@ private TextView                   m_Text;
 
      /*********************************************************/
      /*                                                       */
-     /* CMainActivity.onStop()                                */
+     /* CCityListActivity.onStop()                            */
      /*                                                       */
      /*********************************************************/
      @Override
@@ -111,7 +114,7 @@ private TextView                   m_Text;
 
      /*********************************************************/
      /*                                                       */
-     /* CMainActivity.onCreateOptionsMenu()                   */
+     /* CCityListActivity.onCreateOptionsMenu()               */
      /*                                                       */
      /*********************************************************/
      @Override
@@ -124,12 +127,74 @@ private TextView                   m_Text;
      /*********************************************************/
      /*                                                       */
      /*                                                       */
+     /* OnItemClickListener Interface Implementation          */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onItemClick()                       */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override 
+     public void onItemClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
+     {
+//          if( m_bTablet )
+//          {
+//               m_Post = m_PostList.get( id );
+//               m_ListView.setItemChecked( iPosition, true );
+//               
+//               // Build Tablet Fragment
+//               CPostDetailsFragment Fragment = new CPostDetailsFragment();
+//               Bundle Params = new Bundle();
+//               Params.putParcelable( CPostDetailsFragment.IDS_POST_PARAM, m_Post );
+//               Fragment.setArguments( Params );
+//
+//               FragmentManager frgManager = getSupportFragmentManager();
+//               FragmentTransaction tx = frgManager.beginTransaction();
+//               tx.replace( R.id.IDR_LAY_POST_CONTAINER, Fragment );
+//               tx.commit();
+//          }
+//          else
+//          {
+//               Intent intent = new Intent( CPostListActivity.this, CPostDetailsActivity.class );
+//               intent.putExtra( CPostDetailsActivity.IDS_POSTLIST_PARAM, m_PostList );
+//               intent.putExtra( CPostDetailsActivity.IDS_POSTINDEX_PARAM, iPosition );
+//               startActivity( intent );
+//          }
+     }
+     
+     /*********************************************************/
+     /*                                                       */
+     /*                                                       */
+     /* OnClickListener Interface Implementation              */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onClick()                           */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public void onClick( View view )
+     {
+          switch( view.getId() )
+          {
+               case R.id.IDC_BTN_RETRY:
+                    m_NetworkErrorView.setVisibility( View.GONE );
+//                    LoadCityList();
+                    break;
+          }
+     }
+     
+     /*********************************************************/
+     /*                                                       */
+     /*                                                       */
      /* Class Methods                                         */
      /*                                                       */
      /*                                                       */
      /*********************************************************/
      /*                                                       */
-     /* CMainActivity.LoadCityList()                          */
+     /* CCityListActivity.LoadCityList()                      */
      /*                                                       */
      /*********************************************************/
      public void LoadCityList()
@@ -145,7 +210,7 @@ private TextView                   m_Text;
      /*                                                       */
      /*********************************************************/
      /*                                                       */
-     /* CMainActivity.ServiceConnect()                        */
+     /* CCityListActivity.ServiceConnect()                    */
      /*                                                       */
      /*********************************************************/
      private void ServiceConnect()
@@ -167,7 +232,7 @@ private TextView                   m_Text;
                     } );
                     if( !m_Binder.getService().LoadWeather() )
                     {
-//                       m_NetworkErrorView.setVisibility(View.VISIBLE);
+                         m_NetworkErrorView.setVisibility(View.VISIBLE);
                     }
                }
                @Override
@@ -182,7 +247,7 @@ private TextView                   m_Text;
 
      /*********************************************************/
      /*                                                       */
-     /* CMainActivity.ServiceDisconnect()                     */
+     /* CCityListActivity.ServiceDisconnect()                 */
      /*                                                       */
      /*********************************************************/
      private void ServiceDisconnect()
@@ -193,11 +258,11 @@ private TextView                   m_Text;
      /*********************************************************/
      /*                                                       */
      /*                                                       */
-     /* CMainActivity.CDBLoader nested Class                  */
+     /* CCityListActivity.CDBLoader nested Class              */
      /*                                                       */
      /*                                                       */
      /*********************************************************/
-     private class CDBLoader extends AsyncTask< Void, Void, Cursor >
+     private class CDBLoader extends AsyncTask< Void, Void, CCityList >
      {
           /****************************************************/
           /*                                                  */
@@ -207,8 +272,8 @@ private TextView                   m_Text;
           @Override
           protected void onPreExecute()
           {
-//             m_WaitClock.setVisibility( View.VISIBLE );
-//             m_NetworkErrorView.setVisibility( View.GONE );
+               m_WaitClock.setVisibility( View.VISIBLE );
+               m_NetworkErrorView.setVisibility( View.GONE );
           }
 
           /****************************************************/
@@ -217,34 +282,26 @@ private TextView                   m_Text;
           /*                                                  */
           /****************************************************/
           @Override
-          protected Cursor doInBackground( Void... param )
+          protected CCityList doInBackground( Void... param )
           {
-               CWeatherDAO WeatherDAO = new CWeatherDAO( CMainActivity.this );
-//               CCondition FirstCondition = new CCondition( 0, (Date)null, 0, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, null );
-//               CCity City = new CCity( 0, "Madrid", "Spain", "40.400", "-3.683", 0, "Madrid", "" );
-//               City.setCurrentCondition( FirstCondition );
-//               WeatherDAO.Insert( City );
-
+               CWeatherDAO WeatherDAO = new CWeatherDAO( CCityListActivity.this );
                Cursor cityCursor = WeatherDAO.SelectAllCities();
-               int cityCount = cityCursor.getCount();
-
-               m_CityList = new CCityList();
+               CCityList CityList = new CCityList();
+               
                if( cityCursor.moveToFirst() )
                {
                     do
                     {
                          CCity NewCity = new CCity( cityCursor );
                          Cursor conditionCursor = WeatherDAO.selectCityCondition( NewCity );
-                         int conditionCount = conditionCursor.getCount();
                          if( conditionCursor.moveToFirst() )
                          {
                               CCondition Condition = new CCondition( conditionCursor );
                               NewCity.setCurrentCondition( Condition );
                          }
-                         m_CityList.add( NewCity );
+                         CityList.add( NewCity );
                          
                          Cursor forecastCursor = WeatherDAO.selectCityForecast( NewCity );
-                         int forecastCount = forecastCursor.getCount();
                          if( forecastCursor.moveToFirst() )
                          {
                               CForecastList ForecastList = new CForecastList();
@@ -259,7 +316,7 @@ private TextView                   m_Text;
                     } while( cityCursor.moveToNext() );
                }
 
-               return cityCursor;
+               return CityList;
           }
 
           /*********************************************************/
@@ -268,76 +325,16 @@ private TextView                   m_Text;
           /*                                                       */
           /*********************************************************/
           @Override
-          protected void onPostExecute( Cursor cursor )
+          protected void onPostExecute( CCityList CityList )
           {
-               StringBuffer Buffer = new StringBuffer();
-               for( CCity City : m_CityList.getCityList() )
+               m_WaitClock.setVisibility( View.GONE );
+               m_Adapter = new CCityListAdapter( CCityListActivity.this, CityList );
+               m_ListView.setAdapter( m_Adapter );
+
+               if( CityList.getCityList().size() == 0 )
                {
-                    Buffer.append( "********************************************" );
-                    Buffer.append( "\nID: " + City.getId() );
-                    Buffer.append( "\nCity: " + City.getName() );
-                    Buffer.append( "\nCountry: " + City.getCountry() );
-                    Buffer.append( "\nLatitude: " + City.getLatitude() );
-                    Buffer.append( "\nLongitude: " + City.getLongitude() );
-                    Buffer.append( "\nPopulation: " + City.getPopulation() );
-                    Buffer.append( "\nRegion: " + City.getRegion() );
-                    Buffer.append( "\nURL: " + City.getWeatherUrl() );
-                    
-                    if( City.getCondition() != null )
-                    {
-                         Buffer.append( "\n--Current Conditions-------------------------" );
-                         Buffer.append( "\nCloud Cover %: " + City.getCondition().getCloudCoverPercentage() );
-                         Buffer.append( "\nTime: " + City.getCondition().getObservationTime() );
-                         Buffer.append( "\nPressure: " + City.getCondition().getPressure() );
-                         Buffer.append( "\nºC: " + City.getCondition().getTemperatureCelsius() );
-                         Buffer.append( "\nVisibility: " + City.getCondition().getVisibility() );
-                         Buffer.append( "\nºF: " + City.getCondition().getTemperatureFahrenheit() );
-                         Buffer.append( "\nWind Speed MPH: " + City.getCondition().getWindSpeedMph() );
-                         Buffer.append( "\nPrecipitation: " + City.getCondition().getPrecipitation() );
-                         Buffer.append( "\nWind Direction º: " + City.getCondition().getWindDirectionDegrees() );
-                         Buffer.append( "\nWind Direction: " + City.getCondition().getWindDirectionCompass() );
-                         Buffer.append( "\nIcon URL: " + City.getCondition().getIconUrl() );
-                         Buffer.append( "\nHumidity: " + City.getCondition().getHumidity() );
-                         Buffer.append( "\nWind Spped (KMPH): " + City.getCondition().getWindSpeedKmph() );
-                         Buffer.append( "\nCode: " + City.getCondition().getWeatherCode() );
-                         Buffer.append( "\nDescription: " + City.getCondition().getWeatherDescription() );
-                         Buffer.append( "\n" );
-                    }
-                    
-                    if( City.getForecastList() != null )
-                    {
-                         for( CForecast Forecast : City.getForecastList().getForecastList() )
-                         {
-                              Buffer.append( "\n--Forcast------------------------------------" );
-                              Buffer.append( "\nIcon URL: " + Forecast.getIconUrl() );
-                              Buffer.append( "\nMin ºC: " + Forecast.getMinTemperatureCelsius() );
-                              Buffer.append( "\nWind Speed (MPH): " + Forecast.getWindSpeedMph() );
-                              Buffer.append( "\nWind Speed (KMPH): " + Forecast.getWindSpeedKmph() );
-                              Buffer.append( "\nWind Direction: " + Forecast.getWindDirection() );
-                              Buffer.append( "\nMax ºC: " + Forecast.getMaxTemperatureCelsius() );
-                              Buffer.append( "\nDate: " + Forecast.getForecastDate() );
-                              Buffer.append( "\nCode: " + Forecast.getWeatherCode() );
-                              Buffer.append( "\nMax ºF: " + Forecast.getMaxTemperatureFahrenheit() );
-                              Buffer.append( "\nPrecipitation: " + Forecast.getPrecipitation() );
-                              Buffer.append( "\nWind Direction º: " + Forecast.getWindDirectionDegrees() );
-                              Buffer.append( "\nWind Direction Compass: " + Forecast.getWindDirectionCompass() );
-                              Buffer.append( "\nDescription: " + Forecast.getWeatherDescription() );
-                              Buffer.append( "\nMin ºF: " + Forecast.getMinTemperatureFahrenheit() );
-                         }
-                    }
-                    Buffer.append( "\n********************************************\n\n" );
+                    m_NetworkErrorView.setVisibility( View.VISIBLE );
                }
-               Buffer.append( "\n********************************************" );
-               m_Text.setText( Buffer ); 
-               
-//               m_WaitClock.setVisibility( View.GONE );
-//               m_Adapter = new CCityListAdapter( CMainActivity.this, cursor );
-//               m_ListView.setAdapter( m_Adapter );
-//
-//               if( !cursor.moveToFirst() || cursor.getCount() == 0 )
-//               {
-//                    m_NetworkErrorView.setVisibility( View.VISIBLE );
-//               }
           }
      }
 }

@@ -10,6 +10,7 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather.utility;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.utad.marcos.jorge.jmfweather.model.CCity;
@@ -29,7 +32,6 @@ import com.utad.marcos.jorge.jmfweather.model.CCityList;
 import com.utad.marcos.jorge.jmfweather.model.CCondition;
 import com.utad.marcos.jorge.jmfweather.model.CForecast;
 import com.utad.marcos.jorge.jmfweather.model.CForecastList;
-import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 
 /**************************************************************/
 /*                                                            */ 
@@ -42,11 +44,12 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 /**************************************************************/
 public class CWorldWeatherApi
 {
-private static final int		HTTP_CONNECT_TIMEOUT_MS = 15000; // millisecons
-private static final int		HTTP_READ_TIMEOUT_MS = 10000; // millisecons
+private static final int		HTTP_CONNECT_TIMEOUT_MS       = 15000; // millisecons
+private static final int		HTTP_READ_TIMEOUT_MS          = 10000; // millisecons
+private static final int      IO_BUFFER_SIZE                = 1024;
 private static final String	WORLD_WEATHER_GET_WEATHER_URL = "http://api.worldweatheronline.com/free/v1/weather.ashx";
 private static final String	WORLD_WEATHER_SEARCH_CITY_URL = "http://api.worldweatheronline.com/free/v1/search.ashx";
-private static final String	WORLD_WEATHER_KEY = "hk3bn55kb4g7hjwhxqghx22g";
+private static final String	WORLD_WEATHER_KEY             = "hk3bn55kb4g7hjwhxqghx22g";
 
 private Charset 			m_Charset;
 private HttpURLConnection	m_Connection;
@@ -79,7 +82,25 @@ private InputStream 		m_InputStream;
 		this.m_Charset = Charset;
 	}
 	
+     /*********************************************************/
+     /*                                                       */ 
+     /*                                                       */ 
+     /* Object Override Methods                               */ 
+     /*                                                       */ 
+     /*                                                       */ 
 	/*********************************************************/
+     /*                                                       */ 
+     /* CWorldWeatherApi.finalize()                           */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void finalize() throws Throwable
+     {
+          this.Close();
+          super.finalize();
+     }
+     
+     /*********************************************************/
 	/*                                                       */ 
 	/*                                                       */ 
 	/* Class Methods                                         */ 
@@ -228,6 +249,45 @@ private InputStream 		m_InputStream;
 		return new JSONObject( getString() );
 	}
 	
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWorldWeatherApi.getImage()                           */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public Bitmap getImage() throws IOException, InterruptedException
+     {
+//        return BitmapFactory.decodeStream( m_InputStream );
+          
+          byte[] Bytes = getBytes();
+          return ( Bytes == null ) ? null : BitmapFactory.decodeByteArray( Bytes, 0, Bytes.length );
+     }
+     
+     /*********************************************************/
+     /*                                                       */
+     /* CWorldWeatherApi.getBytes()                           */
+     /*                                                       */
+     /*********************************************************/
+     public byte[] getBytes() throws IOException, InterruptedException
+     {
+          byte[] Buffer = new byte[ IO_BUFFER_SIZE ];
+          ByteArrayOutputStream Output = new ByteArrayOutputStream();
+          int BytesRead = 0;
+          
+          while( ( BytesRead = m_InputStream.read( Buffer ) ) != -1 )
+          {
+               if( Thread.interrupted() ) throw new InterruptedException();
+               Output.write( Buffer, 0, BytesRead );
+          }
+          try
+          {
+               return Output.toByteArray();
+          }
+          finally
+          {
+               if( Output != null ) Output.close();
+          }
+     }
+     
 	/*********************************************************/
 	/*                                                       */ 
 	/* CWorldWeatherApi.Close()                              */ 

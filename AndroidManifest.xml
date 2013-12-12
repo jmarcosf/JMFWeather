@@ -14,7 +14,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="11"
         android:targetSdkVersion="18" />
 
 	<!--**********************************************************/
@@ -62,7 +62,7 @@
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <activity
-            android:name="com.utad.marcos.jorge.jmfweather.CMainActivity"
+            android:name="com.utad.marcos.jorge.jmfweather.CCityListActivity"
             android:label="@string/IDS_APP_NAME" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
