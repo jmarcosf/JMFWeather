@@ -16,6 +16,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.utad.marcos.jorge.jmfweather.model.CCity;
+import com.utad.marcos.jorge.jmfweather.model.CCondition;
 import com.utad.marcos.jorge.jmfweather.model.CForecast;
 import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 
@@ -194,7 +195,25 @@ private SQLiteDatabase		m_db;
           return ExistLocation( City.getLatitude(), City.getLongitude() );
      }
 
-	/*********************************************************/
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherDAO.SelectCity()                              */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public CCity selectCity( long cityId )
+     {
+          if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
+
+          String[] Projection = { "*" };
+          String Where = CWeatherDBContract.CCityTable._ID + " = ?";
+          String[] WhereArgs = new String[] { "" + cityId };
+
+          Cursor cursor = m_db.query( CWeatherDBContract.CCityTable.TABLE_NAME, Projection, Where, WhereArgs, null, null, null );
+          if( cursor == null || !cursor.moveToFirst() ) return null;
+          else return new CCity( cursor );
+     }
+     
+     /*********************************************************/
 	/*                                                       */ 
 	/* CWeatherDAO.SelectAllCities()                         */ 
 	/*                                                       */ 
@@ -225,7 +244,22 @@ private SQLiteDatabase		m_db;
 		return m_db.query( CWeatherDBContract.CConditionTable.TABLE_NAME, Projection, Where, WhereArgs, null, null, null );                               
 	}
 	
-	/*********************************************************/
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherDAO.SetCityCondition()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void SetCityCondition( CCity City )
+     {
+          Cursor cursor = selectCityCondition( City );
+          if( cursor.moveToFirst() )
+          {
+               CCondition Condition = new CCondition( cursor );
+               City.setCurrentCondition( Condition );
+          }
+     }
+     
+     /*********************************************************/
 	/*                                                       */ 
 	/* CWeatherDAO.SelectCityForecast()                      */ 
 	/*                                                       */ 
@@ -242,7 +276,28 @@ private SQLiteDatabase		m_db;
 		return m_db.query( CWeatherDBContract.CForecastTable.TABLE_NAME, Projection, Where, WhereArgs, null, null, orderBy );                               
 	}
 	
-	/*********************************************************/
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherDAO.SetCityForecast()                         */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void SetCityForecast( CCity City )
+     {
+          Cursor cursor = selectCityForecast( City );
+          CForecastList ForecastList = new CForecastList();
+          if( cursor.moveToFirst() )
+          {
+               do
+               {
+                    CForecast Forecast = new CForecast( cursor );
+                    ForecastList.add( Forecast );
+               }
+               while( cursor.moveToNext() );
+          }
+          City.setForecastList( ForecastList );
+     }
+     
+     /*********************************************************/
 	/*                                                       */ 
 	/* CWeatherDAO.DeleteCity()                              */ 
 	/*                                                       */ 

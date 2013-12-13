@@ -12,8 +12,13 @@
     <string name="IDS_APP_NAME">JmfWeather</string>
     <string name="IDS_SETTINGS_STRING">Settings</string>
     <string name="IDS_SHARE_STRING">Share</string>
+    <string name="IDS_ADD_CITY_STRING">Add City</string>
     <string name="IDS_OK_STRING">OK</string>
     <string name="IDS_CANCEL_STRING">Cancel</string>
     <string name="IDS_NETWORK_ERROR_MESSAGE">There is not network connectivity.</string>
     <string name="IDS_RETRY_STRING">Retry</string>
+    <string name="IDS_DRAWER_MENU_TEXT">Este es un menú lateral implementado con un DrawerLayout. El contenido de este espacio es totalmente arbitrario.</string>
+    <string name="IDS_DRAWER_OPEN_TEXT">Se abre el menú</string>
+    <string name="IDS_DRAWER_CLOSE_TEXT">Se cierra el menú</string>
+    
 </resources>

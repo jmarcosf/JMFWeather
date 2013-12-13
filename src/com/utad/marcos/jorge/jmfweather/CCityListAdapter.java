@@ -16,16 +16,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
-import com.utad.marcos.jorge.jmfweather.model.CCityList;
 import com.utad.marcos.jorge.jmfweather.utility.CWorldWeatherApi;
 
 /**************************************************************/
@@ -37,11 +37,10 @@ import com.utad.marcos.jorge.jmfweather.utility.CWorldWeatherApi;
 /*                                                            */
 /*                                                            */
 /**************************************************************/
-public class CCityListAdapter extends BaseAdapter
+public class CCityListAdapter extends CursorAdapter
 {
 private	Activity 			m_Context;
 private	HashSet< Thread >	m_ThreadSet;
-private   CCityList           m_CityList;
 	
      /*********************************************************/
      /*                                                       */ 
@@ -54,77 +53,63 @@ private   CCityList           m_CityList;
 	/* CCityListAdapter.CCityListAdapter()                   */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public CCityListAdapter( Activity context, CCityList CityList )
+	public CCityListAdapter( Activity context, Cursor cityCursor )
 	{
+	     super( context, cityCursor, false );
 		this.m_Context = context;
-		this.m_CityList = CityList;
 		this.m_ThreadSet = new HashSet< Thread >();
 	}
 
      /*********************************************************/
      /*                                                       */ 
      /*                                                       */ 
-     /* BaseAdapter Override Methods                          */ 
+     /* CursorAdapter Override Methods                        */ 
      /*                                                       */ 
      /*                                                       */ 
      /*********************************************************/
      /*                                                       */ 
-     /* CCityListAdapter.getCount()                           */ 
+     /* CCityListAdapter.newView()                            */ 
      /*                                                       */ 
      /*********************************************************/
      @Override
-     public int getCount()
+     public View newView( Context context, Cursor cityCursor, ViewGroup parent )
      {
-          return m_CityList.getCityList().size();
+          View ItemView = null;
+          LayoutInflater inflater = (LayoutInflater)m_Context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+          ItemView = inflater.inflate( R.layout.layout_city_list_item, null );
+          return ItemView;
      }
-
+     
      /*********************************************************/
      /*                                                       */ 
-     /* CCityListAdapter.getItem()                            */ 
-     /*                                                       */ 
-     /*********************************************************/
-     @Override
-     public Object getItem( int index )
-     {
-          return m_CityList.getCityList().get( index );
-     }
-
-     /*********************************************************/
-     /*                                                       */ 
-     /* CCityListAdapter.getItemId()                          */ 
+     /* CCityListAdapter.bindView()                           */ 
      /*                                                       */ 
      /*********************************************************/
      @Override
-     public long getItemId( int index )
+     public void bindView( View ItemView, Context context, Cursor cityCursor )
      {
-          return m_CityList.getCityList().get( index ).getId();
-     }
+          CCity City = new CCity( cityCursor );
+          ItemView.setTag( Long.valueOf( City.getId() ) );
 
-     /*********************************************************/
-     /*                                                       */ 
-     /* CCityListAdapter.getView()                            */ 
-     /*                                                       */ 
-     /*********************************************************/
-     @Override
-     public View getView( int position, View convertView, ViewGroup parent )
-     {
-     	View ItemLayout = null;
-     	if( convertView == null )
-     	{
-               LayoutInflater inflater = (LayoutInflater)m_Context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-     	     ItemLayout = inflater.inflate( R.layout.layout_city_list_item, null);
-     	}
-     	else ItemLayout = convertView;
-
-		TextView CityName = (TextView)ItemLayout.findViewById( R.id.IDC_TXT_CITY_NAME );
-		CityName.setText( m_CityList.getCityList().get( position ).getName() );
-	
-		final ImageView CityIcon = (ImageView)ItemLayout.findViewById( R.id.IDP_ICO_CITY_ICON );
-          CityIcon.setImageResource( R.drawable.app_main_icon );
+          TextView CityName = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_NAME );
+          CityName.setText( City.getName() );
+     
+          TextView CityCountry = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_COUNTRY );
+          CityCountry.setText( "" + City.getCountry() );
+     
+          CWeatherDAO WeatherDAO = new CWeatherDAO( context );
+          WeatherDAO.SetCityCondition( City );
+          WeatherDAO.Close();
           
-		final String IconUrl = ( m_CityList.getCityList().get( position ).getCondition() != null ) ? m_CityList.getCityList().get( position ).getCondition().getIconUrl() : null; 
-		if( IconUrl != null )
-		{
+          if( City.getCondition() == null ) return;
+          
+          TextView CityTemp = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_TEMPERATURE );
+          CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
+     
+          final ImageView CityIcon = (ImageView)ItemView.findViewById( R.id.IDP_ICO_CITY_ICON );
+          final String IconUrl = ( City.getCondition() != null ) ? City.getCondition().getIconUrl() : null; 
+          if( IconUrl != null )
+          {
                Thread imageThread = new Thread()
                {
                     @Override
@@ -174,12 +159,10 @@ private   CCityList           m_CityList;
                };
                m_ThreadSet.add( imageThread );
                imageThread.start();
-		}
-		else CityIcon.setImageResource( R.drawable.app_main_icon );
-		
-          return ItemLayout;
+          }
+          else CityIcon.setImageResource( R.drawable.app_main_icon );
      }
-     
+
      /*********************************************************/
      /*                                                       */ 
      /*                                                       */ 
@@ -203,6 +186,4 @@ private   CCityList           m_CityList;
      	
      	m_ThreadSet = new HashSet< Thread >();
      }
-
-
 }

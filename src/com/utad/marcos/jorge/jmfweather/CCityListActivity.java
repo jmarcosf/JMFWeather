@@ -9,16 +9,20 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -28,10 +32,6 @@ import android.widget.ProgressBar;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
-import com.utad.marcos.jorge.jmfweather.model.CCityList;
-import com.utad.marcos.jorge.jmfweather.model.CCondition;
-import com.utad.marcos.jorge.jmfweather.model.CForecast;
-import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.CWeatherRetrieverBinder;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeatherRetrieverListener;
@@ -45,10 +45,12 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeath
 /*                                                            */
 /*                                                            */
 /**************************************************************/
-public class CCityListActivity extends Activity implements OnClickListener, OnItemClickListener
+public class CCityListActivity extends CBaseCityActivity implements OnClickListener, OnItemClickListener
 {
 private   boolean                  m_bTablet = false;
 private   CCityListAdapter         m_Adapter;
+private   DrawerLayout             m_Drawer;
+private   ActionBarDrawerToggle    m_DrawerToggle;
 private   ListView                 m_ListView;
 private   ProgressBar              m_WaitClock;
 private   View                     m_NetworkErrorView;
@@ -83,10 +85,29 @@ private   CWeatherRetrieverBinder  m_Binder;
           m_ListView.setChoiceMode( m_bTablet ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE );
           m_ListView.setOnItemClickListener( this );
 
-          getActionBar().setDisplayHomeAsUpEnabled( true );
+          m_Drawer = (DrawerLayout)findViewById( R.id.IDC_LAY_DRAWER );
+          m_DrawerToggle = new ActionBarDrawerToggle( this, m_Drawer, R.drawable.app_drawer_icon, R.string.IDS_DRAWER_OPEN_TEXT, R.string.IDS_DRAWER_CLOSE_TEXT )
+          {
+               public void onDrawerClosed( View drawerView ) {};
+               public void onDrawerOpened( View drawerView ) {};
+          };
+          
+          m_Drawer.setDrawerListener( m_DrawerToggle );          getActionBar().setDisplayHomeAsUpEnabled( true );
           findViewById( R.id.IDC_BTN_RETRY ).setOnClickListener( this );
      }
-
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onPostCreate()                      */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void onPostCreate( Bundle savedInstanceState )
+     {
+          super.onPostCreate( savedInstanceState );
+          m_DrawerToggle.syncState();
+     }
+     
      /*********************************************************/
      /*                                                       */
      /* CCityListActivity.onStart()                           */
@@ -113,6 +134,29 @@ private   CWeatherRetrieverBinder  m_Binder;
      }
 
      /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onConfigurationChanged()            */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public void onConfigurationChanged( Configuration newConfig )
+     {
+          super.onConfigurationChanged( newConfig );
+          m_DrawerToggle.onConfigurationChanged( newConfig );
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onOptionsItemSelected()             */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public boolean onOptionsItemSelected( MenuItem Item )
+     {
+          if( m_DrawerToggle.onOptionsItemSelected( Item ) ) return true;
+          else return super.onOptionsItemSelected( Item );
+     }
+     /*********************************************************/
      /*                                                       */
      /* CCityListActivity.onCreateOptionsMenu()               */
      /*                                                       */
@@ -120,7 +164,7 @@ private   CWeatherRetrieverBinder  m_Binder;
      @Override
      public boolean onCreateOptionsMenu( Menu menu )
      {
-          getMenuInflater().inflate( R.menu.main_menu, menu );
+          getMenuInflater().inflate( R.menu.city_list_menu, menu );
           return true;
      }
 
@@ -138,6 +182,16 @@ private   CWeatherRetrieverBinder  m_Binder;
      @Override 
      public void onItemClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
      {
+          CWeatherDAO WeatherDAO = new CWeatherDAO( CCityListActivity.this );
+          Long cityId = (Long)view.getTag();
+          CCity City = WeatherDAO.selectCity( cityId );
+          if( City != null )
+          {
+               Log.d( CCityListActivity.class.getSimpleName(), "City clicked: " + City.getName() );
+          }
+          
+          
+          
 //          if( m_bTablet )
 //          {
 //               m_Post = m_PostList.get( id );
@@ -183,6 +237,9 @@ private   CWeatherRetrieverBinder  m_Binder;
                     m_NetworkErrorView.setVisibility( View.GONE );
 //                    LoadCityList();
                     break;
+                    
+               case R.id.IDR_LAY_LEFT_DRAWER:
+                    break;              //this is to avoid clicking thru drawer
           }
      }
      
@@ -262,7 +319,7 @@ private   CWeatherRetrieverBinder  m_Binder;
      /*                                                       */
      /*                                                       */
      /*********************************************************/
-     private class CDBLoader extends AsyncTask< Void, Void, CCityList >
+     private class CDBLoader extends AsyncTask< Void, Void, Cursor >
      {
           /****************************************************/
           /*                                                  */
@@ -282,41 +339,11 @@ private   CWeatherRetrieverBinder  m_Binder;
           /*                                                  */
           /****************************************************/
           @Override
-          protected CCityList doInBackground( Void... param )
+          protected Cursor doInBackground( Void... param )
           {
                CWeatherDAO WeatherDAO = new CWeatherDAO( CCityListActivity.this );
                Cursor cityCursor = WeatherDAO.SelectAllCities();
-               CCityList CityList = new CCityList();
-               
-               if( cityCursor.moveToFirst() )
-               {
-                    do
-                    {
-                         CCity NewCity = new CCity( cityCursor );
-                         Cursor conditionCursor = WeatherDAO.selectCityCondition( NewCity );
-                         if( conditionCursor.moveToFirst() )
-                         {
-                              CCondition Condition = new CCondition( conditionCursor );
-                              NewCity.setCurrentCondition( Condition );
-                         }
-                         CityList.add( NewCity );
-                         
-                         Cursor forecastCursor = WeatherDAO.selectCityForecast( NewCity );
-                         if( forecastCursor.moveToFirst() )
-                         {
-                              CForecastList ForecastList = new CForecastList();
-                              do
-                              {
-                                   CForecast Forecast = new CForecast( forecastCursor );
-                                   ForecastList.add( Forecast );
-                                   
-                              } while( forecastCursor.moveToNext() );
-                              NewCity.setForecastList( ForecastList );
-                         }
-                    } while( cityCursor.moveToNext() );
-               }
-
-               return CityList;
+               return cityCursor;
           }
 
           /*********************************************************/
@@ -325,13 +352,13 @@ private   CWeatherRetrieverBinder  m_Binder;
           /*                                                       */
           /*********************************************************/
           @Override
-          protected void onPostExecute( CCityList CityList )
+          protected void onPostExecute( Cursor cityCursor )
           {
                m_WaitClock.setVisibility( View.GONE );
-               m_Adapter = new CCityListAdapter( CCityListActivity.this, CityList );
+               m_Adapter = new CCityListAdapter( CCityListActivity.this, cityCursor );
                m_ListView.setAdapter( m_Adapter );
 
-               if( CityList.getCityList().size() == 0 )
+               if( !cityCursor.moveToFirst() || cityCursor.getCount() == 0 )
                {
                     m_NetworkErrorView.setVisibility( View.VISIBLE );
                }

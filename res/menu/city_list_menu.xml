@@ -7,10 +7,24 @@
 /*              JmfWeather Project                               */ 
 /*                                                               */ 
 /***************************************************************-->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item
-        android:id="@+id/IDM_ACTION_SETTINGS"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:JmfWeatherApp="http://schemas.android.com/apk/res-auto" >
+    
+	<item
+        android:id="@+id/IDM_SHARE"
+        JmfWeatherApp:showAsAction="ifRoom"
+        android:title="@string/IDS_SHARE_STRING"
+        android:icon="@android:drawable/ic_menu_share" />
+	
+	<item
+        android:id="@+id/IDM_ADD_CITY"
+        JmfWeatherApp:showAsAction="always"
+        android:title="@string/IDS_ADD_CITY_STRING"
+        android:icon="@android:drawable/ic_menu_add" />
+	
+	<item
+        android:id="@+id/IDM_SETTINGS"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="always"
         android:title="@string/IDS_SETTINGS_STRING"/>
 </menu>

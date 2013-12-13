@@ -21,7 +21,7 @@
         android:id="@+id/IDP_ICO_CITY_ICON"
         android:layout_width="100dp"
         android:layout_height="100dp" />
-
+    
     <!--**********************************************************/
     /*                                                           */ 
     /* City Name                                                 */ 
@@ -29,12 +29,43 @@
     /***********************************************************-->
     <TextView
         android:id="@+id/IDC_TXT_CITY_NAME"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
+        android:paddingTop="5dp"
         android:paddingLeft="15dp"
         android:fontFamily="Arial"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* City Country                                              */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <TextView
+        android:id="@+id/IDC_TXT_CITY_COUNTRY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/IDC_TXT_CITY_NAME"
+        android:paddingTop="5dp"
+        android:paddingLeft="15dp"
+        android:fontFamily="Arial"
+        android:textSize="18sp"
+        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* Current Temperature                                       */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <TextView
+        android:id="@+id/IDC_TXT_CITY_TEMPERATURE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+		android:layout_centerVertical="true"
+        android:fontFamily="Times New Roman"
+        android:textSize="75sp" />
 
 </RelativeLayout>

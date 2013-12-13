@@ -19,7 +19,7 @@
     </item>
     
     <item>
-        <color android:color="@android:color/white"/>
-    </item>
+        <color android:color="@android:color/background_light"/>
+        </item>
 
 </selector>

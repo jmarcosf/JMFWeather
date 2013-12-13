@@ -7,37 +7,78 @@
 /*              JmfWeather Project                               */ 
 /*                                                               */ 
 /***************************************************************-->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/IDC_LAY_DRAWER"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Main Content Layout                                       */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <FrameLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent" >
-       
-	<!--**********************************************************/
-    /*                                                           */ 
-    /* Listview Layout                                           */ 
-	/*                                                           */ 
-    /***********************************************************-->
-   	<ListView 
-	    android:id="@+id/IDC_LV_CITY_LIST"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" />
+	       
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* Listview Layout                                       */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	   	<ListView 
+		    android:id="@+id/IDC_LV_CITY_LIST"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" />
+	
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* Progress Bar Layout                                   */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	   	<ProgressBar
+		    android:id="@+id/IDC_PB_WAIT_CLOCK"
+		    android:layout_width="48dp"
+		    android:layout_height="48dp"
+		    android:layout_gravity="center"
+		    android:visibility="gone" />
+	
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* Network Error Message Layout                          */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	   <include layout="@layout/layout_network_error_message" />
+	   	    	
+	</FrameLayout>
 
-	<!--**********************************************************/
+    <!--**********************************************************/
     /*                                                           */ 
-    /* Progress Bar Layout                                       */ 
+    /* Navigation Drawer Layout                                  */ 
+    /*     start=indica que este elemento es el Drawer           */ 
 	/*                                                           */ 
     /***********************************************************-->
-   	<ProgressBar
-	    android:id="@+id/IDC_PB_WAIT_CLOCK"
-	    android:layout_width="48dp"
-	    android:layout_height="48dp"
-	    android:layout_gravity="center"
-	    android:visibility="gone" />
-
-	<!--**********************************************************/
-    /*                                                           */ 
-    /* Network Error Message Layout                              */ 
-	/*                                                           */ 
-    /***********************************************************-->
-   <include layout="@layout/layout_network_error_message" />
-   	    	
-</FrameLayout>
+    <LinearLayout 
+        android:id="@+id/IDR_LAY_LEFT_DRAWER"
+        android:orientation="vertical"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:padding="8dp"
+        android:background="@android:color/white" >
+        
+        <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/IDS_DRAWER_MENU_TEXT" />
+        
+        <Button
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/IDS_SETTINGS_STRING" />
+	        
+    </LinearLayout>    	
+    
+</android.support.v4.widget.DrawerLayout>
+    
