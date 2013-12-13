@@ -4,7 +4,7 @@
 /* (c)2013 jmarcosf                                          */ 
 /*                                                           */ 
 /* Description: CBaseCityActivity Class                      */ 
-/*              BlogReader Project                           */ 
+/*              JmfWeather Project                           */ 
 /*                                                           */ 
 /*************************************************************/
 package com.utad.marcos.jorge.jmfweather;

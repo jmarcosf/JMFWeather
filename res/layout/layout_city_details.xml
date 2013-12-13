@@ -1,0 +1,17 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* layout_city_details.xml                                       */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: City Details Container Layout                    */ 
+/*              JmfWeather Project                               */ 
+/*                                                               */ 
+/***************************************************************-->
+<android.support.v4.view.ViewPager
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/IDR_LAY_CITY_CONTAINER"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+
+

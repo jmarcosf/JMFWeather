@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +30,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
-import com.utad.marcos.jorge.jmfweather.model.CCity;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.CWeatherRetrieverBinder;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeatherRetrieverListener;
@@ -92,7 +90,8 @@ private   CWeatherRetrieverBinder  m_Binder;
                public void onDrawerOpened( View drawerView ) {};
           };
           
-          m_Drawer.setDrawerListener( m_DrawerToggle );          getActionBar().setDisplayHomeAsUpEnabled( true );
+          m_Drawer.setDrawerListener( m_DrawerToggle );
+          getActionBar().setDisplayHomeAsUpEnabled( true );
           findViewById( R.id.IDC_BTN_RETRY ).setOnClickListener( this );
      }
      
@@ -118,7 +117,7 @@ private   CWeatherRetrieverBinder  m_Binder;
      {
           super.onStart();
           ServiceConnect();
-//          LoadCityList();
+          LoadCityList();
      }
 
      /*********************************************************/
@@ -156,6 +155,7 @@ private   CWeatherRetrieverBinder  m_Binder;
           if( m_DrawerToggle.onOptionsItemSelected( Item ) ) return true;
           else return super.onOptionsItemSelected( Item );
      }
+     
      /*********************************************************/
      /*                                                       */
      /* CCityListActivity.onCreateOptionsMenu()               */
@@ -182,39 +182,29 @@ private   CWeatherRetrieverBinder  m_Binder;
      @Override 
      public void onItemClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
      {
-          CWeatherDAO WeatherDAO = new CWeatherDAO( CCityListActivity.this );
           Long cityId = (Long)view.getTag();
-          CCity City = WeatherDAO.selectCity( cityId );
-          if( City != null )
-          {
-               Log.d( CCityListActivity.class.getSimpleName(), "City clicked: " + City.getName() );
-          }
-          
-          
           
 //          if( m_bTablet )
 //          {
-//               m_Post = m_PostList.get( id );
 //               m_ListView.setItemChecked( iPosition, true );
 //               
 //               // Build Tablet Fragment
-//               CPostDetailsFragment Fragment = new CPostDetailsFragment();
+//               CCityDetailsFragment Fragment = new CCityDetailsFragment();
 //               Bundle Params = new Bundle();
-//               Params.putParcelable( CPostDetailsFragment.IDS_POST_PARAM, m_Post );
+//               Params.putParcelable( CCityDetailsFragment.IDS_CITY_ID_PARAM, City );
 //               Fragment.setArguments( Params );
 //
 //               FragmentManager frgManager = getSupportFragmentManager();
 //               FragmentTransaction tx = frgManager.beginTransaction();
-//               tx.replace( R.id.IDR_LAY_POST_CONTAINER, Fragment );
+//               tx.replace( R.id.IDR_LAY_CITY_CONTAINER, Fragment );
 //               tx.commit();
 //          }
 //          else
-//          {
-//               Intent intent = new Intent( CPostListActivity.this, CPostDetailsActivity.class );
-//               intent.putExtra( CPostDetailsActivity.IDS_POSTLIST_PARAM, m_PostList );
-//               intent.putExtra( CPostDetailsActivity.IDS_POSTINDEX_PARAM, iPosition );
-//               startActivity( intent );
-//          }
+          {
+               Intent intent = new Intent( CCityListActivity.this, CCityDetailsActivity.class );
+               intent.putExtra( CCityDetailsFragment.IDS_CITY_ID_PARAM, cityId );
+               startActivity( intent );
+          }
      }
      
      /*********************************************************/
@@ -287,6 +277,7 @@ private   CWeatherRetrieverBinder  m_Binder;
                               LoadCityList();
                          }
                     } );
+                    
                     if( !m_Binder.getService().LoadWeather() )
                     {
                          m_NetworkErrorView.setVisibility(View.VISIBLE);

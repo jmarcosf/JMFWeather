@@ -30,7 +30,7 @@ public class CWeatherDBContract
 	/*                                                       */
 	/*********************************************************/
 	/*                                                       */
-	/* CBlogDBContract.CBlogDbContract()                     */
+	/* CWeatherDBContract.CWeatherDbContract()               */
 	/* private constructor: no instances allowed             */
 	/*                                                       */
 	/*********************************************************/

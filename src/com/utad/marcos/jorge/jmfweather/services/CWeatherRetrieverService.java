@@ -27,7 +27,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
@@ -50,8 +49,7 @@ private IWeatherRetrieverListener	m_Listener = null;
 
 private static final int PERIODIC_TASK_REQUEST_CODE = 0x4777;
 private static final int PERIODIC_TASK_TRIGGER_TIMEOUT = ( 10 * 1000 );         // 10 Seconds
-//private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 60 * 1000 * 5 );  // Every 5 minutes
-private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        // Every 5 minutes
+private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 60 * 1000 * 5 );  // Every 5 minutes
 
 	/*********************************************************/
 	/*                                                       */
@@ -94,7 +92,6 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 	@Override
 	public void onCreate()
 	{
-	     Log.d( CWeatherRetrieverService.class.getSimpleName(), "onCreate()" );
           super.onCreate();
 	}
 
@@ -106,7 +103,6 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
      @Override
      public void onDestroy()
      {
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onDestroy()" );
           super.onDestroy();
      }
 
@@ -118,7 +114,6 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 	@Override
 	public IBinder onBind( Intent arg0 )
 	{
-	     Log.d( CWeatherRetrieverService.class.getSimpleName(), "onBind()" );
           new CInetLoader().execute( true );
           StartAlarm( getBaseContext() );
 		return new CWeatherRetrieverBinder();
@@ -132,7 +127,6 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 	@Override
 	public boolean onUnbind( Intent intent )
 	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onUnbind()" );
           StopAlarm( getBaseContext() );
 		m_Listener = null;
 		return super.onUnbind( intent );
@@ -146,7 +140,6 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
      @Override
      public int onStartCommand( Intent intent, int flags, int startId )
      {
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onStartCommand()" );
           LoadWeather();
           return START_STICKY;
      }
@@ -164,7 +157,6 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 	/*********************************************************/
 	public void setListener( IWeatherRetrieverListener listener )
 	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "SetListener()" );
 		this.m_Listener = listener;
 	}
 	
@@ -250,7 +242,6 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 	/*********************************************************/
 	public boolean LoadWeather()
 	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "LoadWeather()" );
 		ConnectivityManager ConnManager = (ConnectivityManager)getSystemService( Context.CONNECTIVITY_SERVICE );
 		NetworkInfo NetInfo = ConnManager.getActiveNetworkInfo();
 
@@ -271,6 +262,22 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
 	/*********************************************************/
 	private class CInetLoader extends AsyncTask< Boolean, Void, Void >
 	{
+     CWorldWeatherApi WorldWeatherApi = null;
+     CWeatherDAO WeatherDAO = null;
+	     
+	     /****************************************************/
+	     /*                                                  */ 
+	     /* CWeatherRetrieverService.onPreExecute()          */ 
+	     /*                                                  */ 
+	     /****************************************************/
+	     @Override
+	     protected void onPreExecute()
+	     {
+	          super.onPreExecute();
+               WorldWeatherApi = new CWorldWeatherApi();
+               WeatherDAO = new CWeatherDAO( CWeatherRetrieverService.this );
+	     }
+	     
 		/****************************************************/
 		/*                                                  */ 
 		/* CInetLoader.doInBackground()                     */ 
@@ -279,8 +286,6 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
           @Override
           protected Void doInBackground( Boolean... bAddCurrentLocation )
           {
-          	CWorldWeatherApi WorldWeatherApi = new CWorldWeatherApi();
-          	CWeatherDAO WeatherDAO = new CWeatherDAO( CWeatherRetrieverService.this );
           	if( bAddCurrentLocation[ 0 ] ) AddCurrentLocation( WorldWeatherApi, WeatherDAO, CWeatherRetrieverService.this );
           	CCityList CityList = new CCityList();
 
@@ -313,18 +318,6 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
                {
                     exception.printStackTrace();
                }
-               finally
-               {
-                    try
-                    {
-                         WorldWeatherApi.Close();
-                    }
-                    catch( IOException exception )
-                    {
-                         exception.printStackTrace();
-                    }
-                    WeatherDAO.Close();
-               }
      		return null;
           }
 		
@@ -336,6 +329,15 @@ private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 30 * 1000 );        
           @Override
           protected void onPostExecute( Void result )
           {
+               try
+               {
+                    WorldWeatherApi.Close();
+               }
+               catch( IOException exception )
+               {
+                    exception.printStackTrace();
+               }
+               WeatherDAO.Close();
      		if( m_Listener != null )	m_Listener.onWeatherLoaded();
           }
 	}

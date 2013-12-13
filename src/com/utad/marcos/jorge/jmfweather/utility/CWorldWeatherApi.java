@@ -182,7 +182,7 @@ private InputStream 		m_InputStream;
 		CCondition CurrentCondition = new CCondition( currentConditionArray.getJSONObject( 0 ) );
 		City.setCurrentCondition( CurrentCondition );
 						
-		JSONArray requestArray = Root.getJSONArray( "request" );
+//		JSONArray requestArray = Root.getJSONArray( "request" );
 		JSONArray weatherArray = Root.getJSONArray( "weather" );
 
 		CForecastList ForecastList = new CForecastList();

@@ -9,6 +9,8 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather.db;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -146,7 +148,8 @@ private SQLiteDatabase		m_db;
 		ForecastRecord.put( CWeatherDBContract.CForecastTable.COLUMN_NAME_WEATHER_DESCRIPTION, 		Forecast.getWeatherDescription() );
 		ForecastRecord.put( CWeatherDBContract.CForecastTable.COLUMN_NAME_MIN_TEMPERATURE_FAHRENHEIT, 	Forecast.getMinTemperatureFahrenheit() );
 
-		return m_db.insert( CWeatherDBContract.CForecastTable.TABLE_NAME, null, ForecastRecord );
+          long ret = m_db.insert( CWeatherDBContract.CForecastTable.TABLE_NAME, null, ForecastRecord );
+		return ret;
 	}
 
      /*********************************************************/
@@ -181,6 +184,7 @@ private SQLiteDatabase		m_db;
           String[] WhereArgs = new String[] { Longitude, Latitude };
           String Where = CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " = ? AND " + CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + " = ?";
           long Count = DatabaseUtils.queryNumEntries( m_db, CWeatherDBContract.CCityTable.TABLE_NAME, Where, WhereArgs );          
+          this.Close();
           return ( Count != 0 );
      }
 
@@ -200,7 +204,7 @@ private SQLiteDatabase		m_db;
      /* CWeatherDAO.SelectCity()                              */ 
      /*                                                       */ 
      /*********************************************************/
-     public CCity selectCity( long cityId )
+     public CCity SelectCity( long cityId )
      {
           if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
 
@@ -209,10 +213,36 @@ private SQLiteDatabase		m_db;
           String[] WhereArgs = new String[] { "" + cityId };
 
           Cursor cursor = m_db.query( CWeatherDBContract.CCityTable.TABLE_NAME, Projection, Where, WhereArgs, null, null, null );
-          if( cursor == null || !cursor.moveToFirst() ) return null;
-          else return new CCity( cursor );
+          CCity City = null;
+          if( cursor != null && cursor.moveToFirst() ) City = new CCity( cursor );
+          this.Close();
+          return City;
      }
      
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherDAO.SelectAllCityIds()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public ArrayList< Long > SelectAllCityIds()
+     {
+          if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
+          
+          String[] Projection = { CWeatherDBContract.CCityTable._ID };
+          Cursor cursor = m_db.query( CWeatherDBContract.CCityTable.TABLE_NAME, Projection, null, null, null, null, null );
+          if( cursor == null || !cursor.moveToFirst() ) return null;
+          
+          ArrayList< Long > CityIdList = new ArrayList< Long >();
+          do
+          {
+               CityIdList.add( Long.valueOf( cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CCityTable._ID ) ) ) );
+          }
+          while( cursor.moveToNext() );
+          
+          this.Close();
+          return CityIdList;
+     }
+
      /*********************************************************/
 	/*                                                       */ 
 	/* CWeatherDAO.SelectAllCities()                         */ 
@@ -233,7 +263,7 @@ private SQLiteDatabase		m_db;
 	/* CWeatherDAO.SelectCityCondition()                     */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public Cursor selectCityCondition( CCity City )
+	public Cursor SelectCityCondition( CCity City )
 	{
 		if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
 
@@ -251,7 +281,7 @@ private SQLiteDatabase		m_db;
      /*********************************************************/
      public void SetCityCondition( CCity City )
      {
-          Cursor cursor = selectCityCondition( City );
+          Cursor cursor = SelectCityCondition( City );
           if( cursor.moveToFirst() )
           {
                CCondition Condition = new CCondition( cursor );

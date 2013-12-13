@@ -7,24 +7,125 @@
 /*              JmfWeather Project                               */
 /*                                                               */
 /***************************************************************-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/IDR_STY_CITY_DETAILS_STYLE"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants" >
 
 	<!--**********************************************************/
-   	/*                                                           */ 
-   	/* City Name                                                 */ 
+    /*                                                           */ 
+    /* City Details Layout                                       */ 
 	/*                                                           */ 
-   	/***********************************************************-->
-       <TextView
-           android:id="@+id/IDC_TXT_CITY_NAME"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:textSize="18sp" />
+    /***********************************************************-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp" >
+    
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* City Icon                                             */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <ImageView
+	        android:id="@+id/IDP_ICO_CITY_ICON"
+	        android:layout_width="100dp"
+	        android:layout_height="100dp" />
+	    
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* City Name                                             */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_NAME"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="15dp"
+	        android:fontFamily="Arial"
+	        android:textSize="30sp"
+	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+	
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* City Country                                          */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_COUNTRY"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/IDC_TXT_CITY_NAME"
+	        android:paddingTop="5dp"
+	        android:paddingLeft="15dp"
+	        android:fontFamily="Arial"
+	        android:textSize="18sp"
+	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+	    
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* City GeoPosition                                      */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_GEOPISITION"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/IDC_TXT_CITY_COUNTRY"
+	        android:paddingTop="5dp"
+	        android:paddingLeft="15dp"
+	        android:fontFamily="Arial"
+	        android:textSize="18sp"
+	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+	    	
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* Current Temperature                                   */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_TEMPERATURE"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentTop="true"
+	        android:gravity="right"
+			android:layout_centerVertical="true"
+	        android:fontFamily="Times New Roman"
+	        android:textSize="75sp" />
 
-</RelativeLayout>
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* City Pressure                                          */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_PRESSURE"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/IDP_ICO_CITY_ICON"
+	        android:paddingTop="25dp"
+	        android:fontFamily="Arial"
+	        android:textSize="25sp" />
+	
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* City Humidity                                         */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_HUMIDITY"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/IDC_TXT_CITY_PRESSURE"
+	        android:paddingTop="5dp"
+	        android:fontFamily="Arial"
+	        android:textSize="25sp" />
+	    
+   	</RelativeLayout>
+
+</ScrollView>
 
 
 

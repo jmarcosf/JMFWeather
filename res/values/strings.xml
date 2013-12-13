@@ -12,6 +12,7 @@
     <string name="IDS_APP_NAME">JmfWeather</string>
     <string name="IDS_SETTINGS_STRING">Settings</string>
     <string name="IDS_SHARE_STRING">Share</string>
+    <string name="IDS_DEGREES_TYPE_STRING">Celsius/Fahrenheit</string>
     <string name="IDS_ADD_CITY_STRING">Add City</string>
     <string name="IDS_OK_STRING">OK</string>
     <string name="IDS_CANCEL_STRING">Cancel</string>

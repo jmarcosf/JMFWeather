@@ -58,7 +58,7 @@
 		/*                                                       */ 
 	    /*********************************************************/
 	    /*                                                       */ 
-	    /* Main Activity                                         */ 
+	    /* City List Activity                                    */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <activity
@@ -68,7 +68,16 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
+        </activity>
+        
+   		<!--******************************************************/
+	    /*                                                       */ 
+	    /* City Details Activity                                 */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+        <activity
+            android:name="com.utad.marcos.jorge.jmfweather.CCityDetailsActivity"
+            android:parentActivityName="com.utad.marcos.jorge.jmfweather.CCityListActivity" >
         </activity>
         
     </application>

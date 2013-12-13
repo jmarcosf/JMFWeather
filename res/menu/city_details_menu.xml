@@ -8,17 +8,23 @@
 /*                                                               */ 
 /***************************************************************-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:myapp="http://schemas.android.com/apk/res-auto" >
+      xmlns:JmfWeather="http://schemas.android.com/apk/res-auto" >
 
-    <item
+	<item
+        android:id="@+id/IDM_DEGREES_TYPE"
+        JmfWeather:showAsAction="always"
+        android:title="@string/IDS_DEGREES_TYPE_STRING"
+        android:icon="@android:drawable/ic_menu_compass" />
+
+	<item
         android:id="@+id/IDM_SHARE"
-        myapp:showAsAction="ifRoom"
+        JmfWeather:showAsAction="ifRoom"
         android:title="@string/IDS_SHARE_STRING"
         android:icon="@android:drawable/ic_menu_share" />
 
     <item
         android:id="@+id/IDM_SETTINGS"
-        android:showAsAction="never"
+        android:showAsAction="always"
         android:title="@string/IDS_SETTINGS_STRING"
         android:icon="@android:drawable/ic_menu_preferences" />
 
