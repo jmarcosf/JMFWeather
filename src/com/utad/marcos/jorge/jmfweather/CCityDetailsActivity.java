@@ -109,7 +109,7 @@ private   int                 m_Position;
      @Override
      public boolean onCreateOptionsMenu( Menu menu )
      {
-          getMenuInflater().inflate( R.menu.city_details_menu, menu );
+          getMenuInflater().inflate( R.menu.menu_city_details, menu );
           return true;
      }
 

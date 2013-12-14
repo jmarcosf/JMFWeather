@@ -33,7 +33,7 @@
     /***********************************************************-->
     <application
         android:allowBackup="true"
-        android:icon="@drawable/app_main_icon"
+        android:icon="@drawable/icon_main"
         android:label="@string/IDS_APP_NAME"
         android:theme="@style/IDR_APP_THEME" >
         

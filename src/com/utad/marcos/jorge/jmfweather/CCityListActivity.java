@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -53,7 +54,7 @@ private   ListView                 m_ListView;
 private   ProgressBar              m_WaitClock;
 private   View                     m_NetworkErrorView;
 private   ServiceConnection        m_ServiceConnection;
-private   CWeatherRetrieverBinder  m_Binder;
+private   CWeatherRetrieverBinder  m_ServiceBinder;
 
      /*********************************************************/
      /*                                                       */
@@ -84,14 +85,15 @@ private   CWeatherRetrieverBinder  m_Binder;
           m_ListView.setOnItemClickListener( this );
 
           m_Drawer = (DrawerLayout)findViewById( R.id.IDC_LAY_DRAWER );
-          m_DrawerToggle = new ActionBarDrawerToggle( this, m_Drawer, R.drawable.app_drawer_icon, R.string.IDS_DRAWER_OPEN_TEXT, R.string.IDS_DRAWER_CLOSE_TEXT )
+          m_DrawerToggle = new ActionBarDrawerToggle( this, m_Drawer, R.drawable.icon_drawer, R.string.IDS_DRAWER_OPEN_TEXT, R.string.IDS_DRAWER_CLOSE_TEXT )
           {
                public void onDrawerClosed( View drawerView ) {};
                public void onDrawerOpened( View drawerView ) {};
           };
-          
           m_Drawer.setDrawerListener( m_DrawerToggle );
+          
           getActionBar().setDisplayHomeAsUpEnabled( true );
+          findViewById( R.id.IDR_LAY_LEFT_DRAWER ).setOnClickListener( this );
           findViewById( R.id.IDC_BTN_RETRY ).setOnClickListener( this );
      }
      
@@ -134,16 +136,16 @@ private   CWeatherRetrieverBinder  m_Binder;
 
      /*********************************************************/
      /*                                                       */ 
-     /* CCityListActivity.onConfigurationChanged()            */ 
+     /* CCityListActivity.onDestroy()                         */ 
      /*                                                       */ 
      /*********************************************************/
      @Override
-     public void onConfigurationChanged( Configuration newConfig )
+     protected void onDestroy()
      {
-          super.onConfigurationChanged( newConfig );
-          m_DrawerToggle.onConfigurationChanged( newConfig );
+          if( m_ServiceBinder != null ) m_ServiceBinder.getService().StopLoadingImages();
+          super.onDestroy();
      }
-
+     
      /*********************************************************/
      /*                                                       */ 
      /* CCityListActivity.onOptionsItemSelected()             */ 
@@ -164,8 +166,26 @@ private   CWeatherRetrieverBinder  m_Binder;
      @Override
      public boolean onCreateOptionsMenu( Menu menu )
      {
-          getMenuInflater().inflate( R.menu.city_list_menu, menu );
+          getMenuInflater().inflate( R.menu.menu_city_list, menu );
           return true;
+     }
+
+     /*********************************************************/
+     /*                                                       */
+     /*                                                       */
+     /* ActionBarActivity Override Methods                    */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onConfigurationChanged()            */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public void onConfigurationChanged( Configuration newConfig )
+     {
+          super.onConfigurationChanged( newConfig );
+          m_DrawerToggle.onConfigurationChanged( newConfig );
      }
 
      /*********************************************************/
@@ -225,11 +245,11 @@ private   CWeatherRetrieverBinder  m_Binder;
           {
                case R.id.IDC_BTN_RETRY:
                     m_NetworkErrorView.setVisibility( View.GONE );
-//                    LoadCityList();
+                    LoadCityList();
                     break;
                     
                case R.id.IDR_LAY_LEFT_DRAWER:
-                    break;              //this is to avoid clicking thru drawer
+                    break;              //this is just to avoid clicking thru drawer
           }
      }
      
@@ -268,8 +288,8 @@ private   CWeatherRetrieverBinder  m_Binder;
                @Override
                public void onServiceConnected( ComponentName name, IBinder binder )
                {
-                    m_Binder = (CWeatherRetrieverBinder)binder;
-                    m_Binder.getService().setListener( new IWeatherRetrieverListener()
+                    m_ServiceBinder = (CWeatherRetrieverBinder)binder;
+                    m_ServiceBinder.getService().setListener( new IWeatherRetrieverListener()
                     {
                          @Override
                          public void onWeatherLoaded()
@@ -278,15 +298,14 @@ private   CWeatherRetrieverBinder  m_Binder;
                          }
                     } );
                     
-                    if( !m_Binder.getService().LoadWeather() )
-                    {
-                         m_NetworkErrorView.setVisibility(View.VISIBLE);
-                    }
+                    //Load List from DB then program service to update Weather.
+                    LoadCityList();
+                    m_ServiceBinder.getService().LoadWeather();
                }
                @Override
                public void onServiceDisconnected( ComponentName name )
                {
-                    m_Binder = null;
+                    m_ServiceBinder = null;
                }
           };
 

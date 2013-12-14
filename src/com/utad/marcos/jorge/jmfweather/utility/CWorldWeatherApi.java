@@ -54,6 +54,7 @@ private static final String	WORLD_WEATHER_KEY             = "hk3bn55kb4g7hjwhxqg
 private Charset 			m_Charset;
 private HttpURLConnection	m_Connection;
 private InputStream 		m_InputStream;
+private byte[]                m_ImageBytes;
 
 	/*********************************************************/
 	/*                                                       */ 
@@ -212,7 +213,15 @@ private InputStream 		m_InputStream;
 			m_Connection.setRequestMethod( "GET" );
 			m_Connection.setDoInput( true );
 			
-			// Start connection
+			// World Weather Free API allows only tree calls per second
+	          try
+               {
+                    Thread.sleep( 1000 );
+               }
+               catch( InterruptedException exception )
+               {
+                    exception.printStackTrace();
+               }
 			m_Connection.connect();
 			m_InputStream = m_Connection.getInputStream();
 		}
@@ -256,8 +265,6 @@ private InputStream 		m_InputStream;
      /*********************************************************/
      public Bitmap getImage() throws IOException, InterruptedException
      {
-//        return BitmapFactory.decodeStream( m_InputStream );
-          
           byte[] Bytes = getBytes();
           return ( Bytes == null ) ? null : BitmapFactory.decodeByteArray( Bytes, 0, Bytes.length );
      }
@@ -269,6 +276,8 @@ private InputStream 		m_InputStream;
      /*********************************************************/
      public byte[] getBytes() throws IOException, InterruptedException
      {
+          if( this.m_ImageBytes != null ) return m_ImageBytes;
+          
           byte[] Buffer = new byte[ IO_BUFFER_SIZE ];
           ByteArrayOutputStream Output = new ByteArrayOutputStream();
           int BytesRead = 0;
@@ -278,9 +287,11 @@ private InputStream 		m_InputStream;
                if( Thread.interrupted() ) throw new InterruptedException();
                Output.write( Buffer, 0, BytesRead );
           }
+          
           try
           {
-               return Output.toByteArray();
+               this.m_ImageBytes = Output.toByteArray();
+               return this.m_ImageBytes;
           }
           finally
           {

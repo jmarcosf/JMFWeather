@@ -9,12 +9,22 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather.model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.widget.ImageView;
 
+import com.utad.marcos.jorge.jmfweather.R;
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDBContract;
 
 /**************************************************************/
@@ -50,7 +60,7 @@ private CForecastList    m_ForecastList;
 	/* CCity.CCity()                                         */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public CCity( long Id, String Name, String Country, String Latitude, String Longitude, long Population, String Region, String WeatherUrl )
+	public CCity( long Id, String Name, String Country, String Latitude, String Longitude, long Population, String Region, String IconUrl )
 	{
 		this.m_Id = Id;
 		this.m_Name = Name;
@@ -59,7 +69,7 @@ private CForecastList    m_ForecastList;
 		this.m_Longitude = Longitude;
 		this.m_Population = Population;
 		this.m_Region = Region;
-		this.m_WeatherUrl = WeatherUrl;
+		this.m_WeatherUrl = IconUrl;
 		this.m_CurrentCondition = null;
 		this.m_ForecastList = null;
 	}
@@ -138,4 +148,29 @@ private CForecastList    m_ForecastList;
 	/*********************************************************/
 	public void setCurrentCondition( CCondition Condition ) { m_CurrentCondition = Condition; }
      public void setForecastList( CForecastList ForecastList ) { m_ForecastList = ForecastList; }
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCity.SetViewIcon()                                   */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void SetViewIcon( Context context, ImageView view )
+     {
+          if( context != null && view != null && getCondition() != null )
+          {
+               File CacheDirectory = context.getCacheDir();
+               Uri uri = Uri.parse( getCondition().getIconUrl() );
+               String ImagePath = uri.getLastPathSegment();
+               File ImageFile = new File( CacheDirectory, ImagePath );
+               try
+               {
+                    Bitmap IconBitmap = BitmapFactory.decodeStream( new FileInputStream( ImageFile ) );
+                    view.setImageBitmap( IconBitmap );
+               }
+               catch( FileNotFoundException exception )
+               {
+                    view.setImageResource( R.drawable.icon_main );
+               }
+          }
+     }
 }

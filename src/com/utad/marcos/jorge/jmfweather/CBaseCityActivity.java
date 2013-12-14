@@ -8,6 +8,7 @@
 /*                                                           */ 
 /*************************************************************/
 package com.utad.marcos.jorge.jmfweather;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -27,9 +28,6 @@ import com.utad.marcos.jorge.jmfweather.model.CCity;
 /*************************************************************/
 public class CBaseCityActivity extends ActionBarActivity
 {
-//private final static String	IDS_SAVED_INSTANCE_CITY_KEY = "SavedCityInstance";
-
-protected CCity               m_City = null;
 
      /*********************************************************/
      /*                                                       */ 
@@ -46,10 +44,6 @@ protected CCity               m_City = null;
      protected void onCreate( Bundle savedInstanceState )
      {
 	     super.onCreate( savedInstanceState );
-	     if( savedInstanceState != null )
-	     {
-//	     	m_City = savedInstanceState.getParcelable( IDS_SAVED_INSTANCE_CITY_KEY );
-	     }
      }
 
      /*********************************************************/
@@ -60,10 +54,6 @@ protected CCity               m_City = null;
      @Override
      protected void onSaveInstanceState( Bundle outState )
      {
-     	if( m_City != null )
-     	{
-//     		outState.putParcelable( IDS_SAVED_INSTANCE_CITY_KEY, m_City );
-     	}
 	     super.onSaveInstanceState( outState );
      }
           
@@ -75,13 +65,7 @@ protected CCity               m_City = null;
 	@Override
 	public boolean onCreateOptionsMenu( Menu menu )
 	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		if( m_City != null )
-		{
-			getMenuInflater().inflate( R.menu.city_details_menu, menu );
-			return true;
-		}
-		else return super.onCreateOptionsMenu( menu );
+		return super.onCreateOptionsMenu( menu );
 	}
 	
 	/*********************************************************/

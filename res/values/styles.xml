@@ -51,7 +51,7 @@
 	/*                                                           */ 
     /***********************************************************-->
     <style name="IDR_STY_CITY_LISTVIEW_ITEM_STYLE">
-        <item name="android:background">@drawable/city_list_item_background</item>
+        <item name="android:background">@drawable/selector_city_list_item_background</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">10dp</item>
@@ -59,7 +59,7 @@
         </style>
 
     <style name="IDR_STY_CITY_DETAILS_STYLE">
-        <item name="android:background">@drawable/city_details_background</item>
+        <item name="android:background">@drawable/image_city_details_background</item>
         <item name="android:padding">36dp</item>
     </style>
     

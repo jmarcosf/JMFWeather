@@ -9,13 +9,8 @@
 /*************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
-import java.io.IOException;
-import java.net.URL;
-
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +19,6 @@ import android.widget.TextView;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
-import com.utad.marcos.jorge.jmfweather.utility.CWorldWeatherApi;
 
 /*************************************************************/
 /*                                                           */
@@ -78,61 +72,9 @@ public static final String IDS_CITY_ID_PARAM = "CityIdParam";
           CityPressure.setText( "Pressure: " + City.getCondition().getPressure() );
           CityHumitidy.setText( "Humidity: " + City.getCondition().getHumidity() );
           
-		final ImageView CityIcon = (ImageView)view.findViewById( R.id.IDP_ICO_CITY_ICON );
-		final String IconUrl = ( City.getCondition() != null ) ? City.getCondition().getIconUrl() : null; 
-		if( IconUrl != null )
-		{
-		     Thread imageThread = new Thread()
-		     {
-		          @Override
-		          public void run()
-		          {
-		               CWorldWeatherApi Request = new CWorldWeatherApi();
-		               try
-		               {
-		                    Request.Connect( new URL( IconUrl ) );
-		                    final Bitmap image = Request.getImage();
-		                    getActivity().runOnUiThread( new Runnable()
-		                    {
-		                         @Override
-		                         public void run()
-		                         {
-		                              CityIcon.setImageBitmap( image );
-		                         }
-		                    } );
-		               }
-		               catch( IOException e )
-		               {
-		                    getActivity().runOnUiThread( new Runnable()
-		                    {
-		                         @Override
-		                         public void run()
-		                         {
-		                              CityIcon.setImageResource( R.drawable.app_main_icon );
-		                         }
-		                    } );
-		               }
-		               catch( InterruptedException exception )
-		               {
-		                    Log.d( CCityListAdapter.class.getSimpleName(), "Image Loading interrupted" );
-		               }
-		               finally
-		               {
-		                    try
-		                    {
-		                         Request.Close();
-		                    }
-		                    catch( IOException exception )
-		                    {
-		                         exception.printStackTrace();
-		                    }
-		               }
-		          }
-		     };
-		     imageThread.start();
-		}
-		else CityIcon.setImageResource( R.drawable.app_main_icon );
-		
+          ImageView CityIcon = (ImageView)view.findViewById( R.id.IDP_ICO_CITY_ICON );
+          City.SetViewIcon( getActivity(), CityIcon );
+          
 		return view;
 	}
 }
