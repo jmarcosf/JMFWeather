@@ -5,6 +5,11 @@
 /*                                                               */ 
 /* Description: City Details Container Layout                    */ 
 /*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
 <android.support.v4.view.ViewPager

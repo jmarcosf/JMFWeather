@@ -1,12 +1,17 @@
-/*************************************************************/
-/*                                                           */
-/* CCityDetailsFragment.java                                 */
-/* (c)2013 jmarcosf                                          */
-/*                                                           */
-/* Description: CCityDetailsFragment Class                   */
-/*              JmfWeather Project                           */
-/*                                                           */
-/*************************************************************/
+/**************************************************************/
+/*                                                            */
+/* CCityDetailsFragment.java                                  */
+/* (c)2013 jmarcosf                                           */
+/*                                                            */
+/* Description: CCityDetailsFragment Class                    */
+/*              JmfWeather Project                            */
+/*              Práctica asignatura Android Fundamental       */ 
+/*              U-Tad - Master Apps                           */ 
+/*              www.u-tad.com                                 */ 
+/*                                                            */ 
+/*        Date: December 2013                                 */ 
+/*                                                            */
+/**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
 import android.os.Bundle;
@@ -20,15 +25,15 @@ import android.widget.TextView;
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 
-/*************************************************************/
-/*                                                           */
-/*                                                           */
-/*                                                           */
-/* CCityDetailsFragment Class                                */ 
-/*                                                           */
-/*                                                           */
-/*                                                           */
-/*************************************************************/
+/**************************************************************/
+/*                                                            */
+/*                                                            */
+/*                                                            */
+/* CCityDetailsFragment Class                                 */ 
+/*                                                            */
+/*                                                            */
+/*                                                            */
+/**************************************************************/
 public class CCityDetailsFragment extends Fragment
 {
 public static final String IDS_CITY_ID_PARAM = "CityIdParam";

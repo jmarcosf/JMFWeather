@@ -1,0 +1,59 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* preferences.xml                                               */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: Application Preferences                          */ 
+/*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
+/*                                                               */ 
+/***************************************************************-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+	<!--**********************************************************/
+	/*                                                           */ 
+	/* General                                                   */ 
+	/*                                                           */ 
+	/***********************************************************-->
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="IncludeCurrentLocationOnStartup"
+        android:title="@string/IDS_PREF_TITLE_INCLUDE_CURRENT_LOCATION_ON_STARTUP"
+        android:summary="@string/IDS_PREF_DESC_INCLUDE_CURRENT_LOCATION_ON_STARTUP" />
+    
+	<!--**********************************************************/
+	/*                                                           */ 
+	/* City Weather Synchronization Frequency                    */ 
+	/*                                                           */ 
+	/***********************************************************-->
+    <ListPreference
+        android:defaultValue="@integer/g_WeatherSyncFrequencyDefault"
+        android:key="WeatherSyncFrequency"
+        android:title="@string/IDS_PREF_TITLE_SYNC_FREQUENCY"
+        android:entries="@array/IDS_ARRAY_SYNC_FREQUENCY_TITLES"
+        android:entryValues="@array/IDS_ARRAY_SYNC_FREQUENCY_VALUES"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
+    
+</PreferenceScreen>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

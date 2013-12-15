@@ -5,8 +5,14 @@
 /*                                                               */ 
 /* Description: Global Default Application Definitions           */ 
 /*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
 <resources>
-    <item type="bool" name="g_bTablet">false</item>
+    <item name="g_bTablet" type="bool" >false</item>
+    <item name="g_WeatherSyncFrequencyDefault" type="integer" >180</item>
 </resources>

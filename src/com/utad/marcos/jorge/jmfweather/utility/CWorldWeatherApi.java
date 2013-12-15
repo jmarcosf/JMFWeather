@@ -1,4 +1,3 @@
-
 /**************************************************************/
 /*                                                            */
 /* CWorldWeatherApi.java                                      */
@@ -6,6 +5,11 @@
 /*                                                            */
 /* Description: CWorldWeatherApi Class                        */
 /*              JmfWeather Project                            */
+/*              Práctica asignatura Android Fundamental       */ 
+/*              U-Tad - Master Apps                           */ 
+/*              www.u-tad.com                                 */ 
+/*                                                            */ 
+/*        Date: December 2013                                 */ 
 /*                                                            */
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather.utility;

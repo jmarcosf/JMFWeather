@@ -1,12 +1,17 @@
-/*************************************************************/
-/*                                                           */
-/* CCityDetailsPagerAdapter                                  */
-/* (c)2013 jmarcosf                                          */
-/*                                                           */
-/* Description: CCityDetailsPagerAdapter Class               */
-/*              JmfWeather Project                           */
-/*                                                           */
-/*************************************************************/
+/**************************************************************/
+/*                                                            */
+/* CCityDetailsPagerAdapter.java                              */
+/* (c)2013 jmarcosf                                           */
+/*                                                            */
+/* Description: CCityDetailsPagerAdapter Class                */
+/*              JmfWeather Project                            */
+/*              Práctica asignatura Android Fundamental       */ 
+/*              U-Tad - Master Apps                           */ 
+/*              www.u-tad.com                                 */ 
+/*                                                            */ 
+/*        Date: December 2013                                 */ 
+/*                                                            */
+/**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 import java.util.ArrayList;
 
@@ -15,15 +20,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-/*************************************************************/
-/*                                                           */
-/*                                                           */
-/*                                                           */
-/* CCityDetailsPagerAdapter Class                            */
-/*                                                           */
-/*                                                           */
-/*                                                           */
-/*************************************************************/
+/**************************************************************/
+/*                                                            */
+/*                                                            */
+/*                                                            */
+/* CCityDetailsPagerAdapter Class                             */
+/*                                                            */
+/*                                                            */
+/*                                                            */
+/**************************************************************/
 public class CCityDetailsPagerAdapter extends FragmentStatePagerAdapter
 {
 private ArrayList< Long >     m_CityIdList;     

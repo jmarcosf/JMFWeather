@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--**************************************************************/
 /*                                                               */ 
-/* city_list_item_background.xml                                 */ 
+/* selector_city_list_item_background.xml                        */ 
 /* (c)2013 jmarcosf                                              */ 
 /*                                                               */ 
 /* Description: Defines colors & images of Cities on ListView    */ 
 /*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >

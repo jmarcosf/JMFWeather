@@ -1,12 +1,17 @@
-/*************************************************************/
-/*                                                           */ 
-/* CBaseCityActivity                                         */ 
-/* (c)2013 jmarcosf                                          */ 
-/*                                                           */ 
-/* Description: CBaseCityActivity Class                      */ 
-/*              JmfWeather Project                           */ 
-/*                                                           */ 
-/*************************************************************/
+/**************************************************************/
+/*                                                            */ 
+/* CBaseCityActivity.java                                     */ 
+/* (c)2013 jmarcosf                                           */ 
+/*                                                            */ 
+/* Description: CBaseCityActivity Class                       */ 
+/*              JmfWeather Project                            */ 
+/*              Práctica asignatura Android Fundamental       */ 
+/*              U-Tad - Master Apps                           */ 
+/*              www.u-tad.com                                 */ 
+/*                                                            */ 
+/*        Date: December 2013                                 */ 
+/*                                                            */ 
+/**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
 import android.content.Intent;
@@ -15,17 +20,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.utad.marcos.jorge.jmfweather.model.CCity;
-
-/*************************************************************/
-/*                                                           */ 
-/*                                                           */ 
-/*                                                           */ 
-/* CBaseCityActivity Class                                   */ 
-/*                                                           */ 
-/*                                                           */ 
-/*                                                           */ 
-/*************************************************************/
+/**************************************************************/
+/*                                                            */ 
+/*                                                            */ 
+/*                                                            */ 
+/* CBaseCityActivity Class                                    */ 
+/*                                                            */ 
+/*                                                            */ 
+/*                                                            */ 
+/**************************************************************/
 public class CBaseCityActivity extends ActionBarActivity
 {
 
@@ -90,7 +93,9 @@ public class CBaseCityActivity extends ActionBarActivity
 			}
 
 			case R.id.IDM_SETTINGS:
-				return true;
+			     Intent intent = new Intent( this, CSettingsActivity.class );
+			     startActivity( intent );
+			     return true;
 	
 			default:
 				super.onOptionsItemSelected( Item );

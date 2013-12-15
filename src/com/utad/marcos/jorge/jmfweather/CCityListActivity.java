@@ -5,6 +5,11 @@
 /*                                                            */
 /* Description: CCityListActivity Class                       */
 /*              JmfWeather Project                            */
+/*              Práctica asignatura Android Fundamental       */ 
+/*              U-Tad - Master Apps                           */ 
+/*              www.u-tad.com                                 */ 
+/*                                                            */ 
+/*        Date: December 2013                                 */ 
 /*                                                            */
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
@@ -15,7 +20,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -300,7 +304,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
                     
                     //Load List from DB then program service to update Weather.
                     LoadCityList();
-                    m_ServiceBinder.getService().LoadWeather();
+                    m_ServiceBinder.getService().LoadWeather( true );
                }
                @Override
                public void onServiceDisconnected( ComponentName name )

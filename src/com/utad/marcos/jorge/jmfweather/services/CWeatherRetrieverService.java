@@ -5,6 +5,11 @@
 /*                                                            */
 /* Description: CWeatherRetrieverService Class                */
 /*              JmfWeather Project                            */
+/*              Práctica asignatura Android Fundamental       */ 
+/*              U-Tad - Master Apps                           */ 
+/*              www.u-tad.com                                 */ 
+/*                                                            */ 
+/*        Date: December 2013                                 */ 
 /*                                                            */
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather.services;
@@ -34,6 +39,7 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.utad.marcos.jorge.jmfweather.CApp;
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 import com.utad.marcos.jorge.jmfweather.model.CCityList;
@@ -52,9 +58,8 @@ import com.utad.marcos.jorge.jmfweather.utility.CWorldWeatherApi;
 /**************************************************************/
 public class CWeatherRetrieverService extends Service
 {
-private static final int PERIODIC_TASK_REQUEST_CODE     = 0x4777;
-private static final int PERIODIC_TASK_TRIGGER_TIMEOUT  = ( 5 * 1000 );        // 5 Seconds
-private static final int PERIODIC_TASK_INTERVAL_TIMEOUT = ( 60 * 1000 * 5 );  // Every 5 minutes
+private static final int ALARM_REQUEST_CODE     = 0x4777;
+private static final int ALARM_INITIAL_TIMEOUT  = ( 5 * 1000 );        // 5 Seconds
 
 private IWeatherRetrieverListener	                    m_Listener = null;
 private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
@@ -148,7 +153,7 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
      @Override
      public int onStartCommand( Intent intent, int flags, int startId )
      {
-          LoadWeather();
+          LoadWeather( false );
           return START_STICKY;
      }
      
@@ -176,7 +181,7 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
      public static PendingIntent getPendingIntent( Context context )
      {
           Intent TaskIntent = new Intent( context, CWeatherRetrieverService.class );
-          PendingIntent pendingIntent = PendingIntent.getService( context, PERIODIC_TASK_REQUEST_CODE, TaskIntent, PendingIntent.FLAG_CANCEL_CURRENT );
+          PendingIntent pendingIntent = PendingIntent.getService( context, ALARM_REQUEST_CODE, TaskIntent, PendingIntent.FLAG_CANCEL_CURRENT );
           return pendingIntent;
      }
 
@@ -187,11 +192,24 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
      /*********************************************************/
      public static void StartAlarm( Context context )
      {
+          int timeout = CApp.getWeatherSyncFrequecyTimeout();
           PendingIntent pendingIntent = CWeatherRetrieverService.getPendingIntent( context );
           AlarmManager alarmManager = (AlarmManager)context.getSystemService( Context.ALARM_SERVICE );
-          alarmManager.setInexactRepeating( AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + PERIODIC_TASK_TRIGGER_TIMEOUT, PERIODIC_TASK_INTERVAL_TIMEOUT, pendingIntent );
+          alarmManager.setInexactRepeating( AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + ALARM_INITIAL_TIMEOUT, timeout, pendingIntent );
      }
 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CBlogRetrieverService.StartAlarm()                    */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public static void StartAlarm( Context context, int Timeout )
+     {
+          StopAlarm( context );
+          AlarmManager alarmManager = (AlarmManager)context.getSystemService( Context.ALARM_SERVICE );
+          alarmManager.setInexactRepeating( AlarmManager.RTC_WAKEUP, ALARM_INITIAL_TIMEOUT, Timeout, getPendingIntent( context ) );
+     }
+     
      /*********************************************************/
      /*                                                       */ 
      /* CWeatherRetrieverService.StopAlarm()                  */ 
@@ -211,6 +229,9 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
      /*********************************************************/
      public static void AddCurrentLocation( CWorldWeatherApi WorldWeatherApi, CWeatherDAO WeatherDAO, Context context )
      {
+          boolean bLoadCurrentLocationOnStartup = CApp.IsLoadCurrentLocationOnStartupEnabled();
+          if( !bLoadCurrentLocationOnStartup ) return;
+
           LocationManager locationManager = (LocationManager)context.getSystemService( Context.LOCATION_SERVICE );
           Location location = locationManager.getLastKnownLocation( LocationManager.GPS_PROVIDER );
           if( location != null )
@@ -248,14 +269,14 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
 	/* CWeatherRetrieverService.LoadWeather()                */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public boolean LoadWeather()
+	public boolean LoadWeather( boolean bFirstCall )
 	{
 		ConnectivityManager ConnManager = (ConnectivityManager)getSystemService( Context.CONNECTIVITY_SERVICE );
 		NetworkInfo NetInfo = ConnManager.getActiveNetworkInfo();
 
 		if( NetInfo != null && NetInfo.isConnected() && m_Listener != null )
 		{
-			new CInetLoader().execute( false );
+			new CInetLoader().execute( bFirstCall );
 			return true;
 		}
 		else	return false;

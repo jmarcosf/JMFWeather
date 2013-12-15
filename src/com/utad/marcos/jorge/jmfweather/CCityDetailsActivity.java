@@ -1,12 +1,17 @@
-/*************************************************************/
-/*                                                           */
-/* CCityDetailsActivity                                      */
-/* (c)2013 jmarcosf                                          */
-/*                                                           */
-/* Description: CCityDetailsActivity Class                   */
-/*              JmfWeather Project                           */
-/*                                                           */
-/*************************************************************/
+/**************************************************************/
+/*                                                            */
+/* CCityDetailsActivity.java                                  */
+/* (c)2013 jmarcosf                                           */
+/*                                                            */
+/* Description: CCityDetailsActivity Class                    */
+/*              JmfWeather Project                            */
+/*              Práctica asignatura Android Fundamental       */ 
+/*              U-Tad - Master Apps                           */ 
+/*              www.u-tad.com                                 */ 
+/*                                                            */ 
+/*        Date: December 2013                                 */ 
+/*                                                            */ 
+/**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 import java.util.ArrayList;
 
@@ -20,15 +25,15 @@ import android.view.MenuItem;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 
-/*************************************************************/
-/*                                                           */
-/*                                                           */
-/*                                                           */
-/* CCityDetailsActivity Class                                */ 
-/*                                                           */
-/*                                                           */
-/*                                                           */
-/*************************************************************/
+/**************************************************************/
+/*                                                            */
+/*                                                            */
+/*                                                            */
+/* CCityDetailsActivity Class                                 */ 
+/*                                                            */
+/*                                                            */
+/*                                                            */
+/**************************************************************/
 public class CCityDetailsActivity extends CBaseCityActivity
 {
 private   ArrayList< Long >   m_CityIdList;

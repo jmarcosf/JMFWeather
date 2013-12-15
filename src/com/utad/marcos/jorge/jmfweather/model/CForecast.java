@@ -1,4 +1,3 @@
-
 /**************************************************************/
 /*                                                            */
 /* CForecast.java                                             */
@@ -6,6 +5,11 @@
 /*                                                            */
 /* Description: CForecast Class                               */
 /*              JmfWeather Project                            */
+/*              Práctica asignatura Android Fundamental       */ 
+/*              U-Tad - Master Apps                           */ 
+/*              www.u-tad.com                                 */ 
+/*                                                            */ 
+/*        Date: December 2013                                 */ 
 /*                                                            */
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather.model;

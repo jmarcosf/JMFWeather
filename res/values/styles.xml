@@ -5,6 +5,11 @@
 /*                                                               */ 
 /* Description: Application Styles                               */ 
 /*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">

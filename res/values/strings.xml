@@ -6,6 +6,11 @@
 /*                                                               */ 
 /* Description: Application Strings                              */ 
 /*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
 <resources>
@@ -22,5 +27,39 @@
     <string name="IDS_DRAWER_MENU_TEXT">Este es un menú lateral implementado con un DrawerLayout. El contenido de este espacio es totalmente arbitrario.</string>
     <string name="IDS_DRAWER_OPEN_TEXT">Se abre el menú</string>
     <string name="IDS_DRAWER_CLOSE_TEXT">Se cierra el menú</string>
+    
+	<!--**********************************************************/
+	/*                                                           */ 
+	/* Preferences Strings                                       */ 
+	/*                                                           */ 
+	/***********************************************************-->
+    <string name="IDS_GENERAL">General</string>
+    <string name="IDS_PREF_TITLE_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Add current location on startup</string>
+    <string name="IDS_PREF_DESC_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Add current location city to list of cities automatically on application startup</string>
+    
+    <string name="IDS_PREF_TITLE_SYNC_FREQUENCY">Weather Sync Frequency</string>
+    <string-array name="IDS_ARRAY_SYNC_FREQUENCY_TITLES">
+	    <item>15 minutes</item>
+	    <item>30 minutes</item>
+	    <item>1 hour</item>
+	    <item>3 hours</item>
+	    <item>6 hours</item>
+	    <item>Never</item>
+    </string-array>
+    <string-array name="IDS_ARRAY_SYNC_FREQUENCY_VALUES">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+	</string-array>
+    
+    
+    
+    
+
+
+    
     
 </resources>
