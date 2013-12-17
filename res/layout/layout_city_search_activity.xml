@@ -1,0 +1,79 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* layout_city_search_activity.xml                               */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: City Search Activity Layout                      */
+/*              JmfWeather Project                               */
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
+/*                                                               */
+/***************************************************************-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/IDR_LAY_CITY_SEARCH"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/IDR_COL_TRANSLUCENT_BACKGROUND"
+    android:gravity="center" >
+
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Main Content Layout                                       */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <RelativeLayout
+   	    style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF" >
+
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* Listview Layout                                       */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	   	<ListView 
+		    android:id="@+id/IDC_LV_SELECT_CITY_LIST"
+	   	    style="?android:attr/listViewStyle"
+		    android:layout_width="400dp"
+		    android:layout_height="300dp"
+		    android:layout_gravity="center_horizontal"
+		    android:layout_alignParentTop="true"
+		    android:paddingTop="1dp" />
+	   	
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* Add City Button Layout                                */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	   	<Button
+	   	    android:id="@+id/IDC_BTN_ADD_CITY"
+	   	    style="?android:attr/buttonBarButtonStyle"
+	   	    android:layout_width="wrap_content"
+	   	    android:layout_height="wrap_content"
+	   	    android:layout_below="@id/IDC_LV_SELECT_CITY_LIST"
+	   	    android:layout_gravity="center_horizontal"
+	   	    android:paddingTop="5dp"
+	   	    android:text="@string/IDS_ADD_CITY" />
+	   	
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* Progress Bar Layout                                   */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	   	<ProgressBar
+		    android:id="@+id/IDC_PB_WAIT_CLOCK"
+		    android:layout_width="48dp"
+		    android:layout_height="48dp"
+		    android:layout_gravity="center"
+		    android:visibility="gone" />
+	
+	</RelativeLayout>
+
+</RelativeLayout>
+
+
+

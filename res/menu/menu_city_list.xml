@@ -17,19 +17,20 @@
     
    	<item
         android:id="@+id/IDM_SHARE"
-        JmfWeather:showAsAction="ifRoom"
         android:title="@string/IDS_SHARE"
+        JmfWeather:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_share" />
 	
 	<item
         android:id="@+id/IDM_ADD_CITY"
-        JmfWeather:showAsAction="always"
+        JmfWeather:showAsAction="collapseActionView|ifRoom"
         android:title="@string/IDS_ADD_CITY"
-        android:icon="@android:drawable/ic_menu_add" />
-	
+        android:icon="@android:drawable/ic_menu_add"
+        android:actionViewClass="android.support.v7.widget.SearchView" />
+
 	<item
         android:id="@+id/IDM_SETTINGS"
         android:orderInCategory="100"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/IDS_SETTINGS"/>
 </menu>

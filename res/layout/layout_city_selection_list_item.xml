@@ -1,0 +1,32 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* layout_city_selection_list_item.xml                           */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: City Selection List Item Layout                  */ 
+/*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
+/*                                                               */ 
+/***************************************************************-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/IDR_STY_CITY_LISTVIEW_ITEM_STYLE" >
+
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* City Name                                                 */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <TextView
+        android:id="@+id/IDC_TXT_CITY_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="Arial"
+        android:textSize="16sp" />
+
+</RelativeLayout>

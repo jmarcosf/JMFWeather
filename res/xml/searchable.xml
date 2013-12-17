@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--**************************************************************/
+/*                                                               */ 
+/* searchable.xml                                                */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: Search City XML file                             */ 
+/*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
+/*                                                               */ 
+/***************************************************************-->
+<searchable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:hint="@string/IDS_SEARCH_HINT"
+    android:label="@string/IDS_APP_NAME" />
+

@@ -14,6 +14,7 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -51,10 +52,10 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeath
 public class CCityListActivity extends CBaseCityActivity implements OnClickListener, OnItemClickListener
 {
 private   boolean                  m_bTablet = false;
-private   CCityListAdapter         m_Adapter;
 private   DrawerLayout             m_Drawer;
 private   ActionBarDrawerToggle    m_DrawerToggle;
 private   ListView                 m_ListView;
+private   CCityListAdapter         m_Adapter;
 private   ProgressBar              m_WaitClock;
 private   View                     m_NetworkErrorView;
 private   ServiceConnection        m_ServiceConnection;
@@ -96,7 +97,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           };
           m_Drawer.setDrawerListener( m_DrawerToggle );
           
-          getActionBar().setDisplayHomeAsUpEnabled( true );
+          getSupportActionBar().setDisplayHomeAsUpEnabled( true );
           findViewById( R.id.IDR_LAY_LEFT_DRAWER ).setOnClickListener( this );
           findViewById( R.id.IDC_BTN_RETRY ).setOnClickListener( this );
      }
@@ -167,6 +168,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      /* CCityListActivity.onCreateOptionsMenu()               */
      /*                                                       */
      /*********************************************************/
+     @SuppressLint( "NewApi" )
      @Override
      public boolean onCreateOptionsMenu( Menu menu )
      {
@@ -206,8 +208,6 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      @Override 
      public void onItemClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
      {
-          Long cityId = (Long)view.getTag();
-          
 //          if( m_bTablet )
 //          {
 //               m_ListView.setItemChecked( iPosition, true );
@@ -226,7 +226,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
 //          else
           {
                Intent intent = new Intent( CCityListActivity.this, CCityDetailsActivity.class );
-               intent.putExtra( CCityDetailsFragment.IDS_CITY_ID_PARAM, cityId );
+               intent.putExtra( CCityDetailsFragment.IDS_CITY_ID_PARAM, id );
                startActivity( intent );
           }
      }
@@ -353,7 +353,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           /*                                                  */
           /****************************************************/
           @Override
-          protected Cursor doInBackground( Void... param )
+          protected Cursor doInBackground( Void... params )
           {
                CWeatherDAO WeatherDAO = new CWeatherDAO( CCityListActivity.this );
                Cursor cityCursor = WeatherDAO.SelectAllCities();
@@ -369,13 +369,20 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           protected void onPostExecute( Cursor cityCursor )
           {
                m_WaitClock.setVisibility( View.GONE );
-               m_Adapter = new CCityListAdapter( CCityListActivity.this, cityCursor );
-               m_ListView.setAdapter( m_Adapter );
-
-               if( !cityCursor.moveToFirst() || cityCursor.getCount() == 0 )
+               if( cityCursor.getCount() > 0 && cityCursor.moveToFirst() )
                {
-                    m_NetworkErrorView.setVisibility( View.VISIBLE );
+                    if( m_Adapter == null )
+                    {
+                         m_Adapter = new CCityListAdapter( CCityListActivity.this, cityCursor );
+                         m_ListView.setAdapter( m_Adapter );
+                    }
+                    else
+                    {
+                         m_Adapter.changeCursor( cityCursor );
+                         m_Adapter.notifyDataSetChanged();
+                    }
                }
+               else m_NetworkErrorView.setVisibility( View.VISIBLE );
           }
      }
 }

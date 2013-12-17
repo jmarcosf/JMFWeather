@@ -131,7 +131,7 @@ private byte[]                m_ImageBytes;
 		for( int i = 0; i < Entries.length(); i++ )
 		{
 			JSONObject jsonObject = Entries.getJSONObject( i );
-			CCity City = new CCity( jsonObject );
+			CCity City = new CCity( (long)i + 1, jsonObject );
 			CityList.add( City );
 		}
 
@@ -159,7 +159,7 @@ private byte[]                m_ImageBytes;
           for( int i = 0; i < Entries.length(); i++ )
           {
                JSONObject jsonObject = Entries.getJSONObject( i );
-               CCity City = new CCity( jsonObject );
+               CCity City = new CCity( (long)i + 1, jsonObject );
                CityList.add( City );
           }
 

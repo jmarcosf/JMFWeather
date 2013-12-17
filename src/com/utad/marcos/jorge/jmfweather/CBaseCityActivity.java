@@ -92,6 +92,10 @@ public class CBaseCityActivity extends ActionBarActivity
 				return true;
 			}
 
+               case R.id.IDM_ADD_CITY:
+                    onSearchRequested();
+                    return true;
+     
 			case R.id.IDM_SETTINGS:
 			     Intent intent = new Intent( this, CSettingsActivity.class );
 			     startActivity( intent );

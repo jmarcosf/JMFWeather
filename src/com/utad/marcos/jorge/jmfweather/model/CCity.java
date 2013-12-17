@@ -84,9 +84,9 @@ private CForecastList    m_ForecastList;
 	/* CCity.CCity()                                         */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public CCity( JSONObject jsonObject ) throws JSONException
+	public CCity( long Id, JSONObject jsonObject ) throws JSONException
 	{
-		this( -1, null, null, null, null,0,  null, null );
+		this( Id, null, null, null, null, 0, null, null );
 
 		JSONArray areaNameArray = jsonObject.getJSONArray( "areaName" );
 		this.m_Name = areaNameArray.getJSONObject( 0 ).getString( "value" );
@@ -112,7 +112,7 @@ private CForecastList    m_ForecastList;
 	/*********************************************************/
 	public CCity( Cursor cursor )
 	{
-		this( -1, null, null, null, null,0,  null, null );
+		this( -1, null, null, null, null, 0, null, null );
 
 		this.m_Id = cursor.getLong( cursor.getColumnIndex( CWeatherDBContract.CCityTable._ID ) );
 		this.m_Name = cursor.getString( cursor.getColumnIndex( CWeatherDBContract.CCityTable.COLUMN_NAME_NAME ) );

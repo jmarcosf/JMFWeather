@@ -20,6 +20,7 @@
     <string name="IDS_CELSIUS">Celsius</string>
     <string name="IDS_FAHRENHEIT">Fahrenheit</string>
     <string name="IDS_ADD_CITY">Add City</string>
+    <string name="IDS_SEARCH_HINT">Type City Name to add to the list</string>
     <string name="IDS_OK">OK</string>
     <string name="IDS_CANCEL">Cancel</string>
     <string name="IDS_NETWORK_ERROR_MESSAGE">There is not network connectivity.</string>

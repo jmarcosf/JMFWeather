@@ -69,7 +69,7 @@ private	TreeMap< Long, CCity> 	m_CityMap;
 		for( int i = 0; i < Entries.length(); i++ )
 		{
 			JSONObject objCity = Entries.getJSONObject( i );
-			CCity City = new CCity( objCity );
+			CCity City = new CCity( (long)i + 1, objCity );
 			this.add( City );
 		}
 	}
