@@ -66,6 +66,6 @@
     /* Network Error Message Layout                              */ 
 	/*                                                           */ 
     /***********************************************************-->
-    <include layout="@layout/layout_network_error_message" />
+    <include layout="@layout/layout_error_message" />
     
 </FrameLayout>

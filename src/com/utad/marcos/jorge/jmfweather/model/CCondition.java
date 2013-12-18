@@ -100,24 +100,25 @@ private String		m_WeatherDescription;
 	{
 		this( 0, (Date)null, 0, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, null );
 		
-		this.m_CloudCoverPercentage = jsonObject.getInt( "cloudcover" );
+		this.m_CloudCoverPercentage = jsonObject.optInt( "cloudcover" );
 		SimpleDateFormat DateFormat = new SimpleDateFormat( "yyyy-MM-dd hh:mm aaa", Locale.US );
-		this.m_ObservationTime = DateFormat.parse( jsonObject.getString( "localObsDateTime" ) );
-		this.m_Pressure = jsonObject.getInt( "pressure" );
-		this.m_TemperatureCelsius = jsonObject.getInt( "temp_C" );
-		this.m_Visibility = jsonObject.getInt( "visibility" );
-		this.m_TemperatureFahrenheit = jsonObject.getInt( "temp_F" );
-		this.m_WindSpeedMph = jsonObject.getInt( "windspeedMiles" );
-		this.m_Precipitation = (float)jsonObject.getDouble( "precipMM" );
-		this.m_WindDirectionDegrees = jsonObject.getInt( "winddirDegree" );
-		this.m_WindDirectionCompass = jsonObject.getString( "winddir16Point" );
-		JSONArray iconUrlArray = jsonObject.getJSONArray( "weatherIconUrl" );
-		this.m_IconUrl = iconUrlArray.getJSONObject( 0 ).getString( "value" );
-		this.m_Humidity = jsonObject.getInt( "humidity" );
-		this.m_WindSpeedKmph = jsonObject.getInt( "windspeedKmph" );
-		this.m_WeatherCode = jsonObject.getInt( "weatherCode" );
-		JSONArray descriptionArray = jsonObject.getJSONArray( "weatherDesc" );
-		this.m_WeatherDescription = descriptionArray.getJSONObject( 0 ).getString( "value" );
+		String localObsDateTime = jsonObject.optString( "localObsDateTime" );
+		if( localObsDateTime != null ) this.m_ObservationTime = DateFormat.parse( localObsDateTime );
+		this.m_Pressure = jsonObject.optInt( "pressure" );
+		this.m_TemperatureCelsius = jsonObject.optInt( "temp_C" );
+		this.m_Visibility = jsonObject.optInt( "visibility" );
+		this.m_TemperatureFahrenheit = jsonObject.optInt( "temp_F" );
+		this.m_WindSpeedMph = jsonObject.optInt( "windspeedMiles" );
+		this.m_Precipitation = (float)jsonObject.optDouble( "precipMM" );
+		this.m_WindDirectionDegrees = jsonObject.optInt( "winddirDegree" );
+		this.m_WindDirectionCompass = jsonObject.optString( "winddir16Point" );
+		JSONArray iconUrlArray = jsonObject.optJSONArray( "weatherIconUrl" );
+		if( iconUrlArray != null ) this.m_IconUrl = iconUrlArray.getJSONObject( 0 ).optString( "value" );
+		this.m_Humidity = jsonObject.optInt( "humidity" );
+		this.m_WindSpeedKmph = jsonObject.optInt( "windspeedKmph" );
+		this.m_WeatherCode = jsonObject.optInt( "weatherCode" );
+		JSONArray descriptionArray = jsonObject.optJSONArray( "weatherDesc" );
+		if( descriptionArray != null ) this.m_WeatherDescription = descriptionArray.getJSONObject( 0 ).optString( "value" );
 	}
 	
 	/*********************************************************/

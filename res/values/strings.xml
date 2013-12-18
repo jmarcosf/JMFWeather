@@ -20,10 +20,14 @@
     <string name="IDS_CELSIUS">Celsius</string>
     <string name="IDS_FAHRENHEIT">Fahrenheit</string>
     <string name="IDS_ADD_CITY">Add City</string>
+    <string name="IDS_DELETE_CITY_QUESTION">Do you really want to delete the City </string>
     <string name="IDS_SEARCH_HINT">Type City Name to add to the list</string>
     <string name="IDS_OK">OK</string>
     <string name="IDS_CANCEL">Cancel</string>
     <string name="IDS_NETWORK_ERROR_MESSAGE">There is not network connectivity.</string>
+    <string name="IDS_NO_CITIES_FOUND_ERROR_MESSAGE">No cities found!.</string>
+    <string name="IDS_READ_CITIES_ERROR_MESSAGE">An error occurred reading cities from database.</string>
+    <string name="IDS_WRITE_CITY_ERROR_MESSAGE">An error occurred writing city to database.</string>
     <string name="IDS_RETRY">Retry</string>
     <string name="IDS_DRAWER_MENU_TEXT">Este es un menú lateral implementado con un DrawerLayout. El contenido de este espacio es totalmente arbitrario.</string>
     <string name="IDS_DRAWER_OPEN_TEXT">Se abre el menú</string>

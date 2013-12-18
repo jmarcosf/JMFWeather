@@ -97,23 +97,24 @@ private int		m_MinTemperatureFahrenheit;
 	{
 		this( null, 0, 0, 0, null, 0, (Date)null, 0, 0, 0, 0, null, null, 0 );
 		
-		JSONArray iconUrlArray = jsonObject.getJSONArray( "weatherIconUrl" );
-		this.m_IconUrl = iconUrlArray.getJSONObject( 0 ).getString( "value" );
-		this.m_MinTemperatureCelsius = jsonObject.getInt( "tempMinC" );
-		this.m_WindSpeedMph = jsonObject.getInt( "windspeedMiles" );
-		this.m_WindSpeedKmph = jsonObject.getInt( "windspeedKmph" );
-		this.m_WindDirection = jsonObject.getString( "winddirection" );
-		this.m_MaxTemperatureCelsius = jsonObject.getInt( "tempMaxC" );
+		JSONArray iconUrlArray = jsonObject.optJSONArray( "weatherIconUrl" );
+		if( iconUrlArray != null ) this.m_IconUrl = iconUrlArray.getJSONObject( 0 ).optString( "value" );
+		this.m_MinTemperatureCelsius = jsonObject.optInt( "tempMinC" );
+		this.m_WindSpeedMph = jsonObject.optInt( "windspeedMiles" );
+		this.m_WindSpeedKmph = jsonObject.optInt( "windspeedKmph" );
+		this.m_WindDirection = jsonObject.optString( "winddirection" );
+		this.m_MaxTemperatureCelsius = jsonObject.optInt( "tempMaxC" );
 		SimpleDateFormat DateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-		this.m_ForecastDate = DateFormat.parse( jsonObject.getString( "date" ) );
-		this.m_WeatherCode = jsonObject.getInt( "weatherCode" );
-		this.m_MaxTemperatureFahrenheit = jsonObject.getInt( "tempMaxF" );
-		this.m_Precipitation = (float)jsonObject.getDouble( "precipMM" );
-		this.m_WindDirectionDegrees = jsonObject.getInt( "winddirDegree" );
-		this.m_WindDirectionCompass = jsonObject.getString( "winddir16Point" );
-		JSONArray descriptionArray = jsonObject.getJSONArray( "weatherDesc" );
-		this.m_WeatherDescription = descriptionArray.getJSONObject( 0 ).getString( "value" );
-		this.m_MinTemperatureFahrenheit = jsonObject.getInt( "tempMinF" );
+          String strDate = jsonObject.optString( "date" );
+		if( strDate != null ) this.m_ForecastDate = DateFormat.parse( strDate );
+		this.m_WeatherCode = jsonObject.optInt( "weatherCode" );
+		this.m_MaxTemperatureFahrenheit = jsonObject.optInt( "tempMaxF" );
+		this.m_Precipitation = (float)jsonObject.optDouble( "precipMM" );
+		this.m_WindDirectionDegrees = jsonObject.optInt( "winddirDegree" );
+		this.m_WindDirectionCompass = jsonObject.optString( "winddir16Point" );
+		JSONArray descriptionArray = jsonObject.optJSONArray( "weatherDesc" );
+		if( descriptionArray != null ) this.m_WeatherDescription = descriptionArray.getJSONObject( 0 ).optString( "value" );
+		this.m_MinTemperatureFahrenheit = jsonObject.optInt( "tempMinF" );
 	}
 
 	/*********************************************************/

@@ -63,6 +63,11 @@
         <item name="android:paddingBottom">10dp</item>
         </style>
 
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* City Details Style                                        */ 
+	/*                                                           */ 
+    /***********************************************************-->
     <style name="IDR_STY_CITY_DETAILS_STYLE">
         <item name="android:background">@drawable/image_city_details_background</item>
         <item name="android:padding">36dp</item>

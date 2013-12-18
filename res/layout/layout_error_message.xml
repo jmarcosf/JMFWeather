@@ -1,9 +1,9 @@
 <!--**************************************************************/
 /*                                                               */ 
-/* layout_network_error_message.xml                              */ 
+/* layout_error_message.xml                                      */ 
 /* (c)2013 jmarcosf                                              */ 
 /*                                                               */ 
-/* Description: Network Error Message Layout                     */ 
+/* Description: Error Message Layout                             */ 
 /*              JmfWeather Project                               */ 
 /*              Práctica asignatura Android Fundamental          */ 
 /*              U-Tad - Master Apps                              */ 
@@ -13,7 +13,7 @@
 /*                                                               */ 
 /***************************************************************-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/IDC_LAY_NETWORK_ERROR_MESSAGE"
+    android:id="@+id/IDC_LAY_ERROR_MESSAGE"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/IDR_COL_APPLICATION_BACKGROUND"
@@ -22,21 +22,21 @@
     android:visibility="gone" >
 
     <TextView
+        android:id="@+id/IDC_TXT_ERROR_MESSAGE"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/IDS_NETWORK_ERROR_MESSAGE" />
+        android:layout_height="wrap_content" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/image_mars_invaders" />
+        android:src="@android:drawable/ic_dialog_alert" />
 
     <Button
-        android:id="@+id/IDC_BTN_RETRY"
+        android:id="@+id/IDC_BTN_OK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/IDS_RETRY" />
+        android:text="@string/IDS_OK" />
 
 </LinearLayout>

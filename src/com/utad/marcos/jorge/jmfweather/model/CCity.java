@@ -88,21 +88,21 @@ private CForecastList    m_ForecastList;
 	{
 		this( Id, null, null, null, null, 0, null, null );
 
-		JSONArray areaNameArray = jsonObject.getJSONArray( "areaName" );
-		this.m_Name = areaNameArray.getJSONObject( 0 ).getString( "value" );
+		JSONArray areaNameArray = jsonObject.optJSONArray( "areaName" );
+		if( areaNameArray != null ) this.m_Name = areaNameArray.getJSONObject( 0 ).optString( "value" );
 
-		JSONArray countryArray = jsonObject.getJSONArray( "country" );
-		this.m_Country = countryArray.getJSONObject( 0 ).getString( "value" );
+		JSONArray countryArray = jsonObject.optJSONArray( "country" );
+		if( countryArray != null ) this.m_Country = countryArray.getJSONObject( 0 ).optString( "value" );
 		
-		this.m_Latitude = jsonObject.getString( "latitude" );
-		this.m_Longitude = jsonObject.getString( "longitude" );
-		this.m_Population = jsonObject.getLong( "population" );
+		this.m_Latitude = jsonObject.optString( "latitude" );
+		this.m_Longitude = jsonObject.optString( "longitude" );
+		this.m_Population = jsonObject.optLong( "population" );
 
-		JSONArray regionArray = jsonObject.getJSONArray( "region" );
-		this.m_Region = regionArray.getJSONObject( 0 ).getString( "value" );
+		JSONArray regionArray = jsonObject.optJSONArray( "region" );
+		if( regionArray != null ) this.m_Region = regionArray.getJSONObject( 0 ).optString( "value" );
 		
-		JSONArray weatherUrlArray = jsonObject.getJSONArray( "weatherUrl" );
-		this.m_WeatherUrl = weatherUrlArray.getJSONObject( 0 ).getString( "value" );
+		JSONArray weatherUrlArray = jsonObject.optJSONArray( "weatherUrl" );
+		if( weatherUrlArray != null ) this.m_WeatherUrl = weatherUrlArray.getJSONObject( 0 ).optString( "value" );
 	}
 
 	/*********************************************************/

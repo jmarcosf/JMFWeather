@@ -26,14 +26,18 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
@@ -49,15 +53,18 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeath
 /*                                                            */
 /*                                                            */
 /**************************************************************/
-public class CCityListActivity extends CBaseCityActivity implements OnClickListener, OnItemClickListener
+public class CCityListActivity extends CBaseCityActivity implements OnClickListener, OnItemClickListener, OnItemLongClickListener
 {
+protected final static int         DELETE_CITY_CONFIRMATION_REQUEST_ID = 4777;
+     
 private   boolean                  m_bTablet = false;
 private   DrawerLayout             m_Drawer;
 private   ActionBarDrawerToggle    m_DrawerToggle;
 private   ListView                 m_ListView;
 private   CCityListAdapter         m_Adapter;
 private   ProgressBar              m_WaitClock;
-private   View                     m_NetworkErrorView;
+private   View                     m_ErrorView;
+private   TextView                 m_ErrorMessage;
 private   ServiceConnection        m_ServiceConnection;
 private   CWeatherRetrieverBinder  m_ServiceBinder;
 
@@ -83,11 +90,13 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           setContentView( R.layout.layout_city_list_activity );
           
           m_WaitClock = (ProgressBar)findViewById( R.id.IDC_PB_WAIT_CLOCK );
-          m_NetworkErrorView = findViewById( R.id.IDC_LAY_NETWORK_ERROR_MESSAGE );
+          m_ErrorView = findViewById( R.id.IDC_LAY_ERROR_MESSAGE );
+          m_ErrorMessage = (TextView)findViewById( R.id.IDC_TXT_ERROR_MESSAGE );
 
           m_ListView = (ListView)findViewById( R.id.IDC_LV_CITY_LIST );
           m_ListView.setChoiceMode( m_bTablet ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE );
           m_ListView.setOnItemClickListener( this );
+          m_ListView.setOnItemLongClickListener( this );
 
           m_Drawer = (DrawerLayout)findViewById( R.id.IDC_LAY_DRAWER );
           m_DrawerToggle = new ActionBarDrawerToggle( this, m_Drawer, R.drawable.icon_drawer, R.string.IDS_DRAWER_OPEN_TEXT, R.string.IDS_DRAWER_CLOSE_TEXT )
@@ -99,7 +108,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           
           getSupportActionBar().setDisplayHomeAsUpEnabled( true );
           findViewById( R.id.IDR_LAY_LEFT_DRAWER ).setOnClickListener( this );
-          findViewById( R.id.IDC_BTN_RETRY ).setOnClickListener( this );
+          findViewById( R.id.IDC_BTN_OK ).setOnClickListener( this );
      }
      
      /*********************************************************/
@@ -112,6 +121,8 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      {
           super.onPostCreate( savedInstanceState );
           m_DrawerToggle.syncState();
+          LoadCityList();
+          ServiceConnect();
      }
      
      /*********************************************************/
@@ -123,8 +134,6 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      protected void onStart()
      {
           super.onStart();
-          ServiceConnect();
-          LoadCityList();
      }
 
      /*********************************************************/
@@ -135,7 +144,6 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      @Override
      protected void onStop()
      {
-          ServiceDisconnect();
           super.onStop();
      }
 
@@ -148,6 +156,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      protected void onDestroy()
      {
           if( m_ServiceBinder != null ) m_ServiceBinder.getService().StopLoadingImages();
+          ServiceDisconnect();
           super.onDestroy();
      }
      
@@ -177,6 +186,33 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      }
 
      /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onActivityResult()                  */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void onActivityResult( int RequestCode, int ResultCode, Intent Data )
+     {
+          switch( RequestCode )
+          {
+               case DELETE_CITY_CONFIRMATION_REQUEST_ID:
+                    if( ResultCode == CConfirmationActivity.CONFIRMATION_ACCEPTED )
+                    {
+                         Toast.makeText( this, "Adding to favorites...", Toast.LENGTH_SHORT ).show();
+                    }
+                    else
+                    {
+                         Toast.makeText( this, "User cancelled!", Toast.LENGTH_SHORT ).show();
+                    }
+                    break;
+                    
+               default:
+                    super.onActivityResult( RequestCode, ResultCode, Data );
+                    break;
+          }
+     }
+     
+     /*********************************************************/
      /*                                                       */
      /*                                                       */
      /* ActionBarActivity Override Methods                    */
@@ -194,6 +230,32 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           m_DrawerToggle.onConfigurationChanged( newConfig );
      }
 
+     /*********************************************************/
+     /*                                                       */
+     /*                                                       */
+     /* OnClickListener Interface Implementation              */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onClick()                           */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public void onClick( View view )
+     {
+          switch( view.getId() )
+          {
+               case R.id.IDC_BTN_OK:
+                    m_ErrorView.setVisibility( View.GONE );
+                    LoadCityList();
+                    break;
+                    
+               case R.id.IDR_LAY_LEFT_DRAWER:
+                    break;              //this is just to avoid clicking thru drawer
+          }
+     }
+     
      /*********************************************************/
      /*                                                       */
      /*                                                       */
@@ -234,27 +296,23 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      /*********************************************************/
      /*                                                       */
      /*                                                       */
-     /* OnClickListener Interface Implementation              */
+     /* OnItemLongClickListener Interface Implementation      */
      /*                                                       */
      /*                                                       */
      /*********************************************************/
      /*                                                       */ 
-     /* CCityListActivity.onClick()                           */ 
+     /* CCityListActivity.onItemLongClick()                   */ 
      /*                                                       */ 
      /*********************************************************/
      @Override
-     public void onClick( View view )
+     public boolean onItemLongClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
      {
-          switch( view.getId() )
-          {
-               case R.id.IDC_BTN_RETRY:
-                    m_NetworkErrorView.setVisibility( View.GONE );
-                    LoadCityList();
-                    break;
-                    
-               case R.id.IDR_LAY_LEFT_DRAWER:
-                    break;              //this is just to avoid clicking thru drawer
-          }
+          Log.d( CCityListActivity.class.getName(), "OnLongPress(): " + view.getId() );
+          Intent intent = new Intent( this, CConfirmationActivity.class );
+          String Param = getString( R.string.IDS_DELETE_CITY_QUESTION ) + iPosition;
+          intent.putExtra( CConfirmationActivity.CONFIRMATION_QUESTION_PARAM, Param );
+          startActivityForResult( intent, DELETE_CITY_CONFIRMATION_REQUEST_ID );
+          return true;
      }
      
      /*********************************************************/
@@ -329,7 +387,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      /*********************************************************/
      /*                                                       */
      /*                                                       */
-     /* CCityListActivity.CDBLoader nested Class              */
+     /* CCityListActivity.CDBLoader AsyncTask Class           */
      /*                                                       */
      /*                                                       */
      /*********************************************************/
@@ -344,7 +402,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           protected void onPreExecute()
           {
                m_WaitClock.setVisibility( View.VISIBLE );
-               m_NetworkErrorView.setVisibility( View.GONE );
+               m_ErrorView.setVisibility( View.GONE );
           }
 
           /****************************************************/
@@ -360,11 +418,11 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
                return cityCursor;
           }
 
-          /*********************************************************/
-          /*                                                       */
-          /* CDBLoader.onPostExecute()                             */
-          /*                                                       */
-          /*********************************************************/
+          /****************************************************/
+          /*                                                  */
+          /* CDBLoader.onPostExecute()                        */
+          /*                                                  */
+          /****************************************************/
           @Override
           protected void onPostExecute( Cursor cityCursor )
           {
@@ -382,7 +440,11 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
                          m_Adapter.notifyDataSetChanged();
                     }
                }
-               else m_NetworkErrorView.setVisibility( View.VISIBLE );
+               else
+               {
+                    m_ErrorMessage.setText( R.string.IDS_READ_CITIES_ERROR_MESSAGE );
+                    m_ErrorView.setVisibility( View.VISIBLE );
+               }
           }
      }
 }

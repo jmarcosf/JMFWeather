@@ -102,8 +102,10 @@
 	    /* Search Activity                                       */ 
 		/*                                                       */ 
 	    /*******************************************************-->
-        <activity android:name="com.utad.marcos.jorge.jmfweather.CCitySearchActivity" >
-		    <intent-filter>
+        <activity
+            android:name="com.utad.marcos.jorge.jmfweather.CCitySearchActivity" 
+            android:theme="@style/IDR_STY_CONFIRMATION_DIALOG_THEME" >
+   		    <intent-filter>
 		        <action android:name="android.intent.action.SEARCH" />
 		    </intent-filter>
             <meta-data 
@@ -111,6 +113,15 @@
             	android:resource="@xml/searchable" />
   		</activity>
         
-	</application>
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* Confirmation Dialog Activity                          */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+        <activity android:name="com.utad.marcos.jorge.jmfweather.CConfirmationActivity"
+                  android:theme="@style/IDR_STY_CONFIRMATION_DIALOG_THEME" >
+        </activity>
+        
+   	</application>
 
 </manifest>

@@ -120,7 +120,8 @@ private byte[]                m_ImageBytes;
 	{
 		if( Name == null ) return null;
           Log.d( CWorldWeatherApi.class.getSimpleName(), "SearchCity(): " + Name );
-		String Url = WORLD_WEATHER_SEARCH_CITY_URL + "?q=" + Name + "&format=json&key=" + WORLD_WEATHER_KEY;
+		String Url = WORLD_WEATHER_SEARCH_CITY_URL + "?q=" + Name.replaceAll( " ", "+" ) + "&format=json&key=" + WORLD_WEATHER_KEY;
+          Log.d( CWorldWeatherApi.class.getSimpleName(), "URL: " + Url );
 		Connect( new URL( Url ) );
 		
 		JSONObject jsonResponse = getJSONObject();
