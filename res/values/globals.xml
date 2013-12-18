@@ -15,4 +15,5 @@
 <resources>
     <item name="g_bTablet" type="bool" >false</item>
     <item name="g_WeatherSyncFrequencyDefault" type="integer" >180</item>
+    <item name="g_WeatherDegreesTypeDefault" type="integer" >1</item>
 </resources>

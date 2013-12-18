@@ -33,10 +33,10 @@
 
 	<!--**********************************************************/
     /*                                                           */ 
-    /* Confirmation Activity Theme                               */ 
+    /* Dialog Theme                                              */ 
 	/*                                                           */ 
     /***********************************************************-->
-    <style name="IDR_STY_CONFIRMATION_DIALOG_THEME" parent="@android:style/Theme.Translucent.NoTitleBar">
+    <style name="IDR_STY_DIALOG_THEME" parent="@android:style/Theme.Translucent.NoTitleBar">
     </style>
 
 	<!--**********************************************************/

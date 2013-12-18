@@ -16,7 +16,7 @@
     android:id="@+id/IDR_LAY_CONFIRMATION"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/IDR_COL_TRANSLUCENT_BACKGROUND"
+    android:background="@color/IDR_COL_ALERT_BACKGROUND"
     android:gravity="center" >
 
 	<!--**********************************************************/
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF" >
 
-		<!--******************************************************/
+        <!--******************************************************/
     	/*                                                       */ 
     	/* Confirmation Question Layout                          */ 
 		/*                                                       */ 
@@ -43,8 +43,8 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:textColor="@android:color/black" />
-
+            android:textColor="@android:color/black" />        
+            
 		<!--******************************************************/
     	/*                                                       */ 
     	/* Confirmation Body Layout                              */ 
@@ -52,25 +52,25 @@
     	/*******************************************************-->
         <LinearLayout
             style="?android:attr/buttonBarStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/IDC_TXT_QUESTION" >
 
             <Button
-                android:id="@+id/IDC_BTN_CANCEL"
+                android:id="@+id/IDC_BTN_NO"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/IDS_CANCEL" />
+                android:text="@string/IDS_NO" />
 
             <Button
-                android:id="@+id/IDC_BTN_OK"
+                android:id="@+id/IDC_BTN_YES"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/IDS_OK" />
+                android:text="@string/IDS_YES" />
         </LinearLayout>
         
     </RelativeLayout>

@@ -1,18 +1,18 @@
 <!--**************************************************************/
-/*                                                               */ 
-/* styles.xml                                                    */ 
-/* (c)2013 jmarcosf                                              */ 
-/*                                                               */ 
-/* Description: Application v11+ Styles                          */ 
-/*              JmfWeather Project                               */ 
-/*              Práctica asignatura Android Fundamental          */ 
-/*              U-Tad - Master Apps                              */ 
-/*              www.u-tad.com                                    */ 
-/*                                                               */ 
-/*        Date: December 2013                                    */ 
-/*                                                               */ 
+/*                                                               */
+/* styles.xml                                                    */
+/* (c)2013 jmarcosf                                              */
+/*                                                               */
+/* Description: Application v11+ Styles                          */
+/*              JmfWeather Project                               */
+/*              Práctica asignatura Android Fundamental          */
+/*              U-Tad - Master Apps                              */
+/*              www.u-tad.com                                    */
+/*                                                               */
+/*        Date: December 2013                                    */
+/*                                                               */
 /***************************************************************-->
 <resources>
-    <style name="IDR_DIALOG_THEME" parent="@android:style/Theme.Holo.Light.Dialog">
+    <style name="IDR_STY_DIALOG_THEME" parent="@android:style/Theme.Holo.Light.Dialog">
     </style>
 </resources>

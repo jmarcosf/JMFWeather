@@ -68,6 +68,18 @@ private static Context m_Context = null;
      
      /*********************************************************/
      /*                                                       */ 
+     /* CApp.IsLoadCurrentLocationOnStartupEnabled()          */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public static boolean IsLoadCurrentLocationOnStartupEnabled()
+     {
+          SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( m_Context );
+          boolean bEnabled = preferences.getBoolean( "IncludeCurrentLocationOnStartup", true );
+          return bEnabled;
+     }
+     
+     /*********************************************************/
+     /*                                                       */ 
      /* CApp.getWeatherSyncFrequecyTimeout()                  */ 
      /*                                                       */ 
      /*********************************************************/
@@ -82,13 +94,15 @@ private static Context m_Context = null;
      
      /*********************************************************/
      /*                                                       */ 
-     /* CApp.IsLoadCurrentLocationOnStartupEnabled()          */ 
+     /* CApp.getWeatherDegreesType()                          */ 
      /*                                                       */ 
      /*********************************************************/
-     public static boolean IsLoadCurrentLocationOnStartupEnabled()
+     public static boolean getWeatherDegreesType()
      {
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( m_Context );
-          boolean bEnabled = preferences.getBoolean( "IncludeCurrentLocationOnStartup", true );
-          return bEnabled;
+          int DefaultValue = m_Context.getResources().getInteger( R.integer.g_WeatherDegreesTypeDefault );
+          String DegreesPreference = preferences.getString( "WeatherDegreesType", "" + DefaultValue );
+          int Value = Integer.parseInt( DegreesPreference );
+          return( Value == 1);
      }
 }

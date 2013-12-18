@@ -26,7 +26,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,7 +37,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
@@ -58,6 +57,7 @@ public class CCityListActivity extends CBaseCityActivity implements OnClickListe
 protected final static int         DELETE_CITY_CONFIRMATION_REQUEST_ID = 4777;
      
 private   boolean                  m_bTablet = false;
+private   boolean                  m_bCelsius = true;
 private   DrawerLayout             m_Drawer;
 private   ActionBarDrawerToggle    m_DrawerToggle;
 private   ListView                 m_ListView;
@@ -138,6 +138,23 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
 
      /*********************************************************/
      /*                                                       */
+     /* CCityListActivity.onResume()                          */
+     /*                                                       */
+     /*********************************************************/
+     @Override
+     protected void onResume()
+     {
+          super.onResume();
+          boolean bCelsius = CApp.getWeatherDegreesType();
+          if( bCelsius != m_bCelsius )
+          {
+               m_bCelsius = bCelsius;
+               LoadCityList();
+          }
+     }
+
+     /*********************************************************/
+     /*                                                       */
      /* CCityListActivity.onStop()                            */
      /*                                                       */
      /*********************************************************/
@@ -169,7 +186,28 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      public boolean onOptionsItemSelected( MenuItem Item )
      {
           if( m_DrawerToggle.onOptionsItemSelected( Item ) ) return true;
-          else return super.onOptionsItemSelected( Item );
+
+          switch( Item.getItemId() )
+          {
+               case R.id.IDM_DEGREES_CELSIUS:
+                    if( !m_bCelsius )
+                    {
+                         m_bCelsius = true;
+                         LoadCityList();
+                    }
+                    return true;
+
+               case R.id.IDM_DEGREES_FAHRENHEIT:
+                    if( m_bCelsius )
+                    {
+                         m_bCelsius = false;
+                         LoadCityList();
+                    }
+                    return true;
+     
+               default:
+                    return super.onOptionsItemSelected( Item );
+          }
      }
      
      /*********************************************************/
@@ -191,23 +229,26 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      /*                                                       */ 
      /*********************************************************/
      @Override
-     protected void onActivityResult( int RequestCode, int ResultCode, Intent Data )
+     protected void onActivityResult( int RequestCode, int ResultCode, Intent intent )
      {
           switch( RequestCode )
           {
                case DELETE_CITY_CONFIRMATION_REQUEST_ID:
-                    if( ResultCode == CConfirmationActivity.CONFIRMATION_ACCEPTED )
+                    if( ResultCode == CConfirmationActivity.DIALOG_ACCEPTED )
                     {
-                         Toast.makeText( this, "Adding to favorites...", Toast.LENGTH_SHORT ).show();
-                    }
-                    else
-                    {
-                         Toast.makeText( this, "User cancelled!", Toast.LENGTH_SHORT ).show();
+                         long CityId = intent.getLongExtra( CConfirmationActivity.DIALOG_PARAM_OBJECT_ID, -1 );
+                         if( CityId > 0 )
+                         {
+                              CWeatherDAO WeatherDAO = new CWeatherDAO( this );
+                              int Result = WeatherDAO.DeleteCity( CityId );
+                              WeatherDAO.Close();
+                              if( Result != -1 ) LoadCityList();
+                         }
                     }
                     break;
                     
                default:
-                    super.onActivityResult( RequestCode, ResultCode, Data );
+                    super.onActivityResult( RequestCode, ResultCode, intent );
                     break;
           }
      }
@@ -307,14 +348,15 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      @Override
      public boolean onItemLongClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
      {
-          Log.d( CCityListActivity.class.getName(), "OnLongPress(): " + view.getId() );
           Intent intent = new Intent( this, CConfirmationActivity.class );
-          String Param = getString( R.string.IDS_DELETE_CITY_QUESTION ) + iPosition;
-          intent.putExtra( CConfirmationActivity.CONFIRMATION_QUESTION_PARAM, Param );
+          intent.putExtra( CConfirmationActivity.DIALOG_PARAM_TITLE, getString( R.string.IDS_DELETE_CITY_TITLE ) );
+          String Question = getString( R.string.IDS_DELETE_CITY_QUESTION, (String)view.getTag() );
+          intent.putExtra( CConfirmationActivity.DIALOG_PARAM_QUESTION, Html.fromHtml( Question  ) );
+          intent.putExtra( CConfirmationActivity.DIALOG_PARAM_OBJECT_ID, id );
           startActivityForResult( intent, DELETE_CITY_CONFIRMATION_REQUEST_ID );
           return true;
      }
-     
+
      /*********************************************************/
      /*                                                       */
      /*                                                       */
@@ -432,10 +474,12 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
                     if( m_Adapter == null )
                     {
                          m_Adapter = new CCityListAdapter( CCityListActivity.this, cityCursor );
+                         m_Adapter.SetCelsius( m_bCelsius );
                          m_ListView.setAdapter( m_Adapter );
                     }
                     else
                     {
+                         m_Adapter.SetCelsius( m_bCelsius );
                          m_Adapter.changeCursor( cityCursor );
                          m_Adapter.notifyDataSetChanged();
                     }

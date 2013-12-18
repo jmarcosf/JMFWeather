@@ -14,6 +14,7 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,9 +31,11 @@ import android.widget.TextView;
 /**************************************************************/
 public class CConfirmationActivity extends Activity implements OnClickListener
 {
-public static final String	 CONFIRMATION_QUESTION_PARAM = "";
-public static final int		 CONFIRMATION_CANCELLED = 0;
-public static final int        CONFIRMATION_ACCEPTED = 1;
+public static final String     DIALOG_PARAM_TITLE      = "DialogParamTitle";
+public static final String	 DIALOG_PARAM_QUESTION   = "DialogParamQuestion";
+public static final String     DIALOG_PARAM_OBJECT_ID  = "DialogParamObjectId";
+public static final int		 DIALOG_CANCELLED        = 0;
+public static final int        DIALOG_ACCEPTED         = 1;
 
      /*********************************************************/
      /*                                                       */ 
@@ -48,14 +51,18 @@ public static final int        CONFIRMATION_ACCEPTED = 1;
 	protected void onCreate( Bundle savedInstanceState )
 	{
 		super.onCreate( savedInstanceState );
-		setContentView( R.layout.layout_confirmation );
+		
+		Dialog dialog = new Dialog( this );
+		dialog.setContentView( R.layout.layout_confirmation );
+		dialog.setTitle( getIntent().getCharSequenceExtra( DIALOG_PARAM_TITLE ) );
 	
-		TextView Question = (TextView)findViewById( R.id.IDC_TXT_QUESTION );
-		Question.setText( getIntent().getCharSequenceExtra( CONFIRMATION_QUESTION_PARAM ) );
+		TextView Question = (TextView)dialog.findViewById( R.id.IDC_TXT_QUESTION );
+		Question.setText( getIntent().getCharSequenceExtra( DIALOG_PARAM_QUESTION ) );
 	
-		findViewById( R.id.IDR_LAY_CONFIRMATION ).setOnClickListener( this );
-		findViewById( R.id.IDC_BTN_CANCEL ).setOnClickListener( this );
-		findViewById (R.id.IDC_BTN_OK ).setOnClickListener( this );
+		dialog.findViewById( R.id.IDR_LAY_CONFIRMATION ).setOnClickListener( this );
+		dialog.findViewById( R.id.IDC_BTN_NO ).setOnClickListener( this );
+		dialog.findViewById (R.id.IDC_BTN_YES ).setOnClickListener( this );
+		dialog.show();
 	}
 	
      /*********************************************************/
@@ -74,13 +81,13 @@ public static final int        CONFIRMATION_ACCEPTED = 1;
 	{
 		switch( view.getId() )
 		{
-			case R.id.IDC_BTN_OK:
-				setResult( CONFIRMATION_ACCEPTED );
+			case R.id.IDC_BTN_YES:
+				setResult( DIALOG_ACCEPTED, getIntent() );
 				finish();
 				break;
 				
 			default:
-				setResult( CONFIRMATION_CANCELLED );
+				setResult( DIALOG_CANCELLED, getIntent() );
 				finish();
 				break;
 		}

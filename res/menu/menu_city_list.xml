@@ -21,7 +21,17 @@
         JmfWeather:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_share" />
 	
+   	<item
+        android:id="@+id/IDM_DEGREES_CELSIUS"
+        JmfWeather:showAsAction="always"
+        android:title="@string/IDS_CELSIUS" />
+
 	<item
+        android:id="@+id/IDM_DEGREES_FAHRENHEIT"
+        JmfWeather:showAsAction="always"
+        android:title="@string/IDS_FAHRENHEIT" />
+
+   		<item
         android:id="@+id/IDM_ADD_CITY"
         JmfWeather:showAsAction="collapseActionView|ifRoom"
         android:title="@string/IDS_ADD_CITY"

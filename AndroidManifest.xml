@@ -104,7 +104,7 @@
 	    /*******************************************************-->
         <activity
             android:name="com.utad.marcos.jorge.jmfweather.CCitySearchActivity" 
-            android:theme="@style/IDR_STY_CONFIRMATION_DIALOG_THEME" >
+            android:theme="@style/IDR_STY_DIALOG_THEME" >
    		    <intent-filter>
 		        <action android:name="android.intent.action.SEARCH" />
 		    </intent-filter>
@@ -118,9 +118,11 @@
 	    /* Confirmation Dialog Activity                          */ 
 		/*                                                       */ 
 	    /*******************************************************-->
-        <activity android:name="com.utad.marcos.jorge.jmfweather.CConfirmationActivity"
-                  android:theme="@style/IDR_STY_CONFIRMATION_DIALOG_THEME" >
+        <activity
+            android:name="com.utad.marcos.jorge.jmfweather.CConfirmationActivity"
+            android:theme="@style/IDR_STY_DIALOG_THEME" >
         </activity>
+<!--             android:label="@string/IDS_CONFIRMATION_LABEL" -->
         
    	</application>
 

@@ -57,6 +57,7 @@ public class CSettingsActivity extends PreferenceActivity
           addPreferencesFromResource( R.xml.preferences );
           
           BindPreferenceSummaryToValue( findPreference( "WeatherSyncFrequency" ) );
+          BindPreferenceSummaryToValue( findPreference( "WeatherDegreesType" ) );
      }
 
      /*********************************************************/
@@ -91,7 +92,6 @@ public class CSettingsActivity extends PreferenceActivity
                     int timeout = Integer.parseInt( stringValue ) * 60 * 1000;
                     CWeatherRetrieverService.StartAlarm( CApp.getAppContext(), timeout );
                }
-               
                return true;
           }
      };

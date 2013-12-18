@@ -38,6 +38,7 @@ import com.utad.marcos.jorge.jmfweather.model.CCity;
 public class CCityListAdapter extends CursorAdapter
 {
 private	Activity    m_Context;
+private   boolean     m_bCelsius = true;   
 	
      /*********************************************************/
      /*                                                       */ 
@@ -86,6 +87,7 @@ private	Activity    m_Context;
      {
           CCity City = new CCity( cityCursor );
           ItemView.setId( (int)City.getId() );
+          ItemView.setTag( City.getName() );
 
           TextView CityName = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_NAME );
           CityName.setText( City.getName() );
@@ -100,9 +102,26 @@ private	Activity    m_Context;
           if( City.getCondition() == null ) return;
           
           TextView CityTemp = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_TEMPERATURE );
-          CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
+          if( m_bCelsius ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
+          else CityTemp.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
           
           ImageView CityIcon = (ImageView)ItemView.findViewById( R.id.IDP_ICO_CITY_ICON );
           City.SetViewIcon( context, CityIcon );
+     }
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /*                                                       */ 
+     /* Class Methods                                         */ 
+     /*                                                       */ 
+     /*                                                       */ 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListAdapter.SetCelcius()                         */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void SetCelsius( boolean value )
+     {
+          this.m_bCelsius = value;
      }
 }
