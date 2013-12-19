@@ -1,0 +1,187 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* layout_message_box.xml                                        */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: MessageBox Layout                                */ 
+/*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
+/*                                                               */ 
+/***************************************************************-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/IDR_LAY_MESSAGE_BOX"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/IDR_COL_MESSAGE_BOX_BACKGROUND"
+    android:gravity="center" >
+
+	<!--**********************************************************/
+    /*                                                           */ 
+    /* Message Layout                                            */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF" >
+
+        <!--******************************************************/
+    	/*                                                       */ 
+    	/* MessageBox Question/Message Layout                    */ 
+		/*                                                       */ 
+    	/*******************************************************-->
+        <TextView
+            android:id="@+id/IDC_TXT_MESSAGE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:textColor="@android:color/black" />        
+            
+		<!--******************************************************/
+    	/*                                                       */ 
+    	/* Yes/No Buttons Layout                                 */ 
+		/*                                                       */ 
+    	/*******************************************************-->
+        <LinearLayout
+            android:id="@+id/IDR_LAY_MESSAGEBOX_YESNO_BUTTONS"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@id/IDC_TXT_MESSAGE" >
+
+            <Button
+                android:id="@+id/IDC_BTN_YESNO_NO"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/IDS_NO" />
+
+            <Button
+                android:id="@+id/IDC_BTN_YESNO_YES"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/IDS_YES" />
+        </LinearLayout>
+        
+		<!--******************************************************/
+    	/*                                                       */ 
+    	/* OK/Cancel Buttons Layout                              */ 
+		/*                                                       */ 
+    	/*******************************************************-->
+        <LinearLayout
+            android:id="@+id/IDR_LAY_MESSAGEBOX_OKCANCEL_BUTTONS"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@id/IDC_TXT_MESSAGE" >
+
+            <Button
+                android:id="@+id/IDC_BTN_OKCANCEL_OK"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/IDS_OK" />
+
+            <Button
+                android:id="@+id/IDC_BTN_OKCANCEL_CANCEL"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/IDS_CANCEL" />
+        </LinearLayout>
+        
+		<!--******************************************************/
+    	/*                                                       */ 
+    	/* OK Only Button Layout                                 */ 
+		/*                                                       */ 
+    	/*******************************************************-->
+        <LinearLayout
+            android:id="@+id/IDR_LAY_MESSAGEBOX_OKONLY_BUTTON"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@id/IDC_TXT_MESSAGE" >
+
+            <Button
+                android:id="@+id/IDC_BTN_OKONLY_OK"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/IDS_OK" />
+        </LinearLayout>
+        
+		<!--******************************************************/
+    	/*                                                       */ 
+    	/* Retry/Cancel Buttons Layout                           */ 
+		/*                                                       */ 
+    	/*******************************************************-->
+        <LinearLayout
+            android:id="@+id/IDR_LAY_MESSAGEBOX_RETRYCANCEL_BUTTONS"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@id/IDC_TXT_MESSAGE" >
+
+            <Button
+                android:id="@+id/IDC_BTN_RETRYCANCEL_RETRY"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/IDS_OK" />
+
+            <Button
+                android:id="@+id/IDC_BTN_RETRYCANCEL_CANCEL"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/IDS_CANCEL" />
+        </LinearLayout>
+        
+		<!--******************************************************/
+    	/*                                                       */ 
+    	/* Retry Only Button Layout                              */ 
+		/*                                                       */ 
+    	/*******************************************************-->
+        <LinearLayout
+            android:id="@+id/IDR_LAY_MESSAGEBOX_RETRYONLY_BUTTON"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@id/IDC_TXT_MESSAGE" >
+
+            <Button
+                android:id="@+id/IDC_BTN_RETRYONLY_RETRY"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/IDS_RETRY" />
+        </LinearLayout>
+        
+ 	</RelativeLayout>
+
+</RelativeLayout>
+
+
+

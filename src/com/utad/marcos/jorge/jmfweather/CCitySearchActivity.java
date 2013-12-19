@@ -20,17 +20,19 @@ import java.text.ParseException;
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
@@ -46,13 +48,15 @@ import com.utad.marcos.jorge.jmfweather.utility.CWorldWeatherApi;
 /*                                                            */
 /*                                                            */
 /**************************************************************/
-public class CCitySearchActivity extends Activity implements OnItemClickListener, OnClickListener
+public class CCitySearchActivity extends Activity implements OnItemClickListener, OnCancelListener
 {
+protected final static int    MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID = 102;
+protected final static int    MSGBOX_INSERT_CITY_ERROR_REQUEST_ID = 103;
+
+private   Dialog              m_Dialog;
 private   ListView            m_ListView;
 private   CCitySearchAdapter  m_Adapter;
 private   ProgressBar         m_WaitClock;
-private   View                m_ErrorView;
-private   TextView            m_ErrorMessage;
 private   CCityList           m_CityList;
      
      /*********************************************************/
@@ -70,16 +74,18 @@ private   CCityList           m_CityList;
      public void onCreate( Bundle savedInstanceState )
      {
           super.onCreate( savedInstanceState );
-          setContentView( R.layout.layout_city_search_activity );
           m_CityList = null;
           
-          m_ListView = (ListView)findViewById( R.id.IDC_LV_SEARCH_CITY_LIST );
+          m_Dialog = new Dialog( this );
+          m_Dialog.setContentView( R.layout.layout_city_search_activity );
+          m_Dialog.setCanceledOnTouchOutside( true );
+          m_Dialog.setOnCancelListener( this );
+     
+          m_ListView = (ListView)m_Dialog.findViewById( R.id.IDC_LV_SEARCH_CITY_LIST );
           m_ListView.setChoiceMode( ListView.CHOICE_MODE_SINGLE );
           m_ListView.setOnItemClickListener( this );
-          m_WaitClock = (ProgressBar)findViewById( R.id.IDC_PB_WAIT_CLOCK );
-          m_ErrorView = findViewById( R.id.IDC_LAY_ERROR_MESSAGE );
-          m_ErrorMessage = (TextView)findViewById( R.id.IDC_TXT_ERROR_MESSAGE );
-
+          m_WaitClock = (ProgressBar)m_Dialog.findViewById( R.id.IDC_PB_WAIT_CLOCK );
+     
           HandleIntent( getIntent() );
      }
 
@@ -95,6 +101,28 @@ private   CCityList           m_CityList;
      }
 
      /*********************************************************/
+     /*                                                       */ 
+     /* CCitysearchActivity.onActivityResult()                */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void onActivityResult( int RequestCode, int ResultCode, Intent intent )
+     {
+          switch( RequestCode )
+          {
+               case MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID:
+               case MSGBOX_INSERT_CITY_ERROR_REQUEST_ID:
+                    m_Dialog.cancel();
+                    finish();
+                    break;
+                    
+               default:
+                    super.onActivityResult( RequestCode, ResultCode, intent );
+                    break;
+          }
+     }
+     
+     /*********************************************************/
      /*                                                       */
      /*                                                       */
      /* OnItemClickListener Interface Methods                 */
@@ -109,32 +137,27 @@ private   CCityList           m_CityList;
      public void onItemClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
      {
           CCity City = m_CityList.getCityList().get( iPosition );
+          m_Dialog.setTitle( Html.fromHtml( getString( R.string.IDS_WRITING_CITY_TO_DATABASE, City.getName() ) ) );
           new CInsertCity().execute( City );
      }
      
      /*********************************************************/
-     /*                                                       */
-     /*                                                       */
-     /* OnClickListener Interface Methods                     */
-     /*                                                       */
-     /*                                                       */
+     /*                                                       */ 
+     /*                                                       */ 
+     /* OnCancelListener Interface Methods                    */ 
+     /*                                                       */ 
+     /*                                                       */ 
      /*********************************************************/
      /*                                                       */ 
-     /* CCitySearchActivity.onClick()                         */ 
+     /* CCitySearchActivity.onCancel()                        */ 
      /*                                                       */ 
      /*********************************************************/
      @Override
-     public void onClick( View view )
+     public void onCancel( DialogInterface arg0 )
      {
-          switch( view.getId() )
-          {
-               case R.id.IDC_BTN_OK:
-                    m_ErrorView.setVisibility( View.GONE );
-                    this.finish();
-                    break;
-          }
+          this.finish();
      }
-
+     
      /*********************************************************/
      /*                                                       */
      /*                                                       */
@@ -150,6 +173,8 @@ private   CCityList           m_CityList;
      {
          if( !Intent.ACTION_SEARCH.equals( intent.getAction() ) ) return;
          String Query = intent.getStringExtra( SearchManager.QUERY );
+         m_Dialog.setTitle( Html.fromHtml( getString( R.string.IDS_SEARCHING_CITY, Query ) ) );
+         m_Dialog.show();
          new CSearchCity().execute( Query );
      }
      
@@ -171,7 +196,6 @@ private   CCityList           m_CityList;
           protected void onPreExecute()
           {
                m_WaitClock.setVisibility( View.VISIBLE );
-               m_ErrorView.setVisibility( View.GONE );
                m_ListView.setVisibility( View.GONE );
                m_CityList = null;
           }
@@ -208,12 +232,17 @@ private   CCityList           m_CityList;
                {
                     m_Adapter = new CCitySearchAdapter( CCitySearchActivity.this, m_CityList );
                     m_ListView.setAdapter( m_Adapter );
+                    m_Dialog.setTitle( getString( R.string.IDS_SELECT_CITY ) );
                     m_ListView.setVisibility( View.VISIBLE );
                }
                else
                {
-                    m_ErrorMessage.setText( R.string.IDS_NO_CITIES_FOUND_ERROR_MESSAGE );
-                    m_ErrorView.setVisibility( View.VISIBLE );
+                    Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
+                    String MessageText = getString( R.string.IDS_NO_CITIES_FOUND_ERROR_MESSAGE );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
+                    startActivityForResult( intent, MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID );
                }
           }
      }
@@ -236,7 +265,6 @@ private   CCityList           m_CityList;
           protected void onPreExecute()
           {
                m_WaitClock.setVisibility( View.VISIBLE );
-               m_ErrorView.setVisibility( View.GONE );
                m_ListView.setVisibility( View.GONE );
                m_CityList = null;
           }
@@ -267,7 +295,7 @@ private   CCityList           m_CityList;
 
           /****************************************************/
           /*                                                  */
-          /* CSearchCity.onPostExecute()                      */
+          /* CInsertCity.onPostExecute()                      */
           /*                                                  */
           /****************************************************/
           @Override
@@ -276,8 +304,12 @@ private   CCityList           m_CityList;
                m_WaitClock.setVisibility( View.GONE );
                if( !Param )
                {
-                    m_ErrorMessage.setText( R.string.IDS_WRITE_CITY_ERROR_MESSAGE );
-                    m_ErrorView.setVisibility( View.VISIBLE );
+                    Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
+                    String MessageText = getString( R.string.IDS_WRITE_CITY_ERROR_MESSAGE );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
+                    startActivityForResult( intent, MSGBOX_INSERT_CITY_ERROR_REQUEST_ID );
                }
                else CCitySearchActivity.this.finish();
           }

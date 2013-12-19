@@ -15,12 +15,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:JmfWeather="http://schemas.android.com/apk/res-auto" >
       
-	<item
-        android:id="@+id/IDM_SHARE"
-        JmfWeather:showAsAction="ifRoom"
-        android:title="@string/IDS_SHARE"
-        android:icon="@android:drawable/ic_menu_share" />
-
     <item
         android:id="@+id/IDM_SETTINGS"
         android:showAsAction="always"

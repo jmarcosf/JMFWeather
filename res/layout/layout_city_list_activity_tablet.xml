@@ -61,11 +61,4 @@
 	    android:layout_gravity="center"
 	    android:visibility="gone" />
 
-	<!--**********************************************************/
-    /*                                                           */ 
-    /* Network Error Message Layout                              */ 
-	/*                                                           */ 
-    /***********************************************************-->
-    <include layout="@layout/layout_error_message" />
-    
 </FrameLayout>

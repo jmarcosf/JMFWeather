@@ -1,0 +1,8 @@
+<html>
+<h4>JmfWeather Help</h4>
+<p>Click on any city to view Weather details. Then you can swipe to view all your favorite cities.</p>
+<p>To add a city press the <b>(+)</b> button on ActionBar.</p>
+<p>To delete a city press and hold the city row. A deletion confirmation will appear.</p>
+<p>Use <b>Celsius</b> and <b>Fahrenheit</b> ActionBar buttons to change degrees type.</p>
+<p>Press the <b>Settings</b> ActionBar button to change Preferences.</p>
+</html>

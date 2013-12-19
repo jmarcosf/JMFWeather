@@ -49,13 +49,6 @@
 		    android:layout_gravity="center"
 		    android:visibility="gone" />
 	
-		<!--******************************************************/
-	    /*                                                       */ 
-	    /* Error Message Layout                                  */ 
-		/*                                                       */ 
-	    /*******************************************************-->
-	   <include layout="@layout/layout_error_message" />
-	   	    	
 	</FrameLayout>
 
     <!--**********************************************************/
@@ -74,16 +67,11 @@
         android:background="@android:color/white" >
         
         <TextView
+	        android:id="@+id/IDC_TXT_HELP"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/IDS_DRAWER_MENU_TEXT" />
-        
-        <Button
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/IDS_SETTINGS" />
-	        
-    </LinearLayout>    	
+	        android:layout_height="match_parent" />
+
+	</LinearLayout>    	
     
 </android.support.v4.widget.DrawerLayout>
     

@@ -103,7 +103,7 @@
 		/*                                                       */ 
 	    /*******************************************************-->
         <activity
-            android:name="com.utad.marcos.jorge.jmfweather.CCitySearchActivity" 
+            android:name="com.utad.marcos.jorge.jmfweather.CCitySearchActivity"
             android:theme="@style/IDR_STY_DIALOG_THEME" >
    		    <intent-filter>
 		        <action android:name="android.intent.action.SEARCH" />
@@ -115,14 +115,13 @@
         
 		<!--******************************************************/
 	    /*                                                       */ 
-	    /* Confirmation Dialog Activity                          */ 
+	    /* Message Box Dialog Activity                           */ 
 		/*                                                       */ 
 	    /*******************************************************-->
         <activity
-            android:name="com.utad.marcos.jorge.jmfweather.CConfirmationActivity"
+            android:name="com.utad.marcos.jorge.jmfweather.CMessageBoxActivity"
             android:theme="@style/IDR_STY_DIALOG_THEME" >
         </activity>
-<!--             android:label="@string/IDS_CONFIRMATION_LABEL" -->
         
    	</application>
 

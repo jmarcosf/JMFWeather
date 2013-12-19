@@ -81,20 +81,11 @@ public class CBaseCityActivity extends ActionBarActivity
 	{
 		switch( Item.getItemId() )
 		{
-			case R.id.IDM_SHARE:
-			{
-//				Intent intent = new Intent();
-//				intent.setAction( Intent.ACTION_SEND );
-//				intent.setType( "text/plain" );
-//				intent.putExtra( Intent.EXTRA_SUBJECT, m_City.getTitle() );
-//				intent.putExtra( Intent.EXTRA_TEXT, m_City.getImageUrl() );
-//				startActivity( intent );
-				return true;
-			}
-
                case R.id.IDM_ADD_CITY:
+               {
                     onSearchRequested();
                     return true;
+               }
      
 			case R.id.IDM_SETTINGS:
 			     Intent intent = new Intent( this, CSettingsActivity.class );
@@ -102,8 +93,7 @@ public class CBaseCityActivity extends ActionBarActivity
 			     return true;
 	
 			default:
-				super.onOptionsItemSelected( Item );
-				return false;
+				return super.onOptionsItemSelected( Item );
 		}
 	}
 	

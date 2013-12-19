@@ -36,7 +36,8 @@ import com.utad.marcos.jorge.jmfweather.model.CCity;
 /**************************************************************/
 public class CCityDetailsFragment extends Fragment
 {
-public static final String IDS_CITY_ID_PARAM = "CityIdParam";
+public static final String IDS_CITY_ID_PARAM      = "CityIdParam";
+public static final String IDS_DEGREES_TYPE_PARAM = "DegreesTypeParam";
 
      /*********************************************************/
      /*                                                       */ 
@@ -56,6 +57,7 @@ public static final String IDS_CITY_ID_PARAM = "CityIdParam";
           
 		View view = inflater.inflate( R.layout.layout_city_details_fragment, container, false );
 		long CityId = getArguments().getLong( IDS_CITY_ID_PARAM );
+		boolean bCelsius = getArguments().getBoolean( IDS_DEGREES_TYPE_PARAM );
 		
 		CWeatherDAO WeatherDAO = new CWeatherDAO( getActivity() );
 		CCity City = WeatherDAO.SelectCity( CityId );
@@ -73,7 +75,8 @@ public static final String IDS_CITY_ID_PARAM = "CityIdParam";
 		CityName.setText( City.getName() );
 		CityCountry.setText( City.getCountry() );
           CityGeoPosition.setText( City.getLatitude() + " : " + City.getLongitude() );
-		CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
+		if( bCelsius ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
+		else CityTemp.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
           CityPressure.setText( "Pressure: " + City.getCondition().getPressure() );
           CityHumitidy.setText( "Humidity: " + City.getCondition().getHumidity() );
           

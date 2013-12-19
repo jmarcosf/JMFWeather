@@ -26,11 +26,10 @@
     /***********************************************************-->
    	<ListView 
 	    android:id="@+id/IDC_LV_SEARCH_CITY_LIST"
-	    style="@style/IDR_STY_CITY_LISTVIEW_ITEM_STYLE" 
-	    android:layout_width="400dp"
+	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center_horizontal" />
-
+   	
    	<!--**********************************************************/
     /*                                                           */ 
     /* Progress Bar Layout                                       */ 
@@ -43,11 +42,4 @@
 	    android:layout_gravity="center"
 	    android:visibility="gone" />
 
-	<!--******************************************************/
-    /*                                                       */ 
-    /* Error Message Layout                                  */ 
-	/*                                                       */ 
-    /*******************************************************-->
-	<include layout="@layout/layout_error_message" />
-   		
 </FrameLayout>
