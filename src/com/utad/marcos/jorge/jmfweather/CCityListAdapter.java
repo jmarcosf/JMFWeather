@@ -13,8 +13,13 @@
 /*                                                            */
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
@@ -37,8 +42,9 @@ import com.utad.marcos.jorge.jmfweather.model.CCity;
 /**************************************************************/
 public class CCityListAdapter extends CursorAdapter
 {
-private	Activity    m_Context;
-private   boolean     m_bTablet = false;
+private	Activity       m_Context;
+private   CWeatherDAO    m_WeatherDAO = null;
+private   boolean        m_bTablet = false;
 	
      /*********************************************************/
      /*                                                       */ 
@@ -51,11 +57,12 @@ private   boolean     m_bTablet = false;
 	/* CCityListAdapter.CCityListAdapter()                   */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public CCityListAdapter( Activity context, Cursor cityCursor )
+	public CCityListAdapter( Activity context, CWeatherDAO WeatherDAO, Cursor cityCursor )
 	{
 	     super( context, cityCursor, false );
 		this.m_Context = context;
-          this.m_bTablet = ( m_Context.getResources().getBoolean( R.bool.g_bTablet ) && CApp.IsDivideScreenOnTabletsEnabled() );
+		this.m_WeatherDAO = WeatherDAO;
+          this.m_bTablet = ( m_Context.getResources().getBoolean( R.bool.g_bTablet ) && CApp.IsDivideScreenOnTabletsEnabled() && CApp.getOrientation() != Configuration.ORIENTATION_PORTRAIT );
 	}
 
      /*********************************************************/
@@ -83,6 +90,7 @@ private   boolean     m_bTablet = false;
      /* CCityListAdapter.bindView()                           */ 
      /*                                                       */ 
      /*********************************************************/
+     @SuppressLint( "SimpleDateFormat" )
      @Override
      public void bindView( View ItemView, Context context, Cursor cityCursor )
      {
@@ -90,9 +98,7 @@ private   boolean     m_bTablet = false;
           ItemView.setId( (int)City.getId() );
           ItemView.setTag( City.getName() );
 
-          CWeatherDAO WeatherDAO = new CWeatherDAO( context );
-          WeatherDAO.SetCityCondition( City );
-          WeatherDAO.Close();
+          m_WeatherDAO.SetCityCondition( City );
           if( City.getCondition() == null ) return;
           
           TextView CityName = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_NAME );
@@ -106,6 +112,12 @@ private   boolean     m_bTablet = false;
                TextView CityTemp = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_TEMPERATURE );
                if( CApp.getCelsius() ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
                else CityTemp.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
+               
+               TextView CityUpdate = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_WEATHER_LAST_UPDATE );
+               Date upDate = City.getCondition().getObservationTime();
+               SimpleDateFormat DateFormat = new SimpleDateFormat( "MMM d, k:m" );
+               String LastUpdate = ( upDate == null ) ? "null date" : DateFormat.format( upDate );
+               CityUpdate.setText( LastUpdate );
           }
           
           ImageView CityIcon = (ImageView)ItemView.findViewById( R.id.IDP_ICO_CITY_ICON );

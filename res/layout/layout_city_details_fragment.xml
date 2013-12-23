@@ -28,7 +28,7 @@
     <RelativeLayout
         android:id="@+id/IDR_LAY_DETAILS_FORECAST"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:padding="1dp" >
 
@@ -64,7 +64,7 @@
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <ImageView
-	        android:id="@+id/IDP_ICO_CITY_ICON"
+	        android:id="@+id/IDP_ICO_WEATHER_IMAGE"
 	        android:layout_width="100dp"
 	        android:layout_height="100dp" />
 	    
@@ -77,10 +77,12 @@
 	        android:id="@+id/IDC_TXT_CITY_NAME"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
 	        android:paddingLeft="15dp"
 	        android:fontFamily="Arial"
-	        android:textSize="30sp"
-	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+	        android:textSize="40sp"
+	        android:textStyle="bold"
+	        android:layout_toRightOf="@id/IDP_ICO_WEATHER_IMAGE" />
 	
 	    	
 	    <!--******************************************************/
@@ -93,11 +95,11 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@id/IDC_TXT_CITY_NAME"
-	        android:paddingTop="5dp"
+	        android:paddingTop="2dp"
 	        android:paddingLeft="15dp"
 	        android:fontFamily="Arial"
 	        android:textSize="18sp"
-	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+	        android:layout_toRightOf="@id/IDP_ICO_WEATHER_IMAGE" />
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
@@ -113,8 +115,23 @@
 	        android:paddingLeft="15dp"
 	        android:fontFamily="Arial"
 	        android:textSize="18sp"
-	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+	        android:layout_toRightOf="@id/IDP_ICO_WEATHER_IMAGE" />
 
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* Current Weather Description                           */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_WEATHER_DESCRIPTION"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentRight="true"
+	        android:gravity="right"
+	        android:fontFamily="Arial"
+	        android:textSize="20sp" />
+	    
 	    <!--******************************************************/
 	    /*                                                       */ 
 	    /* Current Temperature                                   */ 
@@ -124,12 +141,26 @@
 	        android:id="@+id/IDC_TXT_CITY_TEMPERATURE"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_below="@id/IDC_TXT_WEATHER_DESCRIPTION"
 	        android:layout_alignParentRight="true"
-	        android:layout_alignParentTop="true"
-	        android:paddingTop="15dp"
 	        android:gravity="right"
 	        android:fontFamily="Times New Roman"
 	        android:textSize="75sp" />
+	    
+   	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* City Weather Last Update                              */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_LAST_WEATHER_UPDATE"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/IDC_TXT_CITY_TEMPERATURE"
+	        android:layout_alignParentRight="true"
+	        android:gravity="right"
+	        android:fontFamily="Arial"
+	        android:textSize="18sp" />
 	    
 	</RelativeLayout>
 	
@@ -149,32 +180,45 @@
         
         <!--******************************************************/
 	    /*                                                       */ 
-	    /* City Pressure                                         */ 
+	    /* Pressure                                              */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_PRESSURE"
+	        android:id="@+id/IDC_TXT_PRESSURE"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:paddingTop="25dp"
 	        android:fontFamily="Arial"
-	        android:textSize="25sp" />
+	        android:textSize="18sp" />
 	
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* City Humidity                                         */ 
+	    /* Wind Speed                                            */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_HUMIDITY"
+	        android:id="@+id/IDC_TXT_WIND_SPEED"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/IDC_TXT_CITY_PRESSURE"
-	        android:paddingTop="5dp"
+	        android:layout_toRightOf="@id/IDC_TXT_PRESSURE"
+	        android:layout_alignParentRight="true"
+	        android:gravity="right"
 	        android:fontFamily="Arial"
-	        android:textSize="25sp" />
+	        android:textSize="18sp" />
 	    
-	</RelativeLayout>
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* Humidity                                              */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_HUMIDITY"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/IDC_TXT_PRESSURE"
+	        android:fontFamily="Arial"
+	        android:textSize="18sp" />
+	    
+   	</RelativeLayout>
    	
 </RelativeLayout>
 

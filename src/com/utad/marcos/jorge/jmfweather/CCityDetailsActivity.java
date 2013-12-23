@@ -36,6 +36,7 @@ import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 /**************************************************************/
 public class CCityDetailsActivity extends CBaseCityActivity
 {
+private   CWeatherDAO              m_WeatherDAO = null;
 private   ArrayList< Long >        m_CityIdList;
 private   int                      m_Position;
 private   CCityDetailsPagerAdapter m_PagerAdapter = null;
@@ -59,9 +60,8 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
 		Intent intent = this.getIntent();
 		long cityId = intent.getLongExtra( CCityDetailsFragment.IDS_CITY_ID_PARAM, 0 );
 		
-		CWeatherDAO WeatherDAO = new CWeatherDAO( CCityDetailsActivity.this );
-		m_CityIdList = WeatherDAO.SelectAllCityIds();
-		WeatherDAO.Close();
+		m_WeatherDAO = new CWeatherDAO( this );
+		m_CityIdList = m_WeatherDAO.SelectAllCityIds();
 		
 		m_Position = 0;
 		for( Long CityId : m_CityIdList )
@@ -83,6 +83,18 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
 		viewPager.setCurrentItem( m_Position );
 	}
 	
+	/*********************************************************/
+     /*                                                       */ 
+     /* CCityDetailsActivity.onDestroy()                      */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void onDestroy()
+     {
+          m_WeatherDAO.Close();
+          super.onDestroy();
+     }
+     
 	/*********************************************************/
 	/*                                                       */ 
 	/* CCityDetailsActivity.onOptionsItemSelected()          */ 

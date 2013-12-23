@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -62,8 +61,10 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeath
 public class CCityListActivity extends CBaseCityActivity implements OnClickListener, OnItemClickListener, OnItemLongClickListener
 {
 protected final static int         MSGBOX_READ_CITIES_ERROR_REQUEST_ID     = 100;
-protected final static int         MSGBOX_DELETE_CITY_REQUEST_ID           = 101;
+protected final static int         MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID      = 101;
+protected final static int         MSGBOX_DELETE_CITY_REQUEST_ID           = 102;
      
+private   CWeatherDAO              m_WeatherDAO = null;
 private   boolean                  m_bTablet = false;
 private   DrawerLayout             m_Drawer = null;
 private   ActionBarDrawerToggle    m_DrawerToggle = null;
@@ -90,11 +91,13 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           super.onCreate( savedInstanceState );
           Log.d( CCityListActivity.class.getSimpleName(), "OnCreate()" );
           if( savedInstanceState != null ) Log.d( CBaseCityActivity.class.getSimpleName(), "savedInstanceState != null" );
+          
+          m_WeatherDAO = new CWeatherDAO( this );
           setContentView( R.layout.layout_city_list_activity );
           
-          m_bTablet = ( getResources().getBoolean( R.bool.g_bTablet ) && CApp.IsDivideScreenOnTabletsEnabled() );
           CApp.setOrientation( getResources().getConfiguration().orientation );
           Log.d( CCityListActivity.class.getSimpleName(), ( CApp.getOrientation() == Configuration.ORIENTATION_LANDSCAPE ) ? "LANDSCAPE" : "PORTRAIT" );
+          m_bTablet = ( getResources().getBoolean( R.bool.g_bTablet ) && CApp.IsDivideScreenOnTabletsEnabled() && CApp.getOrientation() != Configuration.ORIENTATION_PORTRAIT );
           setContentView( m_bTablet ? R.layout.layout_city_list_activity_tablet : R.layout.layout_city_list_activity );
           
           m_WaitClock = (ProgressBar)findViewById( R.id.IDC_PB_WAIT_CLOCK );
@@ -157,6 +160,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           Log.d( CCityListActivity.class.getSimpleName(), "OnDestroy()" );
           if( m_ServiceBinder != null ) m_ServiceBinder.getService().StopLoadingImages();
           ServiceDisconnect();
+          m_WeatherDAO.Close();
           super.onDestroy();
      }
      
@@ -173,6 +177,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           switch( Item.getItemId() )
           {
                case R.id.IDM_DEGREES_CELSIUS:
+//                  TextView Temp = (TextView)findViewById( R.id.IDC_TXT_CITY_TEMPERATURE );
                     if( !CApp.getCelsius() )
                     {
                          CApp.setCelsius( true );
@@ -216,25 +221,26 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
      {
           switch( RequestCode )
           {
+               case MSGBOX_READ_CITIES_ERROR_REQUEST_ID:
+                    Log.d( CCityListActivity.class.getSimpleName(), "Read Cities Error!" );
+                    if( ResultCode == CMessageBoxActivity.MESSAGEBOX_RESULT_ACCEPTED ) LoadCityList();
+                    else finish();
+                    break;
+                    
+               case MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID:
+                    break;
+                    
                case MSGBOX_DELETE_CITY_REQUEST_ID:
                     if( ResultCode == CMessageBoxActivity.MESSAGEBOX_RESULT_ACCEPTED )
                     {
                          long CityId = intent.getLongExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_OBJECT_ID, -1 );
                          if( CityId > 0 )
                          {
-                              CWeatherDAO WeatherDAO = new CWeatherDAO( this );
-                              int Result = WeatherDAO.DeleteCity( CityId );
-                              WeatherDAO.Close();
-                              if( Result != -1 ) Log.d( CCityListActivity.class.getName(), "Delete City!" );
+                              int Result = m_WeatherDAO.DeleteCity( CityId );
+                              if( Result != -1 ) Log.d( CCityListActivity.class.getSimpleName(), "Delete City!" );
                               if( Result != -1 ) LoadCityList();
                          }
                     }
-                    break;
-                    
-               case MSGBOX_READ_CITIES_ERROR_REQUEST_ID:
-                    if( ResultCode == CMessageBoxActivity.MESSAGEBOX_RESULT_ACCEPTED ) Log.d( CCityListActivity.class.getName(), "Read Cities Error!" );
-                    if( ResultCode == CMessageBoxActivity.MESSAGEBOX_RESULT_ACCEPTED ) LoadCityList();
-                    else finish();
                     break;
                     
                default:
@@ -351,17 +357,6 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
      /*                                                       */
      /*********************************************************/
      /*                                                       */
-     /* CCityListActivity.LoadCityList()                      */
-     /*                                                       */
-     /*********************************************************/
-     public void LoadCityList()
-     {
-          Log.d( CCityListActivity.class.getSimpleName(), "LoadCityList()" );
-          new CDBLoader().execute();
-     }
-
-     /*********************************************************/
-     /*                                                       */
      /* CCityListActivity.GetHelpText()                       */
      /*                                                       */
      /*********************************************************/
@@ -386,6 +381,58 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
 
      /*********************************************************/
      /*                                                       */
+     /* CCityListActivity.LoadCityList()                      */
+     /*                                                       */
+     /*********************************************************/
+     public void LoadCityList()
+     {
+          Log.d( CCityListActivity.class.getSimpleName(), "LoadCityList()" );
+          m_WaitClock.setVisibility( View.VISIBLE );
+          
+          Cursor cityCursor = m_WeatherDAO.SelectAllCities();
+          m_WaitClock.setVisibility( View.GONE );
+
+          if( cityCursor != null )
+          {
+               if( cityCursor.getCount() > 0 )
+               {
+                    if( cityCursor.moveToFirst() )
+                    {
+                         if( m_Adapter == null )
+                         {
+                              m_Adapter = new CCityListAdapter( CCityListActivity.this, m_WeatherDAO, cityCursor );
+                              m_ListView.setAdapter( m_Adapter );
+                         }
+                         else
+                         {
+                              m_Adapter.changeCursor( cityCursor );
+                              m_Adapter.notifyDataSetChanged();
+                         }
+                    }
+               }
+               else
+               {
+                    Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_WARNING ) );
+                    String MessageText = getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
+                    startActivityForResult( intent, MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID );
+               }
+          }
+          else
+          {
+               Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
+               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_RETRYCANCEL );
+               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
+               String MessageText = getString( R.string.IDS_READ_CITIES_ERROR_MESSAGE );
+               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
+               startActivityForResult( intent, MSGBOX_READ_CITIES_ERROR_REQUEST_ID );
+          }
+     }
+
+     /*********************************************************/
+     /*                                                       */
      /*                                                       */
      /* Service Methods                                       */
      /*                                                       */
@@ -397,7 +444,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
      /*********************************************************/
      private void ServiceConnect()
      {
-          Log.d( CCityListActivity.class.getName(), "ServiceConnect()" );
+          Log.d( CCityListActivity.class.getSimpleName(), "ServiceConnect()" );
           Intent service = new Intent( this, CWeatherRetrieverService.class );
           m_ServiceConnection = ( new ServiceConnection()
           {
@@ -410,14 +457,10 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
                          @Override
                          public void onWeatherLoaded()
                          {
-                              Log.d( CCityListActivity.class.getName(), "onWeatherLoaded()" );
+                              Log.d( CCityListActivity.class.getSimpleName(), "onWeatherLoaded()" );
                               LoadCityList();
                          }
                     } );
-                    
-                    //Program service to update Weather.
-                    Log.d( CCityListActivity.class.getName(), "onServiceConnected()" );
-                    m_ServiceBinder.getService().LoadWeather();
                }
                @Override
                public void onServiceDisconnected( ComponentName name )
@@ -436,78 +479,8 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
      /*********************************************************/
      private void ServiceDisconnect()
      {
-          Log.d( CCityListActivity.class.getName(), "ServiceDisconnect()" );
+          Log.d( CCityListActivity.class.getSimpleName(), "ServiceDisconnect()" );
           if( m_ServiceConnection != null ) unbindService( m_ServiceConnection );
           m_ServiceConnection = null;
-     }
-
-     /*********************************************************/
-     /*                                                       */
-     /*                                                       */
-     /* CCityListActivity.CDBLoader AsyncTask Class           */
-     /*                                                       */
-     /*                                                       */
-     /*********************************************************/
-     private class CDBLoader extends AsyncTask< Void, Void, Cursor >
-     {
-          /****************************************************/
-          /*                                                  */
-          /* CDBLoader.onPreExecute()                         */
-          /*                                                  */
-          /****************************************************/
-          @Override
-          protected void onPreExecute()
-          {
-               Log.d( CCityListActivity.class.getSimpleName(), "OnPreExecute()" );
-               m_WaitClock.setVisibility( View.VISIBLE );
-          }
-
-          /****************************************************/
-          /*                                                  */
-          /* CDBLoader.doInBackground()                       */
-          /*                                                  */
-          /****************************************************/
-          @Override
-          protected Cursor doInBackground( Void... params )
-          {
-               Log.d( CCityListActivity.class.getSimpleName(), "doInBackround()" );
-               CWeatherDAO WeatherDAO = new CWeatherDAO( CCityListActivity.this );
-               Cursor cityCursor = WeatherDAO.SelectAllCities();
-               return cityCursor;
-          }
-
-          /****************************************************/
-          /*                                                  */
-          /* CDBLoader.onPostExecute()                        */
-          /*                                                  */
-          /****************************************************/
-          @Override
-          protected void onPostExecute( Cursor cityCursor )
-          {
-               Log.d( CCityListActivity.class.getSimpleName(), "OnPostExecute()" );
-               m_WaitClock.setVisibility( View.GONE );
-               if( cityCursor.getCount() > 0 && cityCursor.moveToFirst() )
-               {
-                    if( m_Adapter == null )
-                    {
-                         m_Adapter = new CCityListAdapter( CCityListActivity.this, cityCursor );
-                         m_ListView.setAdapter( m_Adapter );
-                    }
-                    else
-                    {
-                         m_Adapter.changeCursor( cityCursor );
-                         m_Adapter.notifyDataSetChanged();
-                    }
-               }
-               else
-               {
-                    Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_RETRYCANCEL );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
-                    String MessageText = getString( R.string.IDS_READ_CITIES_ERROR_MESSAGE );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
-                    startActivityForResult( intent, MSGBOX_READ_CITIES_ERROR_REQUEST_ID );
-               }
-          }
      }
 }

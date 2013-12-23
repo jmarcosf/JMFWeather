@@ -53,6 +53,7 @@ public class CCitySearchActivity extends Activity implements OnItemClickListener
 protected final static int    MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID = 102;
 protected final static int    MSGBOX_INSERT_CITY_ERROR_REQUEST_ID = 103;
 
+private   CWeatherDAO         m_WeatherDAO = null;
 private   Dialog              m_Dialog;
 private   ListView            m_ListView;
 private   CCitySearchAdapter  m_Adapter;
@@ -74,6 +75,7 @@ private   CCityList           m_CityList;
      public void onCreate( Bundle savedInstanceState )
      {
           super.onCreate( savedInstanceState );
+          m_WeatherDAO = new CWeatherDAO( this );
           m_CityList = null;
           
           m_Dialog = new Dialog( this );
@@ -89,6 +91,18 @@ private   CCityList           m_CityList;
           HandleIntent( getIntent() );
      }
 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCitySearchActivity.onDestroy()                       */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void onDestroy()
+     {
+          m_WeatherDAO.Close();
+          super.onDestroy();
+     }
+     
      /*********************************************************/
      /*                                                       */ 
      /* CCitySearchActivity.onNewIntent()                     */ 
@@ -228,7 +242,7 @@ private   CCityList           m_CityList;
           protected void onPostExecute( Void Param )
           {
                m_WaitClock.setVisibility( View.GONE );
-               if( m_CityList != null && m_CityList.getCityList().size() > 0 )
+               if( m_CityList != null && m_CityList.getSize() > 0 )
                {
                     m_Adapter = new CCitySearchAdapter( CCitySearchActivity.this, m_CityList );
                     m_ListView.setAdapter( m_Adapter );
@@ -279,12 +293,11 @@ private   CCityList           m_CityList;
           {
                if( params.length != 1 || params[ 0 ] == null ) return false;
                CWorldWeatherApi WorldWeatherApi = new CWorldWeatherApi();
-               CWeatherDAO WeatherDAO = new CWeatherDAO( CCitySearchActivity.this );
                try
                {
                     CCity City = params[ 0 ];
                     City.setForecastList( WorldWeatherApi.getCityWeather( City ) );
-                    WeatherDAO.Insert( City );
+                    m_WeatherDAO.Insert( City );
                     return true;
                }
                catch( IOException exception )    { exception.printStackTrace(); }

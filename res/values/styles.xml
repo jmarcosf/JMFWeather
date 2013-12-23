@@ -84,7 +84,7 @@
     <style name="IDR_STY_CITY_DETAILS_STYLE">
 <!--         <item name="android:background">@drawable/image_city_details_background</item> -->
         <item name="android:background">@drawable/image_snow_background</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:padding">25dp</item>
  	</style>
     
 </resources>

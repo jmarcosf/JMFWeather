@@ -85,8 +85,10 @@ private	TreeMap< Long, CCity> 	m_CityMap;
 	/* CCityList.getters()                                   */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public CCity get( long id )			{ return m_CityMap.get( id ); }
-	public ArrayList< CCity > getCityList()	{ return m_CityList; }
+	public CCity                 get( long id )      { return m_CityMap.get( id ); }
+	public ArrayList< CCity >    getCityList()       { return m_CityList; }
+	public int                   getSize()           { return m_CityList.size(); }
+	public CCity                 getAt( int Index )  { return m_CityList.get( Index ); }
 	
 	/*********************************************************/
 	/*                                                       */ 

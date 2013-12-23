@@ -82,8 +82,10 @@ private	TreeMap< Long, CForecast> 	m_ForecastMap;
 	/* CForecastList.getters()                               */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public CForecast get( long id )				{ return m_ForecastMap.get( id ); }
-	public ArrayList< CForecast > getForecastList()	{ return m_ForecastList; }
+	public CForecast                  get( long id )      { return m_ForecastMap.get( id ); }
+	public ArrayList< CForecast >     getForecastList()   { return m_ForecastList; }
+	public int                        getSize()           { return m_ForecastList.size(); }
+	public CForecast                  getAt( int Index )  { return m_ForecastList.get( Index ); }
 	
 	/*********************************************************/
 	/*                                                       */ 

@@ -112,6 +112,9 @@ private SQLiteDatabase		m_db;
 				ConditionRecord.put( CWeatherDBContract.CConditionTable.COLUMN_NAME_WEATHER_DESCRIPTION, 		City.getCondition().getWeatherDescription() );
 	
 				m_db.insert( CWeatherDBContract.CConditionTable.TABLE_NAME, null, ConditionRecord );
+				
+				if( City.getForecastList() != null && City.getForecastList().getSize() > 0 ) Insert( City.getForecastList(), City );
+				
 				m_db.setTransactionSuccessful();
 			}
 		}
@@ -234,7 +237,8 @@ private SQLiteDatabase		m_db;
           if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
           
           String[] Projection = { CWeatherDBContract.CCityTable._ID };
-          Cursor cursor = m_db.query( CWeatherDBContract.CCityTable.TABLE_NAME, Projection, null, null, null, null, null );
+          String orderBy = CWeatherDBContract.CCityTable.COLUMN_NAME_NAME + " ASC";
+          Cursor cursor = m_db.query( CWeatherDBContract.CCityTable.TABLE_NAME, Projection, null, null, null, null, orderBy );
           if( cursor == null || !cursor.moveToFirst() ) return null;
           
           ArrayList< Long > CityIdList = new ArrayList< Long >();

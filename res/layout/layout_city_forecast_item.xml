@@ -12,18 +12,61 @@
 /*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"  >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* Forecast Day                                              */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <TextView
+        android:id="@+id/IDC_TXT_FORECAST_DATE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="Times New Roman"
+        android:textSize="18sp" />
+    
     <!--**********************************************************/
     /*                                                           */ 
     /* Forecast Icon                                             */ 
 	/*                                                           */ 
     /***********************************************************-->
-    <TextView
-        android:id="@+id/IDC_TXT_FORECAST_DATE"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <ImageView
+        android:id="@+id/IDP_ICO_FORECAST_ICON"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="5dp" />
     
-</RelativeLayout>
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* Forecast Temperature                                      */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <TextView
+        android:id="@+id/IDC_TXT_FORECAST_TEMPERATURE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="5dp"
+        android:fontFamily="Arial Black"
+        android:textStyle="bold"
+        android:textSize="26sp" />
+    
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* Forecast Description                                      */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <TextView
+        android:id="@+id/IDC_TXT_FORECAST_DESCRIPTION"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="5dp" />
+    
+</LinearLayout>

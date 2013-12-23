@@ -14,6 +14,9 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather.model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,10 +25,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.utad.marcos.jorge.jmfweather.R;
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDBContract;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.widget.ImageView;
 
 /**************************************************************/
 /*                                                            */ 
@@ -158,23 +167,47 @@ private int		m_MinTemperatureFahrenheit;
 	/* CForecast getters                                     */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public long getId()						{ return m_Id; }
-	public long getCityId()					{ return m_CityId; }
+	public long   getId()					{ return m_Id; }
+	public long   getCityId()				{ return m_CityId; }
 	public String getIconUrl()				{ return m_IconUrl; }
-	public int getMinTemperatureCelsius()		{ return m_MinTemperatureCelsius; }
-	public int getWindSpeedMph()				{ return m_WindSpeedMph; }
-	public int getWindSpeedKmph()				{ return m_WindSpeedKmph; }
+	public int    getMinTemperatureCelsius()	{ return m_MinTemperatureCelsius; }
+	public int    getWindSpeedMph()			{ return m_WindSpeedMph; }
+	public int    getWindSpeedKmph()			{ return m_WindSpeedKmph; }
 	public String getWindDirection()			{ return m_WindDirection; }
-	public int getMaxTemperatureCelsius()		{ return m_MaxTemperatureCelsius; }
-	public Date getForecastDate()				{ return m_ForecastDate; }
-	public int getWeatherCode()				{ return m_WeatherCode; }
-	public int getMaxTemperatureFahrenheit()	{ return m_MaxTemperatureFahrenheit; }
-	public float getPrecipitation()			{ return m_Precipitation; }
-	public int getWindDirectionDegrees()		{ return m_WindDirectionDegrees; }
+	public int    getMaxTemperatureCelsius()	{ return m_MaxTemperatureCelsius; }
+	public Date   getForecastDate()			{ return m_ForecastDate; }
+	public int    getWeatherCode()			{ return m_WeatherCode; }
+	public int    getMaxTemperatureFahrenheit()	{ return m_MaxTemperatureFahrenheit; }
+	public float  getPrecipitation()			{ return m_Precipitation; }
+	public int    getWindDirectionDegrees()		{ return m_WindDirectionDegrees; }
 	public String getWindDirectionCompass()		{ return m_WindDirectionCompass; }
 	public String getWeatherDescription()		{ return m_WeatherDescription; }
-	public int getMinTemperatureFahrenheit()	{ return m_MinTemperatureFahrenheit; }
+	public int    getMinTemperatureFahrenheit()	{ return m_MinTemperatureFahrenheit; }
 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CForecast.SetViewIcon()                               */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void SetViewIcon( Context context, ImageView view )
+     {
+          if( context != null && view != null )
+          {
+               File CacheDirectory = context.getCacheDir();
+               Uri uri = Uri.parse( getIconUrl() );
+               String ImagePath = uri.getLastPathSegment();
+               File ImageFile = new File( CacheDirectory, ImagePath );
+               try
+               {
+                    Bitmap IconBitmap = BitmapFactory.decodeStream( new FileInputStream( ImageFile ) );
+                    view.setImageBitmap( IconBitmap );
+               }
+               catch( FileNotFoundException exception )
+               {
+                    view.setImageResource( R.drawable.icon_main );
+               }
+          }
+     }
 
 }
 

@@ -69,7 +69,7 @@ private CCityList   m_CityList;
      @Override
      public int getCount()
      {
-          return m_CityList.getCityList().size();
+          return m_CityList.getSize();
      }
 
      /*********************************************************/
@@ -80,7 +80,7 @@ private CCityList   m_CityList;
      @Override
      public Object getItem( int position )
      {
-          return m_CityList.getCityList().get( position );
+          return m_CityList.getAt( position );
      }
 
      /*********************************************************/
@@ -91,7 +91,7 @@ private CCityList   m_CityList;
      @Override
      public long getItemId( int position )
      {
-          return m_CityList.getCityList().get( position ).getId();
+          return m_CityList.getAt( position ).getId();
      }
 
      /*********************************************************/
@@ -111,7 +111,7 @@ private CCityList   m_CityList;
           else ItemView = ConvertView;
           TextView CityName = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_NAME );
           
-          CCity City = m_CityList.getCityList().get( position );
+          CCity City = m_CityList.getAt( position );
           if( City == null || City.getName() == null ) return null;
           
           // Concatenate Name, Region & Country whereas not null & Region not equal to Country

@@ -13,16 +13,18 @@
 /*                                                            */
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.utad.marcos.jorge.jmfweather.model.CForecast;
 import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 
 /**************************************************************/
@@ -70,7 +72,7 @@ private CForecastList    m_ForecastList;
      @Override
      public int getCount()
      {
-          return m_ForecastList.getForecastList().size();
+          return m_ForecastList.getSize();
      }
 
      /*********************************************************/
@@ -81,7 +83,7 @@ private CForecastList    m_ForecastList;
      @Override
      public Object getItem( int position )
      {
-          return m_ForecastList.getForecastList().get( position );
+          return m_ForecastList.getAt( position );
      }
 
      /*********************************************************/
@@ -92,7 +94,7 @@ private CForecastList    m_ForecastList;
      @Override
      public long getItemId( int position )
      {
-          return m_ForecastList.getForecastList().get( position ).getId();
+          return m_ForecastList.getAt( position ).getId();
      }
 
      /*********************************************************/
@@ -100,6 +102,7 @@ private CForecastList    m_ForecastList;
      /* CCityForecastAdapter.getView()                        */ 
      /*                                                       */ 
      /*********************************************************/
+     @SuppressLint( "SimpleDateFormat" )
      @Override
      public View getView( int position, View ConvertView, ViewGroup Parent )
      {
@@ -111,9 +114,23 @@ private CForecastList    m_ForecastList;
           }
           else ItemView = ConvertView;
           
+          CForecast Forecast = m_ForecastList.getAt( position );
+          
           TextView ForecastDate = (TextView)ItemView.findViewById( R.id.IDC_TXT_FORECAST_DATE );
-          Date fcDate = m_ForecastList.getForecastList().get( position ).getForecastDate();
-          ForecastDate.setText( ( fcDate == null ) ? "null date" : fcDate.toString() );
+          Date fcDate = Forecast.getForecastDate();
+          SimpleDateFormat DateFormat = new SimpleDateFormat( "EEE" );
+          String DayOfWeek = ( fcDate == null ) ? "null date" : DateFormat.format( fcDate );
+          ForecastDate.setText( DayOfWeek );
+
+          ImageView ForecastIcon = (ImageView)ItemView.findViewById( R.id.IDP_ICO_FORECAST_ICON );
+          Forecast.SetViewIcon( m_Context, ForecastIcon );
+          
+          TextView ForecastTemperature = (TextView)ItemView.findViewById( R.id.IDC_TXT_FORECAST_TEMPERATURE );
+          if( CApp.getCelsius() ) ForecastTemperature.setText( "" + Forecast.getMinTemperatureCelsius() + "/" + Forecast.getMaxTemperatureCelsius() + "ºC" );
+          else ForecastTemperature.setText( "" + Forecast.getMinTemperatureFahrenheit() + "/" + Forecast.getMaxTemperatureFahrenheit() + "ºF" );
+
+          TextView ForecastDescription = (TextView)ItemView.findViewById( R.id.IDC_TXT_FORECAST_DESCRIPTION );
+          ForecastDescription.setText( Forecast.getWeatherDescription() );
 
           return ItemView;
      }

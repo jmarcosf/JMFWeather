@@ -51,11 +51,9 @@ public class CSettingsActivity extends PreferenceActivity
      {
           super.onCreate(savedInstanceState);
           
-//          PreferenceCategory prefCategory = new PreferenceCategory( this );
-//          prefCategory.setTitle( R.string.IDS_GENERAL );
-//          getPreferenceScreen().addPreference( prefCategory );
           addPreferencesFromResource( R.xml.preferences );
           
+//          BindPreferenceSummaryToValue( findPreference( "DivideScreenOnTablets" ) );
           BindPreferenceSummaryToValue( findPreference( "WeatherSyncFrequency" ) );
           BindPreferenceSummaryToValue( findPreference( "WeatherDegreesType" ) );
      }
@@ -87,7 +85,12 @@ public class CSettingsActivity extends PreferenceActivity
                }
                else preference.setSummary( stringValue );
      
-               if( preference.getKey().equals( "WeatherSyncFrequency" ) )
+/*               if( preference.getKey().equals( "DivideScreenOnTablets" ) )
+               {
+                    boolean bValue = Boolean.parseBoolean( stringValue );
+                    bValue = bValue;
+               }
+               else*/ if( preference.getKey().equals( "WeatherSyncFrequency" ) )
                {
                     int timeout = Integer.parseInt( stringValue ) * 60 * 1000;
                     CWeatherRetrieverService.StartAlarm( CApp.getAppContext(), timeout );
@@ -119,6 +122,6 @@ public class CSettingsActivity extends PreferenceActivity
               preference,
               PreferenceManager
                    .getDefaultSharedPreferences( preference.getContext() )
-                   .getString(preference.getKey(), "" ) );
+                   .getString( preference.getKey(), "" ) );
      }
 }
