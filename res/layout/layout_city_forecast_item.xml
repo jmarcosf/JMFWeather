@@ -1,9 +1,9 @@
 <!--**************************************************************/
 /*                                                               */ 
-/* menu_city_details.xml                                         */ 
+/* layout_city_forescast_item.xml                                */ 
 /* (c)2013 jmarcosf                                              */ 
 /*                                                               */ 
-/* Description: City Details Activity Menu                       */ 
+/* Description: City Forecast Item Layout                        */ 
 /*              JmfWeather Project                               */ 
 /*              Práctica asignatura Android Fundamental          */ 
 /*              U-Tad - Master Apps                              */ 
@@ -12,13 +12,18 @@
 /*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:JmfWeather="http://schemas.android.com/apk/res-auto" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"  >
 
-    <item
-        android:id="@+id/IDM_SETTINGS"
-        android:showAsAction="always"
-        android:title="@string/IDS_SETTINGS"
-        android:icon="@android:drawable/ic_menu_preferences" />
-
-</menu>
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* Forecast Icon                                             */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <TextView
+        android:id="@+id/IDC_TXT_FORECAST_DATE"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+</RelativeLayout>

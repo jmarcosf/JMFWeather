@@ -12,7 +12,7 @@
 /*        Date: December 2013                                    */ 
 /*                                                               */
 /***************************************************************-->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/IDR_STY_CITY_DETAILS_STYLE"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,13 +20,43 @@
 
 	<!--**********************************************************/
     /*                                                           */ 
-    /* City Details Layout                                       */ 
+    /*                                                           */ 
+    /* City Details Forecast Layout                              */ 
+    /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/IDR_LAY_DETAILS_FORECAST"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:padding="1dp" >
+
+        <GridView
+            android:id="@+id/IDC_GRID_FORECAST"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnWidth="120dp"
+            android:gravity="center"
+            android:horizontalSpacing="5dp"
+            android:numColumns="5"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp" />
+
+    </RelativeLayout>
+   	
+    <!--**********************************************************/
+    /*                                                           */ 
+    /*                                                           */ 
+    /* City Details Header Layout                                */ 
+    /*                                                           */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <RelativeLayout
+        android:id="@+id/IDR_LAY_DETAILS_HEADER"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp" >
+        android:layout_alignParentTop="true" >
     
 	    <!--******************************************************/
 	    /*                                                       */ 
@@ -52,6 +82,7 @@
 	        android:textSize="30sp"
 	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
 	
+	    	
 	    <!--******************************************************/
 	    /*                                                       */ 
 	    /* City Country                                          */ 
@@ -83,7 +114,7 @@
 	        android:fontFamily="Arial"
 	        android:textSize="18sp"
 	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
-	    	
+
 	    <!--******************************************************/
 	    /*                                                       */ 
 	    /* Current Temperature                                   */ 
@@ -95,12 +126,28 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentRight="true"
 	        android:layout_alignParentTop="true"
-	        android:paddingTop="30dp"
+	        android:paddingTop="15dp"
 	        android:gravity="right"
 	        android:fontFamily="Times New Roman"
 	        android:textSize="75sp" />
-
-	    <!--******************************************************/
+	    
+	</RelativeLayout>
+	
+	<!--**********************************************************/
+    /*                                                           */ 
+    /*                                                           */ 
+    /* City Details Body Layout                                  */ 
+    /*                                                           */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <RelativeLayout
+        android:id="@+id/IDR_LAY_DETAILS_BODY"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/IDR_LAY_DETAILS_FORECAST"
+        android:layout_below="@id/IDR_LAY_DETAILS_HEADER" >
+        
+        <!--******************************************************/
 	    /*                                                       */ 
 	    /* City Pressure                                         */ 
 		/*                                                       */ 
@@ -109,7 +156,6 @@
 	        android:id="@+id/IDC_TXT_CITY_PRESSURE"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/IDP_ICO_CITY_ICON"
 	        android:paddingTop="25dp"
 	        android:fontFamily="Arial"
 	        android:textSize="25sp" />
@@ -130,7 +176,7 @@
 	    
 	</RelativeLayout>
    	
-</ScrollView>
+</RelativeLayout>
 
 
 

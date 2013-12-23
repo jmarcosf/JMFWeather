@@ -30,7 +30,10 @@ import android.preference.PreferenceManager;
 /**************************************************************/
 public class CApp extends Application
 {
-private static Context m_Context = null;
+private static Context   m_Context = null;
+private static boolean   m_bFirstCall = true;
+private static boolean   m_bCelsius = true;
+private static int       m_Orientation = -1;
      
      /*********************************************************/
      /*                                                       */ 
@@ -48,6 +51,7 @@ private static Context m_Context = null;
      {
           super.onCreate();
           CApp.m_Context = getApplicationContext();
+          CApp.m_bFirstCall = true;
      }
      
      /*********************************************************/
@@ -61,10 +65,6 @@ private static Context m_Context = null;
      /* CApp.getAppContext()                                  */ 
      /*                                                       */ 
      /*********************************************************/
-     public static Context getAppContext()
-     {
-          return m_Context;
-     }
      
      /*********************************************************/
      /*                                                       */ 
@@ -75,6 +75,18 @@ private static Context m_Context = null;
      {
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( m_Context );
           boolean bEnabled = preferences.getBoolean( "IncludeCurrentLocationOnStartup", true );
+          return bEnabled;
+     }
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /* CApp.IsDivideScreenOnTabletsEnabled()                 */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public static boolean IsDivideScreenOnTabletsEnabled()
+     {
+          SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( m_Context );
+          boolean bEnabled = preferences.getBoolean( "DivideScreenOnTablets", false );
           return bEnabled;
      }
      
@@ -103,6 +115,26 @@ private static Context m_Context = null;
           int DefaultValue = m_Context.getResources().getInteger( R.integer.g_WeatherDegreesTypeDefault );
           String DegreesPreference = preferences.getString( "WeatherDegreesType", "" + DefaultValue );
           int Value = Integer.parseInt( DegreesPreference );
-          return( Value == 1);
+          CApp.m_bCelsius = ( Value == 1 );
+          return CApp.m_bCelsius;
      }
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /* Class getters                                         */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public static Context getAppContext()   { return m_Context; }
+     public static boolean getFirstCall()    { return CApp.m_bFirstCall; }
+     public static boolean getCelsius()      { return CApp.m_bCelsius; }
+     public static int     getOrientation()  { return CApp.m_Orientation; }
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /* Class setters                                         */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public static void setFirstCall( boolean bValue ) { CApp.m_bFirstCall = bValue; }
+     public static void setCelsius( boolean bValue )   { CApp.m_bCelsius = bValue; }
+     public static void setOrientation( int iValue )   { CApp.m_Orientation = iValue; }
 }

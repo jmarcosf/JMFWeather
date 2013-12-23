@@ -12,8 +12,9 @@
 /*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
-<FrameLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/IDC_LAY_DRAWER"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
@@ -61,4 +62,26 @@
 	    android:layout_gravity="center"
 	    android:visibility="gone" />
 
-</FrameLayout>
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* Navigation Drawer Layout                                  */ 
+    /*     start=indica que este elemento es el Drawer           */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <LinearLayout 
+        android:id="@+id/IDR_LAY_LEFT_DRAWER"
+        android:orientation="vertical"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:padding="8dp"
+        android:background="@android:color/white" >
+        
+        <TextView
+	        android:id="@+id/IDC_TXT_HELP"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" />
+
+	</LinearLayout>    	
+    
+</android.support.v4.widget.DrawerLayout>

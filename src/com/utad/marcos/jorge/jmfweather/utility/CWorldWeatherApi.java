@@ -29,7 +29,6 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 import com.utad.marcos.jorge.jmfweather.model.CCityList;
@@ -119,9 +118,7 @@ private byte[]                m_ImageBytes;
 	public CCityList SearchCity( String Name ) throws IOException, JSONException
 	{
 		if( Name == null ) return null;
-          Log.d( CWorldWeatherApi.class.getSimpleName(), "SearchCity(): " + Name );
 		String Url = WORLD_WEATHER_SEARCH_CITY_URL + "?q=" + Name.replaceAll( " ", "+" ) + "&format=json&key=" + WORLD_WEATHER_KEY;
-          Log.d( CWorldWeatherApi.class.getSimpleName(), "URL: " + Url );
 		Connect( new URL( Url ) );
 		
 		JSONObject jsonResponse = getJSONObject();
@@ -148,7 +145,6 @@ private byte[]                m_ImageBytes;
      public CCityList SearchLocation( String Latitude, String Longitude ) throws IOException, JSONException
      {
           if( Latitude == null || Longitude == null ) return null;
-          Log.d( CWorldWeatherApi.class.getSimpleName(), "SearchLocation(): " + Longitude + "+" + Latitude );
           String Url = WORLD_WEATHER_SEARCH_CITY_URL + "?q=" + Latitude + "+" + Longitude + "&format=json&num_of_results=1&key=" + WORLD_WEATHER_KEY;
           Connect( new URL( Url ) );
           
@@ -176,7 +172,6 @@ private byte[]                m_ImageBytes;
 	public CForecastList getCityWeather( CCity City ) throws IOException, JSONException, ParseException
 	{
 		if( City == null ) return null;
-          Log.d( CWorldWeatherApi.class.getSimpleName(), "GetCityWeather() of: " + City.getName() );
 
 		String Url = WORLD_WEATHER_GET_WEATHER_URL + "?q=" + City.getLatitude() + "+" + City.getLongitude() + "&format=json&extra=localObsTime&num_of_days=5&key=" + WORLD_WEATHER_KEY;
 		Connect( new URL( Url ) );

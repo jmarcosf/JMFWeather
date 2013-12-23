@@ -1,9 +1,9 @@
 <!--**************************************************************/
 /*                                                               */ 
-/* menu_city_details.xml                                         */ 
+/* layout_city_list_item_tablet.xml                              */ 
 /* (c)2013 jmarcosf                                              */ 
 /*                                                               */ 
-/* Description: City Details Activity Menu                       */ 
+/* Description: City List Item Layout (Tablets)                  */ 
 /*              JmfWeather Project                               */ 
 /*              Práctica asignatura Android Fundamental          */ 
 /*              U-Tad - Master Apps                              */ 
@@ -12,13 +12,22 @@
 /*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:JmfWeather="http://schemas.android.com/apk/res-auto" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/IDR_STY_CITY_LISTVIEW_ITEM_STYLE" >
 
-    <item
-        android:id="@+id/IDM_SETTINGS"
-        android:showAsAction="always"
-        android:title="@string/IDS_SETTINGS"
-        android:icon="@android:drawable/ic_menu_preferences" />
+    <ImageView
+        android:id="@+id/IDP_ICO_CITY_ICON"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
 
-</menu>
+    <TextView
+        android:id="@+id/IDC_TXT_CITY_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+
+</RelativeLayout>

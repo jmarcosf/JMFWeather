@@ -36,8 +36,9 @@ import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 /**************************************************************/
 public class CCityDetailsActivity extends CBaseCityActivity
 {
-private   ArrayList< Long >   m_CityIdList;
-private   int                 m_Position;
+private   ArrayList< Long >        m_CityIdList;
+private   int                      m_Position;
+private   CCityDetailsPagerAdapter m_PagerAdapter = null;
 
      /*********************************************************/
      /*                                                       */ 
@@ -77,8 +78,8 @@ private   int                 m_Position;
 		
 		// Attach new PagerAdapter to ViewPager
 		ViewPager viewPager = (ViewPager)findViewById( R.id.IDR_LAY_CITY_CONTAINER );
-		CCityDetailsPagerAdapter pageAdapter = new CCityDetailsPagerAdapter( getSupportFragmentManager(), m_CityIdList );
-		viewPager.setAdapter( pageAdapter );
+		m_PagerAdapter = new CCityDetailsPagerAdapter( getSupportFragmentManager(), m_CityIdList );
+		viewPager.setAdapter( m_PagerAdapter );
 		viewPager.setCurrentItem( m_Position );
 	}
 	

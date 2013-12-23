@@ -87,10 +87,15 @@ public class CSettingsActivity extends PreferenceActivity
                }
                else preference.setSummary( stringValue );
      
-               if( "WeatherSyncFrequency".equals( preference.getKey() ) )
+               if( preference.getKey().equals( "WeatherSyncFrequency" ) )
                {
                     int timeout = Integer.parseInt( stringValue ) * 60 * 1000;
                     CWeatherRetrieverService.StartAlarm( CApp.getAppContext(), timeout );
+               }
+               else if( preference.getKey().equals( "WeatherDegreesType" ) )
+               {
+                    int Value = Integer.parseInt( stringValue );
+                    CApp.setCelsius( Value == 1 );
                }
                return true;
           }

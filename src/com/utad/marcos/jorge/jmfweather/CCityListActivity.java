@@ -29,8 +29,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,14 +65,13 @@ protected final static int         MSGBOX_READ_CITIES_ERROR_REQUEST_ID     = 100
 protected final static int         MSGBOX_DELETE_CITY_REQUEST_ID           = 101;
      
 private   boolean                  m_bTablet = false;
-private   boolean                  m_bCelsius = true;
-private   DrawerLayout             m_Drawer;
-private   ActionBarDrawerToggle    m_DrawerToggle;
-private   ListView                 m_ListView;
-private   CCityListAdapter         m_Adapter;
-private   ProgressBar              m_WaitClock;
-private   ServiceConnection        m_ServiceConnection;
-private   CWeatherRetrieverBinder  m_ServiceBinder;
+private   DrawerLayout             m_Drawer = null;
+private   ActionBarDrawerToggle    m_DrawerToggle = null;
+private   ListView                 m_ListView = null;
+private   CCityListAdapter         m_Adapter = null;
+private   ProgressBar              m_WaitClock = null;
+private   ServiceConnection        m_ServiceConnection = null;
+private   CWeatherRetrieverBinder  m_ServiceBinder = null;
 
      /*********************************************************/
      /*                                                       */
@@ -86,11 +88,14 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      protected void onCreate( Bundle savedInstanceState )
      {
           super.onCreate( savedInstanceState );
+          Log.d( CCityListActivity.class.getSimpleName(), "OnCreate()" );
+          if( savedInstanceState != null ) Log.d( CBaseCityActivity.class.getSimpleName(), "savedInstanceState != null" );
           setContentView( R.layout.layout_city_list_activity );
           
-          m_bTablet = getResources().getBoolean( R.bool.g_bTablet );
-//          setContentView( m_bTablet ? R.layout.layout_city_list_activity_tablet : R.layout.layout_city_list_activity );
-          setContentView( R.layout.layout_city_list_activity );
+          m_bTablet = ( getResources().getBoolean( R.bool.g_bTablet ) && CApp.IsDivideScreenOnTabletsEnabled() );
+          CApp.setOrientation( getResources().getConfiguration().orientation );
+          Log.d( CCityListActivity.class.getSimpleName(), ( CApp.getOrientation() == Configuration.ORIENTATION_LANDSCAPE ) ? "LANDSCAPE" : "PORTRAIT" );
+          setContentView( m_bTablet ? R.layout.layout_city_list_activity_tablet : R.layout.layout_city_list_activity );
           
           m_WaitClock = (ProgressBar)findViewById( R.id.IDC_PB_WAIT_CLOCK );
 
@@ -109,6 +114,8 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           
           getSupportActionBar().setDisplayHomeAsUpEnabled( true );
           ( (TextView)findViewById( R.id.IDC_TXT_HELP ) ).setText( Html.fromHtml( GetHelpText() ) );
+
+          ServiceConnect();
      }
      
      /*********************************************************/
@@ -120,22 +127,12 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      protected void onPostCreate( Bundle savedInstanceState )
      {
           super.onPostCreate( savedInstanceState );
+          Log.d( CCityListActivity.class.getSimpleName(), "OnPostCreate()" );
           m_DrawerToggle.syncState();
-          LoadCityList();
-          ServiceConnect();
+          if( savedInstanceState != null ) CApp.setCelsius( savedInstanceState.getBoolean( "Celsius" ) );
+          else CApp.getWeatherDegreesType();
      }
      
-     /*********************************************************/
-     /*                                                       */
-     /* CCityListActivity.onStart()                           */
-     /*                                                       */
-     /*********************************************************/
-     @Override
-     protected void onStart()
-     {
-          super.onStart();
-     }
-
      /*********************************************************/
      /*                                                       */
      /* CCityListActivity.onResume()                          */
@@ -145,23 +142,8 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      protected void onResume()
      {
           super.onResume();
-          boolean bCelsius = CApp.getWeatherDegreesType();
-          if( bCelsius != m_bCelsius )
-          {
-               m_bCelsius = bCelsius;
-               LoadCityList();
-          }
-     }
-
-     /*********************************************************/
-     /*                                                       */
-     /* CCityListActivity.onStop()                            */
-     /*                                                       */
-     /*********************************************************/
-     @Override
-     protected void onStop()
-     {
-          super.onStop();
+          Log.d( CCityListActivity.class.getSimpleName(), "OnResume()" );
+          LoadCityList();
      }
 
      /*********************************************************/
@@ -172,6 +154,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      @Override
      protected void onDestroy()
      {
+          Log.d( CCityListActivity.class.getSimpleName(), "OnDestroy()" );
           if( m_ServiceBinder != null ) m_ServiceBinder.getService().StopLoadingImages();
           ServiceDisconnect();
           super.onDestroy();
@@ -190,18 +173,18 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           switch( Item.getItemId() )
           {
                case R.id.IDM_DEGREES_CELSIUS:
-                    if( !m_bCelsius )
+                    if( !CApp.getCelsius() )
                     {
-                         m_bCelsius = true;
-                         LoadCityList();
+                         CApp.setCelsius( true );
+                         if( m_Adapter != null ) m_Adapter.notifyDataSetChanged();
                     }
                     return true;
 
                case R.id.IDM_DEGREES_FAHRENHEIT:
-                    if( m_bCelsius )
+                    if( CApp.getCelsius() )
                     {
-                         m_bCelsius = false;
-                         LoadCityList();
+                         CApp.setCelsius( false );
+                         if( m_Adapter != null ) m_Adapter.notifyDataSetChanged();
                     }
                     return true;
      
@@ -242,12 +225,14 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
                               CWeatherDAO WeatherDAO = new CWeatherDAO( this );
                               int Result = WeatherDAO.DeleteCity( CityId );
                               WeatherDAO.Close();
+                              if( Result != -1 ) Log.d( CCityListActivity.class.getName(), "Delete City!" );
                               if( Result != -1 ) LoadCityList();
                          }
                     }
                     break;
                     
                case MSGBOX_READ_CITIES_ERROR_REQUEST_ID:
+                    if( ResultCode == CMessageBoxActivity.MESSAGEBOX_RESULT_ACCEPTED ) Log.d( CCityListActivity.class.getName(), "Read Cities Error!" );
                     if( ResultCode == CMessageBoxActivity.MESSAGEBOX_RESULT_ACCEPTED ) LoadCityList();
                     else finish();
                     break;
@@ -311,26 +296,25 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      @Override 
      public void onItemClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
      {
-//          if( m_bTablet )
-//          {
-//               m_ListView.setItemChecked( iPosition, true );
-//               
-//               // Build Tablet Fragment
-//               CCityDetailsFragment Fragment = new CCityDetailsFragment();
-//               Bundle Params = new Bundle();
-//               Params.putParcelable( CCityDetailsFragment.IDS_CITY_ID_PARAM, City );
-//               Fragment.setArguments( Params );
-//
-//               FragmentManager frgManager = getSupportFragmentManager();
-//               FragmentTransaction tx = frgManager.beginTransaction();
-//               tx.replace( R.id.IDR_LAY_CITY_CONTAINER, Fragment );
-//               tx.commit();
-//          }
-//          else
+          if( m_bTablet )
+          {
+               m_ListView.setItemChecked( iPosition, true );
+               
+               // Build Tablet Fragment
+               CCityDetailsFragment Fragment = new CCityDetailsFragment();
+               Bundle Params = new Bundle();
+               Params.putLong( CCityDetailsFragment.IDS_CITY_ID_PARAM, id );
+               Fragment.setArguments( Params );
+
+               FragmentManager frgManager = getSupportFragmentManager();
+               FragmentTransaction tx = frgManager.beginTransaction();
+               tx.replace( R.id.IDR_LAY_CITY_CONTAINER, Fragment );
+               tx.commit();
+          }
+          else
           {
                Intent intent = new Intent( CCityListActivity.this, CCityDetailsActivity.class );
                intent.putExtra( CCityDetailsFragment.IDS_CITY_ID_PARAM, id );
-               intent.putExtra( CCityDetailsFragment.IDS_DEGREES_TYPE_PARAM, m_bCelsius );
                startActivity( intent );
           }
      }
@@ -372,6 +356,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      /*********************************************************/
      public void LoadCityList()
      {
+          Log.d( CCityListActivity.class.getSimpleName(), "LoadCityList()" );
           new CDBLoader().execute();
      }
 
@@ -402,7 +387,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      /*********************************************************/
      /*                                                       */
      /*                                                       */
-     /* Service Binding Methods                               */
+     /* Service Methods                                       */
      /*                                                       */
      /*                                                       */
      /*********************************************************/
@@ -412,8 +397,9 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      /*********************************************************/
      private void ServiceConnect()
      {
+          Log.d( CCityListActivity.class.getName(), "ServiceConnect()" );
           Intent service = new Intent( this, CWeatherRetrieverService.class );
-          m_ServiceConnection = new ServiceConnection()
+          m_ServiceConnection = ( new ServiceConnection()
           {
                @Override
                public void onServiceConnected( ComponentName name, IBinder binder )
@@ -424,20 +410,21 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
                          @Override
                          public void onWeatherLoaded()
                          {
+                              Log.d( CCityListActivity.class.getName(), "onWeatherLoaded()" );
                               LoadCityList();
                          }
                     } );
                     
-                    //Load List from DB then program service to update Weather.
-                    LoadCityList();
-                    m_ServiceBinder.getService().LoadWeather( true );
+                    //Program service to update Weather.
+                    Log.d( CCityListActivity.class.getName(), "onServiceConnected()" );
+                    m_ServiceBinder.getService().LoadWeather();
                }
                @Override
                public void onServiceDisconnected( ComponentName name )
                {
                     m_ServiceBinder = null;
                }
-          };
+          } );
 
           bindService( service, m_ServiceConnection, Service.BIND_AUTO_CREATE );
      }
@@ -449,7 +436,9 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
      /*********************************************************/
      private void ServiceDisconnect()
      {
+          Log.d( CCityListActivity.class.getName(), "ServiceDisconnect()" );
           if( m_ServiceConnection != null ) unbindService( m_ServiceConnection );
+          m_ServiceConnection = null;
      }
 
      /*********************************************************/
@@ -469,6 +458,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           @Override
           protected void onPreExecute()
           {
+               Log.d( CCityListActivity.class.getSimpleName(), "OnPreExecute()" );
                m_WaitClock.setVisibility( View.VISIBLE );
           }
 
@@ -480,6 +470,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           @Override
           protected Cursor doInBackground( Void... params )
           {
+               Log.d( CCityListActivity.class.getSimpleName(), "doInBackround()" );
                CWeatherDAO WeatherDAO = new CWeatherDAO( CCityListActivity.this );
                Cursor cityCursor = WeatherDAO.SelectAllCities();
                return cityCursor;
@@ -493,18 +484,17 @@ private   CWeatherRetrieverBinder  m_ServiceBinder;
           @Override
           protected void onPostExecute( Cursor cityCursor )
           {
+               Log.d( CCityListActivity.class.getSimpleName(), "OnPostExecute()" );
                m_WaitClock.setVisibility( View.GONE );
                if( cityCursor.getCount() > 0 && cityCursor.moveToFirst() )
                {
                     if( m_Adapter == null )
                     {
                          m_Adapter = new CCityListAdapter( CCityListActivity.this, cityCursor );
-                         m_Adapter.SetCelsius( m_bCelsius );
                          m_ListView.setAdapter( m_Adapter );
                     }
                     else
                     {
-                         m_Adapter.SetCelsius( m_bCelsius );
                          m_Adapter.changeCursor( cityCursor );
                          m_Adapter.notifyDataSetChanged();
                     }

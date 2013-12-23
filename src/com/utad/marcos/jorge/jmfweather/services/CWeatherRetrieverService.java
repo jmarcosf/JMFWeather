@@ -38,6 +38,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.utad.marcos.jorge.jmfweather.CApp;
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
@@ -153,7 +154,7 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
      @Override
      public int onStartCommand( Intent intent, int flags, int startId )
      {
-          LoadWeather( false );
+          LoadWeather();
           return START_STICKY;
      }
      
@@ -269,14 +270,14 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
 	/* CWeatherRetrieverService.LoadWeather()                */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public boolean LoadWeather( boolean bFirstCall )
+	public boolean LoadWeather()
 	{
 		ConnectivityManager ConnManager = (ConnectivityManager)getSystemService( Context.CONNECTIVITY_SERVICE );
 		NetworkInfo NetInfo = ConnManager.getActiveNetworkInfo();
 
 		if( NetInfo != null && NetInfo.isConnected() && m_Listener != null )
 		{
-			new CInetLoader().execute( bFirstCall );
+			new CInetLoader().execute();
 			return true;
 		}
 		else	return false;
@@ -319,20 +320,21 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
 	/*                                                       */ 
 	/*                                                       */ 
 	/*********************************************************/
-	private class CInetLoader extends AsyncTask< Boolean, Void, Void >
+	private class CInetLoader extends AsyncTask< Void, Void, Void >
 	{
      CWorldWeatherApi WorldWeatherApi = null;
      CWeatherDAO WeatherDAO = null;
 	     
 	     /****************************************************/
 	     /*                                                  */ 
-	     /* CWeatherRetrieverService.onPreExecute()          */ 
+	     /* CInetLoader.onPreExecute()                       */ 
 	     /*                                                  */ 
 	     /****************************************************/
 	     @Override
 	     protected void onPreExecute()
 	     {
 	          super.onPreExecute();
+               Log.d( CWeatherRetrieverService.class.getName(), "CInetLoader().onPreExecute()" );
                WorldWeatherApi = new CWorldWeatherApi();
                WeatherDAO = new CWeatherDAO( CWeatherRetrieverService.this );
 	     }
@@ -343,9 +345,14 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
 		/*                                                  */ 
 		/****************************************************/
           @Override
-          protected Void doInBackground( Boolean... params )
+          protected Void doInBackground( Void... params )
           {
-          	if( params.length == 1 && params[ 0 ] ) AddCurrentLocation( WorldWeatherApi, WeatherDAO, CWeatherRetrieverService.this );
+               Log.d( CWeatherRetrieverService.class.getName(), "CInetLoader().doInBackground()" );
+               if( CApp.getFirstCall() )
+               {
+                    AddCurrentLocation( WorldWeatherApi, WeatherDAO, CWeatherRetrieverService.this );
+                    CApp.setFirstCall( false );
+               }
           	
           	CCityList CityList = new CCityList();
           	Cursor cursor = WeatherDAO.SelectAllCities();
@@ -390,6 +397,7 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
           @Override
           protected void onPostExecute( Void result )
           {
+               Log.d( CWeatherRetrieverService.class.getName(), "CInetLoader().onPostExecute()" );
                try
                {
                     WorldWeatherApi.Close();

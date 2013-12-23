@@ -1,9 +1,9 @@
 /**************************************************************/
 /*                                                            */
-/* CCityListAdapter.java                                      */
+/* CCityForecastAdapter.java                                  */
 /* (c)2013 jmarcosf                                           */
 /*                                                            */
-/* Description: CCityListAdapter Class                        */
+/* Description: CCityForecastAdapter Class                    */
 /*              JmfWeather Project                            */
 /*              Práctica asignatura Android Fundamental       */ 
 /*              U-Tad - Master Apps                           */ 
@@ -13,32 +13,31 @@
 /*                                                            */
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
-import com.utad.marcos.jorge.jmfweather.model.CCity;
+import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 
 /**************************************************************/
 /*                                                            */
 /*                                                            */
 /*                                                            */
-/* CCityListAdapter Class                                     */
+/* CCityForecastAdapter Class                                 */
 /*                                                            */
 /*                                                            */
 /*                                                            */
 /**************************************************************/
-public class CCityListAdapter extends CursorAdapter
+public class CCityForecastAdapter extends BaseAdapter
 {
-private	Activity    m_Context;
-private   boolean     m_bTablet = false;
+private Activity         m_Context;
+private CForecastList    m_ForecastList;
 	
      /*********************************************************/
      /*                                                       */ 
@@ -48,67 +47,74 @@ private   boolean     m_bTablet = false;
      /*                                                       */ 
      /*********************************************************/
 	/*                                                       */ 
-	/* CCityListAdapter.CCityListAdapter()                   */ 
+	/* CCityForecastAdapter.CCityForecastAdapter()           */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public CCityListAdapter( Activity context, Cursor cityCursor )
+	public CCityForecastAdapter( Activity context, CForecastList ForecastList )
 	{
-	     super( context, cityCursor, false );
 		this.m_Context = context;
-          this.m_bTablet = ( m_Context.getResources().getBoolean( R.bool.g_bTablet ) && CApp.IsDivideScreenOnTabletsEnabled() );
+		this.m_ForecastList = ForecastList;
 	}
-
+	
      /*********************************************************/
      /*                                                       */ 
      /*                                                       */ 
-     /* CursorAdapter Override Methods                        */ 
+     /* BaseAdapter Override Methods                          */ 
      /*                                                       */ 
      /*                                                       */ 
-     /*********************************************************/
+	/*********************************************************/
      /*                                                       */ 
-     /* CCityListAdapter.newView()                            */ 
+     /* CCityForecastAdapter.getCount()                       */ 
      /*                                                       */ 
      /*********************************************************/
      @Override
-     public View newView( Context context, Cursor cityCursor, ViewGroup parent )
+     public int getCount()
+     {
+          return m_ForecastList.getForecastList().size();
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityForecastAdapter.getItem()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public Object getItem( int position )
+     {
+          return m_ForecastList.getForecastList().get( position );
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityForecastAdapter.getItemId()                      */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public long getItemId( int position )
+     {
+          return m_ForecastList.getForecastList().get( position ).getId();
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityForecastAdapter.getView()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public View getView( int position, View ConvertView, ViewGroup Parent )
      {
           View ItemView = null;
-          LayoutInflater inflater = (LayoutInflater)m_Context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-          ItemView = inflater.inflate( m_bTablet ? R.layout.layout_city_list_item_tablet : R.layout.layout_city_list_item, null );
-          return ItemView;
-     }
-     
-     /*********************************************************/
-     /*                                                       */ 
-     /* CCityListAdapter.bindView()                           */ 
-     /*                                                       */ 
-     /*********************************************************/
-     @Override
-     public void bindView( View ItemView, Context context, Cursor cityCursor )
-     {
-          CCity City = new CCity( cityCursor );
-          ItemView.setId( (int)City.getId() );
-          ItemView.setTag( City.getName() );
-
-          CWeatherDAO WeatherDAO = new CWeatherDAO( context );
-          WeatherDAO.SetCityCondition( City );
-          WeatherDAO.Close();
-          if( City.getCondition() == null ) return;
-          
-          TextView CityName = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_NAME );
-          CityName.setText( City.getName() );
-     
-          if( !m_bTablet )
+          if( ConvertView == null )
           {
-               TextView CityCountry = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_COUNTRY );
-               CityCountry.setText( "" + City.getCountry() );
-          
-               TextView CityTemp = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_TEMPERATURE );
-               if( CApp.getCelsius() ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
-               else CityTemp.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
+               LayoutInflater inflater = (LayoutInflater)m_Context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+               ItemView = inflater.inflate( R.layout.layout_city_forecast_item, null );
           }
+          else ItemView = ConvertView;
           
-          ImageView CityIcon = (ImageView)ItemView.findViewById( R.id.IDP_ICO_CITY_ICON );
-          City.SetViewIcon( context, CityIcon );
+          TextView ForecastDate = (TextView)ItemView.findViewById( R.id.IDC_TXT_FORECAST_DATE );
+          Date fcDate = m_ForecastList.getForecastList().get( position ).getForecastDate();
+          ForecastDate.setText( ( fcDate == null ) ? "null date" : fcDate.toString() );
+
+          return ItemView;
      }
 }

@@ -25,7 +25,7 @@
         JmfWeather:showAsAction="always"
         android:title="@string/IDS_FAHRENHEIT" />
 
-   		<item
+	<item
         android:id="@+id/IDM_ADD_CITY"
         JmfWeather:showAsAction="collapseActionView|ifRoom"
         android:title="@string/IDS_ADD_CITY"

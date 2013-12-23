@@ -27,6 +27,17 @@
     
 	<!--**********************************************************/
 	/*                                                           */ 
+	/* Divide Screen on Tablets                                  */ 
+	/*                                                           */ 
+	/***********************************************************-->
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="DivideScreenOnTablets"
+        android:title="@string/IDS_PREF_TITLE_DIVIDE_SCREEN_ON_TABLETS"
+        android:summary="@string/IDS_PREF_DESC_DIVIDE_SCREEN_ON_TABLETS" />
+    
+    	<!--**********************************************************/
+	/*                                                           */ 
 	/* City Weather Synchronization Frequency                    */ 
 	/*                                                           */ 
 	/***********************************************************-->
