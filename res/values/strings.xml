@@ -26,6 +26,11 @@
     <string name="IDS_WARNING">Warning</string>
     <string name="IDS_CELSIUS">Celsius</string>
     <string name="IDS_FAHRENHEIT">Fahrenheit</string>
+    <string name="IDS_PRESSURE_VALUE">&lt;b&gt;Pressure: &lt;/b&gt;%1$s hPa</string>
+    <string name="IDS_HUMIDITY_VALUE">&lt;b&gt;Humidity: &lt;/b&gt;%1$s%%</string>
+    <string name="IDS_VISIBILITY_VALUE">&lt;b&gt;Visibility: &lt;/b&gt;%1$s Km</string>
+    <string name="IDS_WIND_DIRECTION_VALUE">&lt;b&gt;Wind Direction: &lt;/b&gt;%1$s </string>
+    <string name="IDS_WIND_SPEED_VALUE">&lt;b&gt;Wind Speed: &lt;/b&gt;%1$s Kmph</string>
     <string name="IDS_ADD_CITY">Add City</string>
     <string name="IDS_DELETE_CITY_TITLE">Delete City</string>
     <string name="IDS_DELETE_CITY_QUESTION">Do you really want to delete the City &lt;b&gt;%1$s&lt;/b&gt;?</string>

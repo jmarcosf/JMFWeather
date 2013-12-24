@@ -76,7 +76,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:gravity="left" 
-	    android:layout_alignLeft="@+id/IDR_LAY_CITY_LISTVIEW_ITEM_WEATHER" >
+	    android:layout_toLeftOf="@+id/IDR_LAY_CITY_LISTVIEW_ITEM_WEATHER" >
     
 		<!--******************************************************/
 	    /*                                                       */ 
@@ -100,6 +100,7 @@
 	        android:paddingTop="5dp"
 	        android:paddingLeft="15dp"
 	        android:fontFamily="Arial"
+	        android:singleLine="true"
 	        android:textSize="35sp"
 	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
 	

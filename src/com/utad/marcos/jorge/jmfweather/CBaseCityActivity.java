@@ -15,6 +15,7 @@
 package com.utad.marcos.jorge.jmfweather;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -48,6 +49,8 @@ public class CBaseCityActivity extends ActionBarActivity
      protected void onCreate( Bundle savedInstanceState )
      {
 	     super.onCreate( savedInstanceState );
+          CApp.setOrientation( getResources().getConfiguration().orientation );
+          Log.d( CCityListActivity.class.getSimpleName(), ( CApp.getOrientation() == Configuration.ORIENTATION_LANDSCAPE ) ? "LANDSCAPE" : "PORTRAIT" );
      }
 
      /*********************************************************/

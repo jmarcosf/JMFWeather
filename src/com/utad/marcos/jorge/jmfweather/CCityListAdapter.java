@@ -115,7 +115,7 @@ private   boolean        m_bTablet = false;
                
                TextView CityUpdate = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_WEATHER_LAST_UPDATE );
                Date upDate = City.getCondition().getObservationTime();
-               SimpleDateFormat DateFormat = new SimpleDateFormat( "MMM d, k:m" );
+               SimpleDateFormat DateFormat = new SimpleDateFormat( "MMM d, kk:mm" );
                String LastUpdate = ( upDate == null ) ? "null date" : DateFormat.format( upDate );
                CityUpdate.setText( LastUpdate );
           }

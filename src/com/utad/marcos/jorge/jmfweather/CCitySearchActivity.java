@@ -50,9 +50,6 @@ import com.utad.marcos.jorge.jmfweather.utility.CWorldWeatherApi;
 /**************************************************************/
 public class CCitySearchActivity extends Activity implements OnItemClickListener, OnCancelListener
 {
-protected final static int    MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID = 102;
-protected final static int    MSGBOX_INSERT_CITY_ERROR_REQUEST_ID = 103;
-
 private   CWeatherDAO         m_WeatherDAO = null;
 private   Dialog              m_Dialog;
 private   ListView            m_ListView;
@@ -124,8 +121,8 @@ private   CCityList           m_CityList;
      {
           switch( RequestCode )
           {
-               case MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID:
-               case MSGBOX_INSERT_CITY_ERROR_REQUEST_ID:
+               case CApp.MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID:
+               case CApp.MSGBOX_INSERT_CITY_ERROR_REQUEST_ID:
                     m_Dialog.cancel();
                     finish();
                     break;
@@ -256,7 +253,7 @@ private   CCityList           m_CityList;
                     intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
                     String MessageText = getString( R.string.IDS_NO_CITIES_FOUND_ERROR_MESSAGE );
                     intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
-                    startActivityForResult( intent, MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID );
+                    startActivityForResult( intent, CApp.MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID );
                }
           }
      }
@@ -322,7 +319,7 @@ private   CCityList           m_CityList;
                     intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
                     String MessageText = getString( R.string.IDS_WRITE_CITY_ERROR_MESSAGE );
                     intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
-                    startActivityForResult( intent, MSGBOX_INSERT_CITY_ERROR_REQUEST_ID );
+                    startActivityForResult( intent, CApp.MSGBOX_INSERT_CITY_ERROR_REQUEST_ID );
                }
                else CCitySearchActivity.this.finish();
           }

@@ -16,15 +16,19 @@ package com.utad.marcos.jorge.jmfweather;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 
@@ -58,7 +62,10 @@ public static final String IDS_CITY_ID_PARAM      = "CityIdParam";
 	{
           getActivity().supportInvalidateOptionsMenu();
           
-		View view = inflater.inflate( R.layout.layout_city_details_fragment, container, false );
+          int ResourceId = ( CApp.getOrientation() == Configuration.ORIENTATION_PORTRAIT )
+                           ? R.layout.layout_city_details_fragment_vert
+                           : R.layout.layout_city_details_fragment_horz;
+		View view = inflater.inflate( ResourceId, container, false );
 		long CityId = getArguments().getLong( IDS_CITY_ID_PARAM );
 		
 		CWeatherDAO WeatherDAO = new CWeatherDAO( getActivity() );
@@ -75,6 +82,8 @@ public static final String IDS_CITY_ID_PARAM      = "CityIdParam";
           TextView LastWeatherUpdate = (TextView)view.findViewById( R.id.IDC_TXT_LAST_WEATHER_UPDATE );
           TextView Pressure = (TextView)view.findViewById( R.id.IDC_TXT_PRESSURE );
           TextView Humitidy = (TextView)view.findViewById( R.id.IDC_TXT_HUMIDITY );
+          TextView Visibility = (TextView)view.findViewById( R.id.IDC_TXT_VISIBILITY );
+          TextView WindDirection = (TextView)view.findViewById( R.id.IDC_TXT_WIND_DIRECTION );
           TextView WindSpeed = (TextView)view.findViewById( R.id.IDC_TXT_WIND_SPEED );
 	
 		CityName.setText( City.getName() );
@@ -85,13 +94,16 @@ public static final String IDS_CITY_ID_PARAM      = "CityIdParam";
           if( CApp.getCelsius() ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
 		else CityTemp.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
           Date upDate = City.getCondition().getObservationTime();
-          SimpleDateFormat DateFormat = new SimpleDateFormat( "MMM d, k:m" );
+          SimpleDateFormat DateFormat = new SimpleDateFormat( "MMM d, kk:mm" );
           String LastUpdate = ( upDate == null ) ? "null date" : DateFormat.format( upDate );
           LastWeatherUpdate.setText( LastUpdate );
 
-          Pressure.setText( "Pressure: " + City.getCondition().getPressure() + " hPa" );
-          Humitidy.setText( "Humidity: " + City.getCondition().getHumidity() + "%" );
-          WindSpeed.setText( "Wind Speed: " + City.getCondition().getWindSpeedKmph() + " Kmph" );
+          if( Pressure != null ) Pressure.setText( Html.fromHtml( getString( R.string.IDS_PRESSURE_VALUE, City.getCondition().getPressure() ) ) );
+          if( Humitidy != null ) Humitidy.setText( Html.fromHtml( getString( R.string.IDS_HUMIDITY_VALUE, City.getCondition().getHumidity() ) ) );
+          if( Visibility != null ) Visibility.setText( Html.fromHtml( getString( R.string.IDS_VISIBILITY_VALUE, City.getCondition().getVisibility() ) ) );
+          if( WindDirection != null ) WindDirection.setText( Html.fromHtml( getString( R.string.IDS_WIND_DIRECTION_VALUE, City.getCondition().getWindDirectionDegrees() )  + 
+                                      "º " + City.getCondition().getWindDirectionCompass() ) );
+          if( WindSpeed != null ) WindSpeed.setText( Html.fromHtml( getString( R.string.IDS_WIND_SPEED_VALUE, City.getCondition().getWindSpeedKmph() ) ) );
           
           ImageView WeatherIcon = (ImageView)view.findViewById( R.id.IDP_ICO_WEATHER_IMAGE );
           City.SetViewIcon( getActivity(), WeatherIcon );

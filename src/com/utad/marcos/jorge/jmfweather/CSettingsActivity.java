@@ -15,10 +15,10 @@
 package com.utad.marcos.jorge.jmfweather;
 
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 
@@ -49,48 +49,55 @@ public class CSettingsActivity extends PreferenceActivity
      @Override
      protected void onCreate( Bundle savedInstanceState )
      {
-          super.onCreate(savedInstanceState);
+          super.onCreate( savedInstanceState );
+          CApp.clearSettingsChanged();
           
           addPreferencesFromResource( R.xml.preferences );
           
-//          BindPreferenceSummaryToValue( findPreference( "DivideScreenOnTablets" ) );
-          BindPreferenceSummaryToValue( findPreference( "WeatherSyncFrequency" ) );
-          BindPreferenceSummaryToValue( findPreference( "WeatherDegreesType" ) );
+          CheckBoxPreference Preference1 = (CheckBoxPreference)findPreference( "IncludeCurrentLocationOnStartup" );
+          Preference1.setOnPreferenceChangeListener( PreferenceChangeListener );
+
+          CheckBoxPreference Preference2 = (CheckBoxPreference)findPreference( "DivideScreenOnTablets" );
+          Preference2.setOnPreferenceChangeListener( PreferenceChangeListener );
+
+          ListPreference Preference3 = (ListPreference)findPreference( "WeatherSyncFrequency" );
+          Preference3.setOnPreferenceChangeListener( PreferenceChangeListener );
+
+          ListPreference Preference4 = (ListPreference)findPreference( "WeatherDegreesType" );
+          Preference4.setOnPreferenceChangeListener( PreferenceChangeListener );
      }
 
      /*********************************************************/
      /*                                                       */ 
      /*                                                       */ 
-     /* PreferenceActivity Abstract Methods                   */ 
+     /* Preference Change Callback                            */ 
      /*                                                       */ 
      /*                                                       */ 
      /*********************************************************/
      /*                                                       */ 
-     /* CSettingsActivity.onPreferenceChangeListener()        */ 
+     /* CSettingsActivity.PreferenceChangeListener()          */ 
      /*                                                       */ 
      /*********************************************************/
-     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener()
+     Preference.OnPreferenceChangeListener PreferenceChangeListener = new Preference.OnPreferenceChangeListener()
      {
-          @Override
           public boolean onPreferenceChange( Preference preference, Object value )
           {
                String stringValue = value.toString();
-     
+               
                if( preference instanceof ListPreference )
                {
                     ListPreference listPreference = (ListPreference)preference;
                     int index = listPreference.findIndexOfValue( stringValue );
-                    preference.setSummary( index >= 0 ? listPreference.getEntries()[ index ] : null);
+                    preference.setSummary( index >= 0 ? listPreference.getEntries()[ index ] : null );
      
                }
                else preference.setSummary( stringValue );
      
-/*               if( preference.getKey().equals( "DivideScreenOnTablets" ) )
+               if( preference.getKey().equals( "DivideScreenOnTablets" ) )
                {
-                    boolean bValue = Boolean.parseBoolean( stringValue );
-                    bValue = bValue;
+                    CApp.setSettingsChanged();
                }
-               else*/ if( preference.getKey().equals( "WeatherSyncFrequency" ) )
+               else if( preference.getKey().equals( "WeatherSyncFrequency" ) )
                {
                     int timeout = Integer.parseInt( stringValue ) * 60 * 1000;
                     CWeatherRetrieverService.StartAlarm( CApp.getAppContext(), timeout );
@@ -102,26 +109,5 @@ public class CSettingsActivity extends PreferenceActivity
                }
                return true;
           }
-     };
-     
-     /*********************************************************/
-     /*                                                       */ 
-     /*                                                       */ 
-     /* Class Methods                                         */ 
-     /*                                                       */ 
-     /*                                                       */ 
-     /*********************************************************/
-     /*                                                       */ 
-     /* CSettingsActivity.BindPreferenceSummaryToValue()      */ 
-     /*                                                       */ 
-     /*********************************************************/
-     private static void BindPreferenceSummaryToValue( Preference preference )
-     {
-         preference.setOnPreferenceChangeListener( sBindPreferenceSummaryToValueListener );
-         sBindPreferenceSummaryToValueListener.onPreferenceChange(
-              preference,
-              PreferenceManager
-                   .getDefaultSharedPreferences( preference.getContext() )
-                   .getString( preference.getKey(), "" ) );
-     }
+      };
 }
