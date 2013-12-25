@@ -265,7 +265,7 @@ private   CCityList           m_CityList;
      /*                                                       */
      /*                                                       */
      /*********************************************************/
-     private class CInsertCity extends AsyncTask< CCity, Void, Boolean >
+     private class CInsertCity extends AsyncTask< CCity, Void, Long >
      {
           /****************************************************/
           /*                                                  */
@@ -286,21 +286,20 @@ private   CCityList           m_CityList;
           /*                                                  */
           /****************************************************/
           @Override
-          protected Boolean doInBackground( CCity... params )
+          protected Long doInBackground( CCity... params )
           {
-               if( params.length != 1 || params[ 0 ] == null ) return false;
+               if( params.length != 1 || params[ 0 ] == null ) return Long.valueOf( -1 );
                CWorldWeatherApi WorldWeatherApi = new CWorldWeatherApi();
                try
                {
                     CCity City = params[ 0 ];
                     City.setForecastList( WorldWeatherApi.getCityWeather( City ) );
-                    m_WeatherDAO.Insert( City );
-                    return true;
+                    return Long.valueOf( m_WeatherDAO.Insert( City ) );
                }
                catch( IOException exception )    { exception.printStackTrace(); }
                catch( JSONException exception )  { exception.printStackTrace(); }
                catch( ParseException exception ) { exception.printStackTrace(); }
-               return false;
+               return Long.valueOf( -1 );
           }
 
           /****************************************************/
@@ -309,10 +308,10 @@ private   CCityList           m_CityList;
           /*                                                  */
           /****************************************************/
           @Override
-          protected void onPostExecute( Boolean Param )
+          protected void onPostExecute( Long Param )
           {
                m_WaitClock.setVisibility( View.GONE );
-               if( !Param )
+               if( Param.longValue() == -1 )
                {
                     Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
                     intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );

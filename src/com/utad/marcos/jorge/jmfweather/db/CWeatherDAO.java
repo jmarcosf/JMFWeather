@@ -93,6 +93,7 @@ private SQLiteDatabase		m_db;
 			RecordId = m_db.insert( CWeatherDBContract.CCityTable.TABLE_NAME, null, CityRecord );
 			if( RecordId != -1 )
 			{
+			     City.setId( RecordId );
 				ContentValues ConditionRecord = new ContentValues();
 				ConditionRecord.put( CWeatherDBContract.CConditionTable.COLUMN_NAME_CITY_ID, 				RecordId );
 				ConditionRecord.put( CWeatherDBContract.CConditionTable.COLUMN_NAME_CLOUD_COVERAGE, 			City.getCondition().getCloudCoverPercentage() );

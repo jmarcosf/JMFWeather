@@ -151,6 +151,7 @@ private CForecastList    m_ForecastList;
 	/* CCity setters                                         */ 
 	/*                                                       */ 
 	/*********************************************************/
+     public void setId( long Id )                            { m_Id = Id; }
 	public void setCurrentCondition( CCondition Condition ) { m_CurrentCondition = Condition; }
      public void setForecastList( CForecastList ForecastList ) { m_ForecastList = ForecastList; }
      

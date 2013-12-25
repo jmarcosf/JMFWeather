@@ -118,7 +118,7 @@ private byte[]                m_ImageBytes;
 	public CCityList SearchCity( String Name ) throws IOException, JSONException
 	{
 		if( Name == null ) return null;
-		String Url = WORLD_WEATHER_SEARCH_CITY_URL + "?q=" + Name.replaceAll( " ", "+" ) + "&format=json&key=" + WORLD_WEATHER_KEY;
+		String Url = WORLD_WEATHER_SEARCH_CITY_URL + "?q=" + Name.replaceAll( " ", "+" ) + "&format=json&num_of_results=50&key=" + WORLD_WEATHER_KEY;
 		Connect( new URL( Url ) );
 		
 		JSONObject jsonResponse = getJSONObject();

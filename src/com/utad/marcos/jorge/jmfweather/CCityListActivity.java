@@ -37,12 +37,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
@@ -99,7 +99,6 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           m_WaitClock = (ProgressBar)findViewById( R.id.IDC_PB_WAIT_CLOCK );
 
           m_ListView = (ListView)findViewById( R.id.IDC_LV_CITY_LIST );
-//          m_ListView.setChoiceMode( m_bTablet ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE );
           m_ListView.setChoiceMode( ListView.CHOICE_MODE_SINGLE );
           m_ListView.setOnItemClickListener( this );
           m_ListView.setOnItemLongClickListener( this );
@@ -113,7 +112,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           m_Drawer.setDrawerListener( m_DrawerToggle );
           
           getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-          ( (TextView)findViewById( R.id.IDC_TXT_HELP ) ).setText( Html.fromHtml( GetHelpText() ) );
+          ( (WebView)findViewById( R.id.IDC_TXT_HELP ) ).loadData( GetHelpText(), "text/html; charset=UTF-8", "UTF-8" );
 
           ServiceConnect();
      }
@@ -174,11 +173,15 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           switch( Item.getItemId() )
           {
                case R.id.IDM_DEGREES_CELSIUS:
-//                  TextView Temp = (TextView)findViewById( R.id.IDC_TXT_CITY_TEMPERATURE );
                     if( !CApp.getCelsius() )
                     {
                          CApp.setCelsius( true );
                          if( m_Adapter != null ) m_Adapter.notifyDataSetChanged();
+                         if( m_bTablet )
+                         {
+                              int SelectedItem = m_ListView.getCheckedItemPosition();
+                              if( SelectedItem != -1 ) m_ListView.performItemClick( m_ListView, SelectedItem, m_ListView.getItemIdAtPosition( SelectedItem ) );
+                         }
                     }
                     return true;
 
@@ -187,6 +190,11 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
                     {
                          CApp.setCelsius( false );
                          if( m_Adapter != null ) m_Adapter.notifyDataSetChanged();
+                         if( m_bTablet )
+                         {
+                              int SelectedItem = m_ListView.getCheckedItemPosition();
+                              if( SelectedItem != -1 ) m_ListView.performItemClick( m_ListView, SelectedItem, m_ListView.getItemIdAtPosition( SelectedItem ) );
+                         }
                     }
                     return true;
      
@@ -399,6 +407,7 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
                          {
                               m_Adapter = new CCityListAdapter( CCityListActivity.this, m_WeatherDAO, cityCursor );
                               m_ListView.setAdapter( m_Adapter );
+                              if( m_bTablet ) m_ListView.performItemClick( m_ListView, 0, m_ListView.getItemIdAtPosition( 0 ) );
                          }
                          else
                          {

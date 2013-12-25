@@ -19,6 +19,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 
@@ -62,9 +63,27 @@ public class CSettingsActivity extends PreferenceActivity
 
           ListPreference Preference3 = (ListPreference)findPreference( "WeatherSyncFrequency" );
           Preference3.setOnPreferenceChangeListener( PreferenceChangeListener );
+          SetDefaultListSummary( Preference3 );
 
           ListPreference Preference4 = (ListPreference)findPreference( "WeatherDegreesType" );
           Preference4.setOnPreferenceChangeListener( PreferenceChangeListener );
+          SetDefaultListSummary( Preference4 );
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /*                                                       */ 
+     /* Class Methods                                         */ 
+     /*                                                       */ 
+     /*                                                       */ 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CSettingsActivity.SetDefaultListSummary()             */ 
+     /*                                                       */ 
+     /*********************************************************/
+     private static void SetDefaultListSummary( ListPreference preference )
+     {
+          PreferenceChangeListener.onPreferenceChange( preference, PreferenceManager.getDefaultSharedPreferences( preference.getContext() ).getString( preference.getKey(), "" ) );
      }
 
      /*********************************************************/
@@ -78,7 +97,7 @@ public class CSettingsActivity extends PreferenceActivity
      /* CSettingsActivity.PreferenceChangeListener()          */ 
      /*                                                       */ 
      /*********************************************************/
-     Preference.OnPreferenceChangeListener PreferenceChangeListener = new Preference.OnPreferenceChangeListener()
+     private static Preference.OnPreferenceChangeListener PreferenceChangeListener = new Preference.OnPreferenceChangeListener()
      {
           public boolean onPreferenceChange( Preference preference, Object value )
           {
