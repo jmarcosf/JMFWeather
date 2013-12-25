@@ -21,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +61,7 @@ public static final String IDS_CITY_ID_PARAM      = "CityIdParam";
 	{
           getActivity().supportInvalidateOptionsMenu();
           
-          int ResourceId = ( CApp.getOrientation() == Configuration.ORIENTATION_PORTRAIT )
+          int ResourceId = ( getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT )
                            ? R.layout.layout_city_details_fragment_vert
                            : R.layout.layout_city_details_fragment_horz;
 		View view = inflater.inflate( ResourceId, container, false );
@@ -98,12 +97,11 @@ public static final String IDS_CITY_ID_PARAM      = "CityIdParam";
           String LastUpdate = ( upDate == null ) ? "null date" : DateFormat.format( upDate );
           LastWeatherUpdate.setText( LastUpdate );
 
-          if( Pressure != null ) Pressure.setText( Html.fromHtml( getString( R.string.IDS_PRESSURE_VALUE, City.getCondition().getPressure() ) ) );
-          if( Humitidy != null ) Humitidy.setText( Html.fromHtml( getString( R.string.IDS_HUMIDITY_VALUE, City.getCondition().getHumidity() ) ) );
-          if( Visibility != null ) Visibility.setText( Html.fromHtml( getString( R.string.IDS_VISIBILITY_VALUE, City.getCondition().getVisibility() ) ) );
-          if( WindDirection != null ) WindDirection.setText( Html.fromHtml( getString( R.string.IDS_WIND_DIRECTION_VALUE, City.getCondition().getWindDirectionDegrees() )  + 
-                                      "º " + City.getCondition().getWindDirectionCompass() ) );
-          if( WindSpeed != null ) WindSpeed.setText( Html.fromHtml( getString( R.string.IDS_WIND_SPEED_VALUE, City.getCondition().getWindSpeedKmph() ) ) );
+          if( Pressure != null ) Pressure.setText( "" + City.getCondition().getPressure() + " hPa" );
+          if( Humitidy != null ) Humitidy.setText( "" + City.getCondition().getHumidity() + "%");
+          if( Visibility != null ) Visibility.setText( "" + City.getCondition().getVisibility() + " Km" );
+          if( WindDirection != null ) WindDirection.setText( "" + City.getCondition().getWindDirectionDegrees() + "º " + City.getCondition().getWindDirectionCompass() );
+          if( WindSpeed != null ) WindSpeed.setText( "" + City.getCondition().getWindSpeedKmph() + " Kmph" );
           
           ImageView WeatherIcon = (ImageView)view.findViewById( R.id.IDP_ICO_WEATHER_IMAGE );
           City.SetViewIcon( getActivity(), WeatherIcon );

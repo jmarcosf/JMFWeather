@@ -5,11 +5,11 @@
 /*                                                            */
 /* Description: CWeatherRetrieverService Class                */
 /*              JmfWeather Project                            */
-/*              Práctica asignatura Android Fundamental       */ 
-/*              U-Tad - Master Apps                           */ 
-/*              www.u-tad.com                                 */ 
-/*                                                            */ 
-/*        Date: December 2013                                 */ 
+/*              Práctica asignatura Android Fundamental       */
+/*              U-Tad - Master Apps                           */
+/*              www.u-tad.com                                 */
+/*                                                            */
+/*        Date: December 2013                                 */
 /*                                                            */
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather.services;
@@ -45,17 +45,16 @@ import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 import com.utad.marcos.jorge.jmfweather.model.CCityList;
 import com.utad.marcos.jorge.jmfweather.model.CForecast;
-import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 import com.utad.marcos.jorge.jmfweather.utility.CWorldWeatherApi;
 
 /**************************************************************/
-/*                                                            */ 
-/*                                                            */ 
-/*                                                            */ 
-/* CWeatherRetrieverService Class                             */ 
-/*                                                            */ 
-/*                                                            */ 
-/*                                                            */ 
+/*                                                            */
+/*                                                            */
+/*                                                            */
+/* CWeatherRetrieverService Class                             */
+/*                                                            */
+/*                                                            */
+/*                                                            */
 /**************************************************************/
 public class CWeatherRetrieverService extends Service
 {
@@ -63,61 +62,63 @@ private static final int ALARM_REQUEST_CODE     = 0x4777;
 private static final int ALARM_INITIAL_TIMEOUT  = ( 5 * 1000 );        // 5 Seconds
 
 private CWeatherDAO                                    m_WeatherDAO = null;
-private IWeatherRetrieverListener	                    m_Listener = null;
+private IWeatherRetrieverListener                      m_Listener = null;
 private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
+public static boolean                                  m_bFirstCall = true;
 
-	/*********************************************************/
-	/*                                                       */
-	/*                                                       */
-	/* CWeatherRetrieverService Listener inner Interface     */
-	/*                                                       */
-	/*                                                       */
-	/*********************************************************/
-	public interface IWeatherRetrieverListener
-	{
-		public void onWeatherLoaded();
-	}
+     /*********************************************************/
+     /*                                                       */
+     /*                                                       */
+     /* CWeatherRetrieverService Listener inner Interface     */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     public interface IWeatherRetrieverListener
+     {
+          public void onWeatherLoaded();
+     }
 
-	/*********************************************************/
-	/*                                                       */
-	/*                                                       */
-	/* CWeatherRetrieverBinder inner Class                   */
-	/*                                                       */
-	/*                                                       */
-	/*********************************************************/
-	public class CWeatherRetrieverBinder extends Binder
-	{
-		public CWeatherRetrieverService getService()
-		{
-			return CWeatherRetrieverService.this;
-		}
-	}
-	
-	/*********************************************************/
-	/*                                                       */
-	/*                                                       */
-	/* Service Override Methods                              */
-	/*                                                       */
-	/*                                                       */
-	/*********************************************************/
-	/*                                                       */ 
-	/* CWeatherRetrieverService.onCreate()                   */ 
-	/*                                                       */ 
-	/*********************************************************/
-	@Override
-	public void onCreate()
-	{
+     /*********************************************************/
+     /*                                                       */
+     /*                                                       */
+     /* CWeatherRetrieverBinder inner Class                   */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     public class CWeatherRetrieverBinder extends Binder
+     {
+          public CWeatherRetrieverService getService()
+          {
+               return CWeatherRetrieverService.this;
+          }
+     }
+
+     /*********************************************************/
+     /*                                                       */
+     /*                                                       */
+     /* Service Override Methods                              */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     /*                                                       */
+     /* CWeatherRetrieverService.onCreate()                   */
+     /*                                                       */
+     /*********************************************************/
+     @Override
+     public void onCreate()
+     {
           super.onCreate();
+          m_bFirstCall = true;
           Log.d( CWeatherRetrieverService.class.getSimpleName(), "onCreate()" );
           m_WeatherDAO = new CWeatherDAO( getBaseContext() );
           this.m_LoadImageTaskSet = new HashSet< AsyncTask< String, Void, Void > >();
           StartAlarm( getBaseContext() );
-	}
+     }
 
      /*********************************************************/
-     /*                                                       */ 
-     /* CWeatherRetrieverService.onDestroy()                  */ 
-     /*                                                       */ 
+     /*                                                       */
+     /* CWeatherRetrieverService.onDestroy()                  */
+     /*                                                       */
      /*********************************************************/
      @Override
      public void onDestroy()
@@ -128,35 +129,35 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
           super.onDestroy();
      }
 
-	/*********************************************************/
-	/*                                                       */
-	/* CWeatherRetrieverService.onBind()                     */
-	/*                                                       */
-	/*********************************************************/
-	@Override
-	public IBinder onBind( Intent arg0 )
-	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onBind()" );
-		return new CWeatherRetrieverBinder();
-	}
-
-	/*********************************************************/
-	/*                                                       */ 
-	/* CWeatherRetrieverService.onUnbind()                   */ 
-	/*                                                       */ 
-	/*********************************************************/
-	@Override
-	public boolean onUnbind( Intent intent )
-	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onUnbind()" );
-		m_Listener = null;
-		return super.onUnbind( intent );
-	}
-	
      /*********************************************************/
-     /*                                                       */ 
-     /* CWeatherRetrieverService.onStartCommand()             */ 
-     /*                                                       */ 
+     /*                                                       */
+     /* CWeatherRetrieverService.onBind()                     */
+     /*                                                       */
+     /*********************************************************/
+     @Override
+     public IBinder onBind( Intent arg0 )
+     {
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onBind()" );
+          return new CWeatherRetrieverBinder();
+     }
+
+     /*********************************************************/
+     /*                                                       */
+     /* CWeatherRetrieverService.onUnbind()                   */
+     /*                                                       */
+     /*********************************************************/
+     @Override
+     public boolean onUnbind( Intent intent )
+     {
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onUnbind()" );
+          m_Listener = null;
+          return super.onUnbind( intent );
+     }
+
+     /*********************************************************/
+     /*                                                       */
+     /* CWeatherRetrieverService.onStartCommand()             */
+     /*                                                       */
      /*********************************************************/
      @Override
      public int onStartCommand( Intent intent, int flags, int startId )
@@ -165,28 +166,28 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
           LoadWeather();
           return START_STICKY;
      }
-     
-	/*********************************************************/
-	/*                                                       */
-	/*                                                       */
-	/* Class Methods                                         */
-	/*                                                       */
-	/*                                                       */
-	/*********************************************************/
-	/*                                                       */ 
-	/* CWeatherRetrieverService.setListener()                */ 
-	/*                                                       */ 
-	/*********************************************************/
-	public void setListener( IWeatherRetrieverListener listener )
-	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onSetListener()" );
-		this.m_Listener = listener;
-	}
-	
+
      /*********************************************************/
-     /*                                                       */ 
-     /* CWeatherRetrieverService.getPendingIntent()           */ 
-     /*                                                       */ 
+     /*                                                       */
+     /*                                                       */
+     /* Class Methods                                         */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     /*                                                       */
+     /* CWeatherRetrieverService.setListener()                */
+     /*                                                       */
+     /*********************************************************/
+     public void setListener( IWeatherRetrieverListener listener )
+     {
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "onSetListener()" );
+          this.m_Listener = listener;
+     }
+
+     /*********************************************************/
+     /*                                                       */
+     /* CWeatherRetrieverService.getPendingIntent()           */
+     /*                                                       */
      /*********************************************************/
      public static PendingIntent getPendingIntent( Context context )
      {
@@ -196,9 +197,9 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
      }
 
      /*********************************************************/
-     /*                                                       */ 
-     /* CWeatherRetrieverService.StartAlarm()                 */ 
-     /*                                                       */ 
+     /*                                                       */
+     /* CWeatherRetrieverService.StartAlarm()                 */
+     /*                                                       */
      /*********************************************************/
      public static void StartAlarm( Context context )
      {
@@ -210,9 +211,9 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
      }
 
      /*********************************************************/
-     /*                                                       */ 
-     /* CBlogRetrieverService.StartAlarm()                    */ 
-     /*                                                       */ 
+     /*                                                       */
+     /* CBlogRetrieverService.StartAlarm()                    */
+     /*                                                       */
      /*********************************************************/
      public static void StartAlarm( Context context, int Timeout )
      {
@@ -221,11 +222,11 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
           AlarmManager alarmManager = (AlarmManager)context.getSystemService( Context.ALARM_SERVICE );
           alarmManager.setInexactRepeating( AlarmManager.RTC_WAKEUP, ALARM_INITIAL_TIMEOUT, Timeout, getPendingIntent( context ) );
      }
-     
+
      /*********************************************************/
-     /*                                                       */ 
-     /* CWeatherRetrieverService.StopAlarm()                  */ 
-     /*                                                       */ 
+     /*                                                       */
+     /* CWeatherRetrieverService.StopAlarm()                  */
+     /*                                                       */
      /*********************************************************/
      public static void StopAlarm( Context context )
      {
@@ -236,13 +237,14 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
      }
 
      /*********************************************************/
-     /*                                                       */ 
-     /* CWeatherRetrieverService.AddCurrentLocation()         */ 
-     /*                                                       */ 
+     /*                                                       */
+     /* CWeatherRetrieverService.AddCurrentLocation()         */
+     /*                                                       */
      /*********************************************************/
      public static void AddCurrentLocation( CWorldWeatherApi WorldWeatherApi, CWeatherDAO WeatherDAO, Context context )
      {
           Log.d( CWeatherRetrieverService.class.getSimpleName(), "AddCurrentLocation()" );
+          m_bFirstCall = false;
           boolean bLoadCurrentLocationOnStartup = CApp.IsLoadCurrentLocationOnStartupEnabled();
           if( !bLoadCurrentLocationOnStartup ) return;
 
@@ -257,9 +259,10 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
                     {
                          if( !WeatherDAO.ExistCity( City ) )
                          {
-                              CForecastList ForecastList = WorldWeatherApi.getCityWeather( City ); 
-                              WeatherDAO.Insert( City );
-                              WeatherDAO.Insert( ForecastList, City );
+                              if( WorldWeatherApi.getCityWeather( City ) )
+                              {
+                                   WeatherDAO.Insert( City );
+                              }
                          }
                     }
                }
@@ -277,120 +280,121 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
                }
           }
      }
-     
-	/*********************************************************/
-	/*                                                       */ 
-	/* CWeatherRetrieverService.LoadWeather()                */ 
-	/*                                                       */ 
-	/*********************************************************/
-	public boolean LoadWeather()
-	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "LoadWeather()" );
-		ConnectivityManager ConnManager = (ConnectivityManager)getSystemService( Context.CONNECTIVITY_SERVICE );
-		NetworkInfo NetInfo = ConnManager.getActiveNetworkInfo();
 
-		if( NetInfo != null && NetInfo.isConnected() && m_Listener != null )
-		{
-			new CInetLoader().execute();
-			return true;
-		}
-		else	return false;
-	}
-	
      /*********************************************************/
-     /*                                                       */ 
-     /* CWeatherRetrieverService.LoadCityImages()             */ 
-     /*                                                       */ 
+     /*                                                       */
+     /* CWeatherRetrieverService.LoadWeather()                */
+     /*                                                       */
      /*********************************************************/
-     public void LoadCityImages( CCity City, CForecastList ForecastList )
+     public boolean LoadWeather()
+     {
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "LoadWeather()" );
+          ConnectivityManager ConnManager = (ConnectivityManager)getSystemService( Context.CONNECTIVITY_SERVICE );
+          NetworkInfo NetInfo = ConnManager.getActiveNetworkInfo();
+
+          if( NetInfo != null && NetInfo.isConnected() && m_Listener != null )
+          {
+               new CInetLoader().execute();
+               return true;
+          }
+          else  return false;
+     }
+
+     /*********************************************************/
+     /*                                                       */
+     /* CWeatherRetrieverService.LoadCityImages()             */
+     /*                                                       */
+     /*********************************************************/
+     public void LoadCityImages( CCity City )
      {
           Log.d( CWeatherRetrieverService.class.getSimpleName(), "LoadCityImages()" );
           if( City.getCondition() != null ) new CLoadImageTask().execute( City.getCondition().getIconUrl() );
-          for( CForecast Forecast : ForecastList.getForecastList() )
+          if( City.getForecastList() != null )
           {
-               new CLoadImageTask().execute( Forecast.getIconUrl() );
+               for( CForecast Forecast : City.getForecastList().getForecastList() )
+               {
+                    new CLoadImageTask().execute( Forecast.getIconUrl() );
+               }
           }
      }
-     
-	/*********************************************************/
-	/*                                                       */
-	/* CWeatherRetrieverService.StopLoadingImages()          */
-	/*                                                       */
-	/*********************************************************/
-	public void StopLoadingImages()
-	{
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "StopLoadingImages()" );
-	     HashSet< AsyncTask< String, Void, Void > > tmpSet = new HashSet< AsyncTask< String, Void, Void > >();
-	     tmpSet.addAll( m_LoadImageTaskSet );
-	     for( AsyncTask< String, Void, Void > Task : tmpSet )
-	     {
-	          Task.cancel( true );
-	     }
-	     m_LoadImageTaskSet = new HashSet< AsyncTask< String, Void, Void > >();
-	}
 
-	/*********************************************************/
-	/*                                                       */ 
-	/*                                                       */ 
-	/* CWeatherRetrieverService CInetLoader inner Class      */ 
-	/*                                                       */ 
-	/*                                                       */ 
-	/*********************************************************/
-	private class CInetLoader extends AsyncTask< Void, Void, Void >
-	{
-     CWorldWeatherApi WorldWeatherApi = null;
-	     
-	     /****************************************************/
-	     /*                                                  */ 
-	     /* CInetLoader.onPreExecute()                       */ 
-	     /*                                                  */ 
-	     /****************************************************/
-	     @Override
-	     protected void onPreExecute()
-	     {
-	          super.onPreExecute();
+     /*********************************************************/
+     /*                                                       */
+     /* CWeatherRetrieverService.StopLoadingImages()          */
+     /*                                                       */
+     /*********************************************************/
+     public void StopLoadingImages()
+     {
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "StopLoadingImages()" );
+          HashSet< AsyncTask< String, Void, Void > > tmpSet = new HashSet< AsyncTask< String, Void, Void > >();
+          tmpSet.addAll( m_LoadImageTaskSet );
+          for( AsyncTask< String, Void, Void > Task : tmpSet )
+          {
+               Task.cancel( true );
+          }
+          m_LoadImageTaskSet = new HashSet< AsyncTask< String, Void, Void > >();
+     }
+
+     /*********************************************************/
+     /*                                                       */
+     /*                                                       */
+     /* CWeatherRetrieverService CInetLoader inner Class      */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     private class CInetLoader extends AsyncTask< Void, Void, Void >
+     {
+          CWorldWeatherApi WorldWeatherApi = null;
+
+          /****************************************************/
+          /*                                                  */
+          /* CInetLoader.onPreExecute()                       */
+          /*                                                  */
+          /****************************************************/
+          @Override
+          protected void onPreExecute()
+          {
+               super.onPreExecute();
                Log.d( CWeatherRetrieverService.class.getSimpleName(), "CInetLoader().onPreExecute()" );
                WorldWeatherApi = new CWorldWeatherApi();
-	     }
-	     
-		/****************************************************/
-		/*                                                  */ 
-		/* CInetLoader.doInBackground()                     */ 
-		/*                                                  */ 
-		/****************************************************/
+          }
+
+          /****************************************************/
+          /*                                                  */
+          /* CInetLoader.doInBackground()                     */
+          /*                                                  */
+          /****************************************************/
           @Override
           protected Void doInBackground( Void... params )
           {
                Log.d( CWeatherRetrieverService.class.getSimpleName(), "CInetLoader().doInBackground()" );
-               if( CApp.getFirstCall() )
-               {
-                    AddCurrentLocation( WorldWeatherApi, m_WeatherDAO, CWeatherRetrieverService.this );
-                    CApp.setFirstCall( false );
-               }
-          	
-          	CCityList CityList = new CCityList();
-          	Cursor cursor = m_WeatherDAO.SelectAllCities();
-          	if( cursor.moveToFirst() )
-          	{
-          		do
-          		{
-          			CityList.add( new CCity( cursor ) );
-          		} while( cursor.moveToNext() );
-          	}
+               if( m_bFirstCall ) AddCurrentLocation( WorldWeatherApi, m_WeatherDAO, CWeatherRetrieverService.this );
 
-          	try
-          	{
-          		for( CCity City : CityList.getCityList() )
-          		{
-          		     m_WeatherDAO.SetCityCondition( City );
-	                    CForecastList ForecastList = WorldWeatherApi.getCityWeather( City );
-    	                    m_WeatherDAO.Update( City, ForecastList );
-  	                    LoadCityImages( City, ForecastList );
-          		}
-          	}
+               CCityList CityList = new CCityList();
+               Cursor cursor = m_WeatherDAO.SelectAllCities();
+               if( cursor.moveToFirst() )
+               {
+                    do
+                    {
+                         CityList.add( new CCity( cursor ) );
+                    } while( cursor.moveToNext() );
+               }
+
+               try
+               {
+                    for( CCity City : CityList.getCityList() )
+                    {
+                         m_WeatherDAO.SetCityCondition( City );
+                         if( WorldWeatherApi.getCityWeather( City ) )
+                         {
+                              m_WeatherDAO.Update( City );
+                              LoadCityImages( City );
+                         }
+                    }
+               }
                catch( IOException exception )
                {
-	               exception.printStackTrace();
+                    exception.printStackTrace();
                }
                catch( JSONException exception )
                {
@@ -400,13 +404,13 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
                {
                     exception.printStackTrace();
                }
-     		return null;
+               return null;
           }
-		
+
           /*********************************************************/
-          /*                                                       */ 
-          /* CInetLoader.onPostExecute()                           */ 
-          /*                                                       */ 
+          /*                                                       */
+          /* CInetLoader.onPostExecute()                           */
+          /*                                                       */
           /*********************************************************/
           @Override
           protected void onPostExecute( Void result )
@@ -420,52 +424,52 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
                {
                     exception.printStackTrace();
                }
-     		if( m_Listener != null )	m_Listener.onWeatherLoaded();
+               if( m_Listener != null )  m_Listener.onWeatherLoaded();
           }
-	}
-	
-	/*********************************************************/
-	/*                                                       */
-	/*                                                       */
-	/* CWeatherRetrieverService CLoadImageTask inner Class   */
-	/*                                                       */
-	/*                                                       */
-	/*********************************************************/
-	private class CLoadImageTask extends AsyncTask< String, Void, Void >
-	{
-	     /****************************************************/
-	     /*                                                  */ 
-	     /* CLoadImageTask.onPreExecute()                    */ 
-	     /*                                                  */ 
-	     /****************************************************/
-	     @Override
-	     protected void onPreExecute()
-	     {
-	          Log.d( CWeatherRetrieverService.class.getSimpleName(), "CLoadImageTask().onPreExecute()" );
-	          super.onPreExecute();
-	          m_LoadImageTaskSet.add( this );
-	     }
+     }
 
-	     /****************************************************/
-	     /*                                                  */
-	     /* CLoadImageTask.doInBackground()                  */
-	     /*                                                  */
-	     /****************************************************/
-	     @Override
-	     protected Void doInBackground( String... params )
-	     {
+     /*********************************************************/
+     /*                                                       */
+     /*                                                       */
+     /* CWeatherRetrieverService CLoadImageTask inner Class   */
+     /*                                                       */
+     /*                                                       */
+     /*********************************************************/
+     private class CLoadImageTask extends AsyncTask< String, Void, Void >
+     {
+          /****************************************************/
+          /*                                                  */
+          /* CLoadImageTask.onPreExecute()                    */
+          /*                                                  */
+          /****************************************************/
+          @Override
+          protected void onPreExecute()
+          {
+               Log.d( CWeatherRetrieverService.class.getSimpleName(), "CLoadImageTask().onPreExecute()" );
+               super.onPreExecute();
+               m_LoadImageTaskSet.add( this );
+          }
+
+          /****************************************************/
+          /*                                                  */
+          /* CLoadImageTask.doInBackground()                  */
+          /*                                                  */
+          /****************************************************/
+          @Override
+          protected Void doInBackground( String... params )
+          {
                Log.d( CWeatherRetrieverService.class.getSimpleName(), "CLoadImageTask().doInBackground()" );
-	          if( params.length != 1 ) return null;
-	          
+               if( params.length != 1 ) return null;
+
                String ImageUrl = params[ 0 ];
-	          Uri ImageUri = Uri.parse( ImageUrl );
-	          File CacheDirectory = CWeatherRetrieverService.this.getCacheDir();
-	          String FileName = ImageUri.getLastPathSegment();
-	          File ImageFile = new File( CacheDirectory, FileName );
-	          
-	          if( ImageFile.exists() ) return null;
-               
-	          CWorldWeatherApi Request = new CWorldWeatherApi();
+               Uri ImageUri = Uri.parse( ImageUrl );
+               File CacheDirectory = CWeatherRetrieverService.this.getCacheDir();
+               String FileName = ImageUri.getLastPathSegment();
+               File ImageFile = new File( CacheDirectory, FileName );
+
+               if( ImageFile.exists() ) return null;
+
+               CWorldWeatherApi Request = new CWorldWeatherApi();
                FileOutputStream Output = null;
                try
                {
@@ -499,32 +503,32 @@ private HashSet< AsyncTask< String, Void, Void > >     m_LoadImageTaskSet;
                     }
                }
 
-	          return null;
-	     }
+               return null;
+          }
 
-	     /****************************************************/
-	     /*                                                  */
-	     /* CLoadImageTask.onPostExecute()                   */
-	     /*                                                  */
-	     /****************************************************/
-	     @Override
-	     protected void onPostExecute( Void result )
-	     {
+          /****************************************************/
+          /*                                                  */
+          /* CLoadImageTask.onPostExecute()                   */
+          /*                                                  */
+          /****************************************************/
+          @Override
+          protected void onPostExecute( Void result )
+          {
                Log.d( CWeatherRetrieverService.class.getSimpleName(), "CLoadImageTask().onPostExecute()" );
-	          m_LoadImageTaskSet.remove( this );
-	     }
+               m_LoadImageTaskSet.remove( this );
+          }
 
-	     /****************************************************/
-	     /*                                                  */
-	     /* CLoadImageTask.onCancelled()                     */
-	     /*                                                  */
-	     /****************************************************/
-	     @Override
-	     protected void onCancelled( Void result )
-	     {
+          /****************************************************/
+          /*                                                  */
+          /* CLoadImageTask.onCancelled()                     */
+          /*                                                  */
+          /****************************************************/
+          @Override
+          protected void onCancelled( Void result )
+          {
                Log.d( CWeatherRetrieverService.class.getSimpleName(), "CLoadImageTask().onCancelled()" );
                m_LoadImageTaskSet.remove( this );
-	     }
-	}
+          }
+     }
 }
-	
+

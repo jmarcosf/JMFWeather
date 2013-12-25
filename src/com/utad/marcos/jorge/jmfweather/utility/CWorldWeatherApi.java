@@ -169,9 +169,9 @@ private byte[]                m_ImageBytes;
 	/* CWorldWeatherApi.getCityWeather()                     */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public CForecastList getCityWeather( CCity City ) throws IOException, JSONException, ParseException
+	public boolean getCityWeather( CCity City ) throws IOException, JSONException, ParseException
 	{
-		if( City == null ) return null;
+		if( City == null ) return false;
 
 		String Url = WORLD_WEATHER_GET_WEATHER_URL + "?q=" + City.getLatitude() + "+" + City.getLongitude() + "&format=json&extra=localObsTime&num_of_days=5&key=" + WORLD_WEATHER_KEY;
 		Connect( new URL( Url ) );
@@ -193,9 +193,10 @@ private byte[]                m_ImageBytes;
 			CForecast Forecast = new CForecast( jsonObject );
 			ForecastList.add( Forecast );
 		}
-
-		Close();
-		return ForecastList; 
+		City.setForecastList( ForecastList );
+		
+          Close();
+		return true; 
 	}
 
 	/*********************************************************/

@@ -37,10 +37,7 @@ public final static int  MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID           = 103
 public final static int  MSGBOX_INSERT_CITY_ERROR_REQUEST_ID               = 104;
 
 private static Context   m_Context = null;
-private static boolean   m_bFirstCall = true;
 private static boolean   m_bCelsius = true;
-private static int       m_Orientation = -1;
-private static boolean   m_bSettingsChanged = false;
 
      /*********************************************************/
      /*                                                       */ 
@@ -58,8 +55,6 @@ private static boolean   m_bSettingsChanged = false;
      {
           super.onCreate();
           CApp.m_Context = getApplicationContext();
-          CApp.m_bFirstCall = true;
-          CApp.m_bSettingsChanged = false;
      }
      
      /*********************************************************/
@@ -68,12 +63,6 @@ private static boolean   m_bSettingsChanged = false;
      /* Class Methods                                         */ 
      /*                                                       */ 
      /*                                                       */ 
-     /*********************************************************/
-     /*                                                       */ 
-     /* CApp.getAppContext()                                  */ 
-     /*                                                       */ 
-     /*********************************************************/
-     
      /*********************************************************/
      /*                                                       */ 
      /* CApp.IsLoadCurrentLocationOnStartupEnabled()          */ 
@@ -132,20 +121,13 @@ private static boolean   m_bSettingsChanged = false;
      /* Class getters                                         */ 
      /*                                                       */ 
      /*********************************************************/
-     public static Context getAppContext()        { return CApp.m_Context; }
-     public static boolean getFirstCall()         { return CApp.m_bFirstCall; }
-     public static boolean getCelsius()           { return CApp.m_bCelsius; }
-     public static int     getOrientation()       { return CApp.m_Orientation; }
-     public static boolean getSettingsChanged()    { return CApp.m_bSettingsChanged; }
+     public static Context getAppContext()   { return CApp.m_Context; }
+     public static boolean getCelsius()      { return CApp.m_bCelsius; }
      
      /*********************************************************/
      /*                                                       */ 
      /* Class setters                                         */ 
      /*                                                       */ 
      /*********************************************************/
-     public static void setFirstCall( boolean bValue ) { CApp.m_bFirstCall = bValue; }
      public static void setCelsius( boolean bValue )   { CApp.m_bCelsius = bValue; }
-     public static void setOrientation( int iValue )   { CApp.m_Orientation = iValue; }
-     public static void setSettingsChanged()           { CApp.m_bSettingsChanged = true; }
-     public static void clearSettingsChanged()         { CApp.m_bSettingsChanged = false; }
 }

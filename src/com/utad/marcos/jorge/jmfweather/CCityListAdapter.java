@@ -62,7 +62,9 @@ private   boolean        m_bTablet = false;
 	     super( context, cityCursor, false );
 		this.m_Context = context;
 		this.m_WeatherDAO = WeatherDAO;
-          this.m_bTablet = ( m_Context.getResources().getBoolean( R.bool.g_bTablet ) && CApp.IsDivideScreenOnTabletsEnabled() && CApp.getOrientation() != Configuration.ORIENTATION_PORTRAIT );
+          this.m_bTablet = ( m_Context.getResources().getBoolean( R.bool.g_bTablet ) && 
+                             CApp.IsDivideScreenOnTabletsEnabled() 
+                             && context.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT );
 	}
 
      /*********************************************************/

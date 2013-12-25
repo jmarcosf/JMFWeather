@@ -51,7 +51,6 @@ public class CSettingsActivity extends PreferenceActivity
      protected void onCreate( Bundle savedInstanceState )
      {
           super.onCreate( savedInstanceState );
-          CApp.clearSettingsChanged();
           
           addPreferencesFromResource( R.xml.preferences );
           
@@ -112,11 +111,7 @@ public class CSettingsActivity extends PreferenceActivity
                }
                else preference.setSummary( stringValue );
      
-               if( preference.getKey().equals( "DivideScreenOnTablets" ) )
-               {
-                    CApp.setSettingsChanged();
-               }
-               else if( preference.getKey().equals( "WeatherSyncFrequency" ) )
+               if( preference.getKey().equals( "WeatherSyncFrequency" ) )
                {
                     int timeout = Integer.parseInt( stringValue ) * 60 * 1000;
                     CWeatherRetrieverService.StartAlarm( CApp.getAppContext(), timeout );
@@ -126,6 +121,11 @@ public class CSettingsActivity extends PreferenceActivity
                     int Value = Integer.parseInt( stringValue );
                     CApp.setCelsius( Value == 1 );
                }
+//             else if( preference.getKey().equals( "DivideScreenOnTablets" ) )
+//             {
+//                  //I don't know how to tell main activity this preference has been changed.
+//             }
+               
                return true;
           }
       };

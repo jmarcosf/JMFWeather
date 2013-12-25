@@ -431,8 +431,10 @@ private SQLiteDatabase		m_db;
 	/* CWeatherDAO.Update()                                  */ 
 	/*                                                       */ 
 	/*********************************************************/
-	public int Update( CCity City, CForecastList ForecastList )
+	public int Update( CCity City )
 	{
+	     if( City == null || City.getForecastList() == null ) return -1;
+	     
 		if( m_db == null || m_db.isReadOnly() )
 		{
 			this.Close();
@@ -445,7 +447,7 @@ private SQLiteDatabase		m_db;
 		try
 		{
 			DeleteCityForecast( City.getId() );
-			for( CForecast Forecast : ForecastList.getForecastList() )
+			for( CForecast Forecast : City.getForecastList().getForecastList() )
 			{
 				Insert( Forecast, City );
 			}

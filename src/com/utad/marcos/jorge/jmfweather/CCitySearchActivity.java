@@ -293,7 +293,7 @@ private   CCityList           m_CityList;
                try
                {
                     CCity City = params[ 0 ];
-                    City.setForecastList( WorldWeatherApi.getCityWeather( City ) );
+                    WorldWeatherApi.getCityWeather( City );
                     return Long.valueOf( m_WeatherDAO.Insert( City ) );
                }
                catch( IOException exception )    { exception.printStackTrace(); }

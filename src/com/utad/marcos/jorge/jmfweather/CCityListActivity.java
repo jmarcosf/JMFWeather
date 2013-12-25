@@ -44,7 +44,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.CWeatherRetrieverBinder;
 import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeatherRetrieverListener;
@@ -60,9 +59,6 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeath
 /**************************************************************/
 public class CCityListActivity extends CBaseCityActivity implements OnClickListener, OnItemClickListener, OnItemLongClickListener
 {
-private   CWeatherDAO              m_WeatherDAO = null;
-private   boolean                  g_bTablet = false;
-private   boolean                  m_bTablet = false;
 private   DrawerLayout             m_Drawer = null;
 private   ActionBarDrawerToggle    m_DrawerToggle = null;
 private   ListView                 m_ListView = null;
@@ -89,15 +85,9 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           Log.d( CCityListActivity.class.getSimpleName(), "OnCreate()" );
           if( savedInstanceState != null ) Log.d( CBaseCityActivity.class.getSimpleName(), "savedInstanceState != null" );
           
-          m_WeatherDAO = new CWeatherDAO( this );
-          setContentView( R.layout.layout_city_list_activity );
-          
-          g_bTablet = getResources().getBoolean( R.bool.g_bTablet );
-          m_bTablet = ( g_bTablet && CApp.IsDivideScreenOnTabletsEnabled() && CApp.getOrientation() != Configuration.ORIENTATION_PORTRAIT );
           setContentView( m_bTablet ? R.layout.layout_city_list_activity_tablet : R.layout.layout_city_list_activity );
-          
           m_WaitClock = (ProgressBar)findViewById( R.id.IDC_PB_WAIT_CLOCK );
-
+          
           m_ListView = (ListView)findViewById( R.id.IDC_LV_CITY_LIST );
           m_ListView.setChoiceMode( ListView.CHOICE_MODE_SINGLE );
           m_ListView.setOnItemClickListener( this );
@@ -111,7 +101,6 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           };
           m_Drawer.setDrawerListener( m_DrawerToggle );
           
-          getSupportActionBar().setDisplayHomeAsUpEnabled( true );
           ( (WebView)findViewById( R.id.IDC_TXT_HELP ) ).loadData( GetHelpText(), "text/html; charset=UTF-8", "UTF-8" );
 
           ServiceConnect();
@@ -156,7 +145,6 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           Log.d( CCityListActivity.class.getSimpleName(), "OnDestroy()" );
           if( m_ServiceBinder != null ) m_ServiceBinder.getService().StopLoadingImages();
           ServiceDisconnect();
-          m_WeatherDAO.Close();
           super.onDestroy();
      }
      

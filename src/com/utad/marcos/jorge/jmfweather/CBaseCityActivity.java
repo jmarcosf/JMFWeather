@@ -14,6 +14,8 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
+import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -33,6 +35,10 @@ import android.view.MenuItem;
 /**************************************************************/
 public class CBaseCityActivity extends ActionBarActivity
 {
+protected CWeatherDAO    m_WeatherDAO = null;
+protected boolean        g_bTablet = false;
+protected boolean        m_bTablet = false;
+protected int            m_Orientation = -1;
 
      /*********************************************************/
      /*                                                       */ 
@@ -49,10 +55,26 @@ public class CBaseCityActivity extends ActionBarActivity
      protected void onCreate( Bundle savedInstanceState )
      {
 	     super.onCreate( savedInstanceState );
-          CApp.setOrientation( getResources().getConfiguration().orientation );
-          Log.d( CCityListActivity.class.getSimpleName(), ( CApp.getOrientation() == Configuration.ORIENTATION_LANDSCAPE ) ? "LANDSCAPE" : "PORTRAIT" );
+          m_Orientation = getResources().getConfiguration().orientation;
+          Log.d( this.getClass().getSimpleName(), ( m_Orientation == Configuration.ORIENTATION_LANDSCAPE ) ? "LANDSCAPE" : "PORTRAIT" );
+          m_WeatherDAO = new CWeatherDAO( this );
+          g_bTablet = getResources().getBoolean( R.bool.g_bTablet );
+          m_bTablet = ( g_bTablet && CApp.IsDivideScreenOnTabletsEnabled() && m_Orientation != Configuration.ORIENTATION_PORTRAIT );
+          getSupportActionBar().setDisplayHomeAsUpEnabled( true );
      }
 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CBaseCityActivity.onDestroy()                         */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void onDestroy()
+     {
+          m_WeatherDAO.Close();
+          super.onDestroy();
+     }     
+     
      /*********************************************************/
 	/*                                                       */ 
 	/* CBaseCityActivity.onSaveInstanceState()               */ 

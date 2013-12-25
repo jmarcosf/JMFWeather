@@ -23,8 +23,6 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
-
 /**************************************************************/
 /*                                                            */
 /*                                                            */
@@ -36,9 +34,7 @@ import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 /**************************************************************/
 public class CCityDetailsActivity extends CBaseCityActivity
 {
-private   CWeatherDAO              m_WeatherDAO = null;
 private   ArrayList< Long >        m_CityIdList;
-private   int                      m_Position;
 private   CCityDetailsPagerAdapter m_PagerAdapter = null;
 
      /*********************************************************/
@@ -59,28 +55,23 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
 		
 		Intent intent = this.getIntent();
 		long cityId = intent.getLongExtra( CCityDetailsFragment.IDS_CITY_ID_PARAM, 0 );
+          setContentView( R.layout.layout_city_details );
 		
-		m_WeatherDAO = new CWeatherDAO( this );
+          int iPosition = 0;
 		m_CityIdList = m_WeatherDAO.SelectAllCityIds();
-		
-		m_Position = 0;
 		for( Long CityId : m_CityIdList )
 		{
 		     if( CityId.longValue() == cityId )
 		     {
-		          m_Position = m_CityIdList.indexOf( CityId );
+		          iPosition = m_CityIdList.indexOf( CityId );
 		          break;
 		     }
 		}
 
-		setContentView( R.layout.layout_city_details );
-		getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-		
-		// Attach new PagerAdapter to ViewPager
 		ViewPager viewPager = (ViewPager)findViewById( R.id.IDR_LAY_CITY_CONTAINER );
 		m_PagerAdapter = new CCityDetailsPagerAdapter( getSupportFragmentManager(), m_CityIdList );
 		viewPager.setAdapter( m_PagerAdapter );
-		viewPager.setCurrentItem( m_Position );
+		viewPager.setCurrentItem( iPosition );
 	}
 	
 	/*********************************************************/
@@ -91,7 +82,6 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
      @Override
      protected void onDestroy()
      {
-          m_WeatherDAO.Close();
           super.onDestroy();
      }
      
