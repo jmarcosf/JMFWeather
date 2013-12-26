@@ -74,7 +74,7 @@ private   CCityList           m_CityList;
           super.onCreate( savedInstanceState );
           m_WeatherDAO = new CWeatherDAO( this );
           m_CityList = null;
-          CApp.setNewCityId( -1 );
+          CApp.setSelectedCityId( -1 );
           
           m_Dialog = new Dialog( this );
           m_Dialog.setContentView( R.layout.layout_city_search_activity );
@@ -154,7 +154,7 @@ private   CCityList           m_CityList;
           long CityId = m_WeatherDAO.GetCityId( City );
           if( CityId != -1 )
           {
-               CApp.setNewCityId( CityId );
+               CApp.setSelectedCityId( CityId );
                m_Dialog.cancel();
                finish();
           }
@@ -320,7 +320,7 @@ private   CCityList           m_CityList;
           protected void onPostExecute( Long Param )
           {
                m_WaitClock.setVisibility( View.GONE );
-               CApp.setNewCityId( Param.longValue() );
+               CApp.setSelectedCityId( Param.longValue() );
                if( Param.longValue() == -1 )
                {
                     Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );

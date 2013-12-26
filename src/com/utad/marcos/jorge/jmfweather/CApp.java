@@ -40,7 +40,7 @@ public final static int  VIEWPAGER_RETURN_SELECTED_REQUEST_ID              = 200
 
 private static Context   m_Context = null;
 private static boolean   m_bCelsius = true;
-private static long      m_NewCityId = -1;
+private static long      m_SelectedCityId = -1;
 
      /*********************************************************/
      /*                                                       */ 
@@ -124,15 +124,15 @@ private static long      m_NewCityId = -1;
      /* Class getters                                         */ 
      /*                                                       */ 
      /*********************************************************/
-     public static Context getAppContext()   { return CApp.m_Context; }
-     public static boolean getCelsius()      { return CApp.m_bCelsius; }
-     public static long    getNewCityId()    { return CApp.m_NewCityId; }
+     public static Context getAppContext()        { return CApp.m_Context; }
+     public static boolean getCelsius()           { return CApp.m_bCelsius; }
+     public static long    getSelectedCityId()    { return CApp.m_SelectedCityId; }
      
      /*********************************************************/
      /*                                                       */ 
      /* Class setters                                         */ 
      /*                                                       */ 
      /*********************************************************/
-     public static void setCelsius( boolean bValue )   { CApp.m_bCelsius = bValue; }
-     public static void setNewCityId( long CityId )    { CApp.m_NewCityId = CityId; }
+     public static void setCelsius( boolean bValue )        { CApp.m_bCelsius = bValue; }
+     public static void setSelectedCityId( long CityId )    { CApp.m_SelectedCityId = CityId; }
 }

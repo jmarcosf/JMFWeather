@@ -14,10 +14,6 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ComponentName;
@@ -61,6 +57,7 @@ public class CCityListActivity extends CBaseCityActivity implements OnClickListe
 {
 public static final String         CURRENT_SELECTED_CITY_STRING = "CurrentSelectedCity";
 
+private   boolean                  m_bEmptyTableWarningAlreadyShowed = false;
 private   DrawerLayout             m_Drawer = null;
 private   ActionBarDrawerToggle    m_DrawerToggle = null;
 private   ListView                 m_ListView = null;
@@ -104,8 +101,9 @@ private   int                      m_CurrentSelectedCity = -1;
           };
           m_Drawer.setDrawerListener( m_DrawerToggle );
           
-          ( (WebView)findViewById( R.id.IDC_TXT_HELP ) ).loadData( GetHelpText(), "text/html; charset=UTF-8", "UTF-8" );
-
+          WebView webView = (WebView)findViewById( R.id.IDC_TXT_HELP );
+          if( webView != null ) webView.loadUrl("file:///android_asset/jmfweather_help.html");
+          
           ServiceConnect();
      }
      
@@ -137,8 +135,8 @@ private   int                      m_CurrentSelectedCity = -1;
           LoadCityList();
 
           //if just inserted a new city, selected it
-          long CityId = CApp.getNewCityId();
-          CApp.setNewCityId( -1 );
+          long CityId = CApp.getSelectedCityId();
+          CApp.setSelectedCityId( -1 );
           if( CityId != -1 ) SelectCity( CityId );
      }
 
@@ -256,6 +254,7 @@ private   int                      m_CurrentSelectedCity = -1;
                     break;
                     
                case CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID:
+                    m_bEmptyTableWarningAlreadyShowed = true;
                     break;
                     
                case CApp.MSGBOX_DELETE_CITY_REQUEST_ID:
@@ -280,13 +279,7 @@ private   int                      m_CurrentSelectedCity = -1;
                     break;
                     
                case CApp.VIEWPAGER_RETURN_SELECTED_REQUEST_ID:
-                    CApp.setNewCityId( ResultCode );
-//                    if( m_ListView != null )
-//                    {
-//                         if( m_bTablet ) m_ListView.performItemClick( m_ListView, ResultCode, m_ListView.getItemIdAtPosition( ResultCode ) );
-//                         else m_ListView.setItemChecked( ResultCode, true );
-//                         m_ListView.setSelection( ResultCode );
-//                    }
+                    CApp.setSelectedCityId( ResultCode );
                     break;
                     
                default:
@@ -405,30 +398,6 @@ private   int                      m_CurrentSelectedCity = -1;
      /*                                                       */
      /*********************************************************/
      /*                                                       */
-     /* CCityListActivity.GetHelpText()                       */
-     /*                                                       */
-     /*********************************************************/
-     public String GetHelpText()
-     {
-          InputStream inputStream = getResources().openRawResource( R.raw.raw_jmfweather_help );
-          ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-          int i;
-          try
-          {
-               i = inputStream.read();
-               while( i != -1 )
-               {
-                    byteArrayOutputStream.write( i );
-                    i = inputStream.read();
-               }
-               inputStream.close();
-          }
-          catch (IOException e) { e.printStackTrace(); }
-          return byteArrayOutputStream.toString();
-     }
-
-     /*********************************************************/
-     /*                                                       */
      /* CCityListActivity.LoadCityList()                      */
      /*                                                       */
      /*********************************************************/
@@ -463,15 +432,15 @@ private   int                      m_CurrentSelectedCity = -1;
                          }
                     }
                }
-//               else
-//               {
-//                    Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
-//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
-//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_WARNING ) );
-//                    String MessageText = getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE );
-//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
-//                    startActivityForResult( intent, CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID );
-//               }
+               else if( !m_bEmptyTableWarningAlreadyShowed )
+               {
+                    Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_WARNING ) );
+                    String MessageText = getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE );
+                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
+                    startActivityForResult( intent, CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID );
+               }
           }
           else
           {
