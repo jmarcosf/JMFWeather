@@ -280,7 +280,13 @@ private   int                      m_CurrentSelectedCity = -1;
                     break;
                     
                case CApp.VIEWPAGER_RETURN_SELECTED_REQUEST_ID:
-                    m_ListView.setItemChecked( ResultCode, true );
+                    CApp.setNewCityId( ResultCode );
+//                    if( m_ListView != null )
+//                    {
+//                         if( m_bTablet ) m_ListView.performItemClick( m_ListView, ResultCode, m_ListView.getItemIdAtPosition( ResultCode ) );
+//                         else m_ListView.setItemChecked( ResultCode, true );
+//                         m_ListView.setSelection( ResultCode );
+//                    }
                     break;
                     
                default:
@@ -457,15 +463,15 @@ private   int                      m_CurrentSelectedCity = -1;
                          }
                     }
                }
-               else
-               {
-                    Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_WARNING ) );
-                    String MessageText = getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
-                    startActivityForResult( intent, CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID );
-               }
+//               else
+//               {
+//                    Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
+//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
+//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_WARNING ) );
+//                    String MessageText = getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE );
+//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
+//                    startActivityForResult( intent, CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID );
+//               }
           }
           else
           {

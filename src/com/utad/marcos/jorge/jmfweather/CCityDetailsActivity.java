@@ -94,7 +94,9 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
      @Override
      public void onBackPressed()
      {
-          setResult( m_ViewPager.getCurrentItem() );
+          int iPage = m_ViewPager.getCurrentItem();
+          long CityId = m_CityIdList.get( iPage );
+          setResult( (int)CityId );
           super.onBackPressed();
      }
      
