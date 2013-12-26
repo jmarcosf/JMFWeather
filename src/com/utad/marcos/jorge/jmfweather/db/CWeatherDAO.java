@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDoneException;
 
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 import com.utad.marcos.jorge.jmfweather.model.CCondition;
@@ -182,19 +183,46 @@ private SQLiteDatabase		m_db;
 
      /*********************************************************/
      /*                                                       */ 
+     /* CWeatherDAO.GetLocationId()                           */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public long GetLocationId( String Latitude, String Longitude )
+     {
+          if( Latitude == null || Longitude == null ) return -1;
+          if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
+
+          String Query = "SELECT * FROM " + CWeatherDBContract.CCityTable.TABLE_NAME + 
+                         " WHERE " + CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " = ? AND " + CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + " = ?";
+          String[] QueryArgs = new String[] { Latitude, Longitude };
+          long LocationId = -1;
+          try
+          {
+               LocationId = DatabaseUtils.longForQuery( m_db, Query, QueryArgs );
+          }
+          catch( SQLiteDoneException e ) {}
+          return LocationId;
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherDAO.GetCityId()                               */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public long GetCityId( CCity City )
+     {
+          if( City == null ) return -1;
+          return GetLocationId( City.getLatitude(), City.getLongitude() );
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
      /* CWeatherDAO.ExistLocation()                           */ 
      /*                                                       */ 
      /*********************************************************/
-     public boolean ExistLocation( String Longitude, String Latitude )
+     public boolean ExistLocation( String Latitude, String Longitude )
      {
-          if( Longitude == null || Latitude == null ) return false;
-          if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
-
-          String[] WhereArgs = new String[] { Longitude, Latitude };
-          String Where = CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " = ? AND " + CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + " = ?";
-          long Count = DatabaseUtils.queryNumEntries( m_db, CWeatherDBContract.CCityTable.TABLE_NAME, Where, WhereArgs );          
-          this.Close();
-          return ( Count != 0 );
+          if( Latitude == null || Longitude == null ) return false;
+          return( GetLocationId( Latitude, Longitude ) != -1 );
      }
 
      /*********************************************************/
@@ -205,7 +233,7 @@ private SQLiteDatabase		m_db;
      public boolean ExistCity( CCity City )
      {
           if( City == null ) return false;
-          return ExistLocation( City.getLatitude(), City.getLongitude() );
+          return ( GetCityId( City ) != -1 );
      }
 
      /*********************************************************/

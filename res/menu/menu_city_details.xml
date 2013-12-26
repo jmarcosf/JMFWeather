@@ -15,7 +15,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:JmfWeather="http://schemas.android.com/apk/res-auto" >
 
-    <item
+<!--    	<item -->
+<!--         android:id="@+id/IDM_DEGREES_CELSIUS" -->
+<!--         JmfWeather:showAsAction="always" -->
+<!--         android:title="@string/IDS_CELSIUS" /> -->
+
+<!-- 	<item -->
+<!--         android:id="@+id/IDM_DEGREES_FAHRENHEIT" -->
+<!--         JmfWeather:showAsAction="always" -->
+<!--         android:title="@string/IDS_FAHRENHEIT" /> -->
+	
+	<item
         android:id="@+id/IDM_SETTINGS"
         android:showAsAction="always"
         android:title="@string/IDS_SETTINGS"

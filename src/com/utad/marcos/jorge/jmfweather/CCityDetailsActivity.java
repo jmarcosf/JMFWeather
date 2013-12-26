@@ -35,6 +35,7 @@ import android.view.MenuItem;
 public class CCityDetailsActivity extends CBaseCityActivity
 {
 private   ArrayList< Long >        m_CityIdList;
+private   ViewPager                m_ViewPager = null;
 private   CCityDetailsPagerAdapter m_PagerAdapter = null;
 
      /*********************************************************/
@@ -68,10 +69,10 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
 		     }
 		}
 
-		ViewPager viewPager = (ViewPager)findViewById( R.id.IDR_LAY_CITY_CONTAINER );
+		m_ViewPager = (ViewPager)findViewById( R.id.IDR_LAY_CITY_CONTAINER );
 		m_PagerAdapter = new CCityDetailsPagerAdapter( getSupportFragmentManager(), m_CityIdList );
-		viewPager.setAdapter( m_PagerAdapter );
-		viewPager.setCurrentItem( iPosition );
+		m_ViewPager.setAdapter( m_PagerAdapter );
+		m_ViewPager.setCurrentItem( iPosition );
 	}
 	
 	/*********************************************************/
@@ -85,6 +86,18 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
           super.onDestroy();
      }
      
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityDetailsActivity.onBackPressed()                  */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public void onBackPressed()
+     {
+          setResult( m_ViewPager.getCurrentItem() );
+          super.onBackPressed();
+     }
+     
 	/*********************************************************/
 	/*                                                       */ 
 	/* CCityDetailsActivity.onOptionsItemSelected()          */ 
@@ -95,6 +108,25 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
      {
      	switch( Item.getItemId() )
      	{
+//               case R.id.IDM_DEGREES_CELSIUS:
+//                    if( !CApp.getCelsius() )
+//                    {
+//                         CApp.setCelsius( true );
+//                         m_ViewPager.invalidate();
+//                         if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
+//                    }
+//                    return true;
+//
+//               case R.id.IDM_DEGREES_FAHRENHEIT:
+//                    if( CApp.getCelsius() )
+//                    {
+//                         CApp.setCelsius( false );
+//                         m_ViewPager.invalidate();
+//                         m_ViewPager.refreshDrawableState();
+//                         if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
+//                    }
+//                    return true;
+//                    
      		case android.R.id.home:
      			Intent upIntent = NavUtils.getParentActivityIntent( this );
      			if( NavUtils.shouldUpRecreateTask( this, upIntent ) )
@@ -120,5 +152,4 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
           getMenuInflater().inflate( R.menu.menu_city_details, menu );
           return true;
      }
-
 }

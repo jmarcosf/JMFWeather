@@ -36,8 +36,11 @@ public final static int  MSGBOX_DELETE_CITY_REQUEST_ID                     = 102
 public final static int  MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID           = 103;
 public final static int  MSGBOX_INSERT_CITY_ERROR_REQUEST_ID               = 104;
 
+public final static int  VIEWPAGER_RETURN_SELECTED_REQUEST_ID              = 200;
+
 private static Context   m_Context = null;
 private static boolean   m_bCelsius = true;
+private static long      m_NewCityId = -1;
 
      /*********************************************************/
      /*                                                       */ 
@@ -123,6 +126,7 @@ private static boolean   m_bCelsius = true;
      /*********************************************************/
      public static Context getAppContext()   { return CApp.m_Context; }
      public static boolean getCelsius()      { return CApp.m_bCelsius; }
+     public static long    getNewCityId()    { return CApp.m_NewCityId; }
      
      /*********************************************************/
      /*                                                       */ 
@@ -130,4 +134,5 @@ private static boolean   m_bCelsius = true;
      /*                                                       */ 
      /*********************************************************/
      public static void setCelsius( boolean bValue )   { CApp.m_bCelsius = bValue; }
+     public static void setNewCityId( long CityId )    { CApp.m_NewCityId = CityId; }
 }

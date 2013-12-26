@@ -56,7 +56,7 @@ protected int            m_Orientation = -1;
      {
 	     super.onCreate( savedInstanceState );
           m_Orientation = getResources().getConfiguration().orientation;
-          Log.d( this.getClass().getSimpleName(), ( m_Orientation == Configuration.ORIENTATION_LANDSCAPE ) ? "LANDSCAPE" : "PORTRAIT" );
+          Log.d( CBaseCityActivity.class.getSimpleName(), ( m_Orientation == Configuration.ORIENTATION_LANDSCAPE ) ? "LANDSCAPE" : "PORTRAIT" );
           m_WeatherDAO = new CWeatherDAO( this );
           g_bTablet = getResources().getBoolean( R.bool.g_bTablet );
           m_bTablet = ( g_bTablet && CApp.IsDivideScreenOnTabletsEnabled() && m_Orientation != Configuration.ORIENTATION_PORTRAIT );

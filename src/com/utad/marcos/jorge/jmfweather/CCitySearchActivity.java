@@ -74,6 +74,7 @@ private   CCityList           m_CityList;
           super.onCreate( savedInstanceState );
           m_WeatherDAO = new CWeatherDAO( this );
           m_CityList = null;
+          CApp.setNewCityId( -1 );
           
           m_Dialog = new Dialog( this );
           m_Dialog.setContentView( R.layout.layout_city_search_activity );
@@ -149,7 +150,15 @@ private   CCityList           m_CityList;
      {
           CCity City = m_CityList.getCityList().get( iPosition );
           m_Dialog.setTitle( Html.fromHtml( getString( R.string.IDS_WRITING_CITY_TO_DATABASE, City.getName() ) ) );
-          new CInsertCity().execute( City );
+          
+          long CityId = m_WeatherDAO.GetCityId( City );
+          if( CityId != -1 )
+          {
+               CApp.setNewCityId( CityId );
+               m_Dialog.cancel();
+               finish();
+          }
+          else new CInsertCity().execute( City );
      }
      
      /*********************************************************/
@@ -311,6 +320,7 @@ private   CCityList           m_CityList;
           protected void onPostExecute( Long Param )
           {
                m_WaitClock.setVisibility( View.GONE );
+               CApp.setNewCityId( Param.longValue() );
                if( Param.longValue() == -1 )
                {
                     Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
@@ -320,7 +330,11 @@ private   CCityList           m_CityList;
                     intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
                     startActivityForResult( intent, CApp.MSGBOX_INSERT_CITY_ERROR_REQUEST_ID );
                }
-               else CCitySearchActivity.this.finish();
+               else
+               {
+                    m_Dialog.cancel();
+                    CCitySearchActivity.this.finish();
+               }
           }
      }
 }

@@ -40,6 +40,8 @@ public static final String     MESSAGEBOX_PARAM_TYPE        = "MessageBoxParamTy
 public static final String     MESSAGEBOX_PARAM_TITLE       = "MessageBoxParamTitle";
 public static final String	 MESSAGEBOX_PARAM_TEXT        = "MessageBoxParamText";
 public static final String     MESSAGEBOX_PARAM_OBJECT_ID   = "MessageBoxParamObjectId";
+public static final String     MESSAGEBOX_PARAM_USER_DATA1  = "MessageBoxParamUserData1";
+public static final String     MESSAGEBOX_PARAM_USER_DATA2  = "MessageBoxParamUserData2";
 public static final int		 MESSAGEBOX_RESULT_CANCELLED  = 0;
 public static final int        MESSAGEBOX_RESULT_ACCEPTED   = 1;
 

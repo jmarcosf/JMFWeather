@@ -59,6 +59,8 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService.IWeath
 /**************************************************************/
 public class CCityListActivity extends CBaseCityActivity implements OnClickListener, OnItemClickListener, OnItemLongClickListener
 {
+public static final String         CURRENT_SELECTED_CITY_STRING = "CurrentSelectedCity";
+
 private   DrawerLayout             m_Drawer = null;
 private   ActionBarDrawerToggle    m_DrawerToggle = null;
 private   ListView                 m_ListView = null;
@@ -66,6 +68,7 @@ private   CCityListAdapter         m_Adapter = null;
 private   ProgressBar              m_WaitClock = null;
 private   ServiceConnection        m_ServiceConnection = null;
 private   CWeatherRetrieverBinder  m_ServiceBinder = null;
+private   int                      m_CurrentSelectedCity = -1;
 
      /*********************************************************/
      /*                                                       */
@@ -132,6 +135,11 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           super.onResume();
           Log.d( CCityListActivity.class.getSimpleName(), "OnResume()" );
           LoadCityList();
+
+          //if just inserted a new city, selected it
+          long CityId = CApp.getNewCityId();
+          CApp.setNewCityId( -1 );
+          if( CityId != -1 ) SelectCity( CityId );
      }
 
      /*********************************************************/
@@ -206,6 +214,33 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
 
      /*********************************************************/
      /*                                                       */ 
+     /* CCityListActivity.onSaveInstanceState()               */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void onSaveInstanceState( Bundle outState )
+     {
+          Log.d( CCityListActivity.class.getSimpleName(), "OnSaveInstanceState()" );
+          outState.putInt( CURRENT_SELECTED_CITY_STRING, m_ListView.getCheckedItemPosition() );
+          super.onSaveInstanceState( outState );
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onRestoreInstanceState()            */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void onRestoreInstanceState( Bundle savedInstanceState )
+     {
+          super.onRestoreInstanceState( savedInstanceState );
+          Log.d( CCityListActivity.class.getSimpleName(), "OnRestoreInstanceState()" );
+          if( savedInstanceState == null ) Log.d( CBaseCityActivity.class.getSimpleName(), "savedInstanceState = null" );
+          if( savedInstanceState != null ) m_CurrentSelectedCity = savedInstanceState.getInt( CURRENT_SELECTED_CITY_STRING );
+     }
+     
+     /*********************************************************/
+     /*                                                       */ 
      /* CCityListActivity.onActivityResult()                  */ 
      /*                                                       */ 
      /*********************************************************/
@@ -227,13 +262,25 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
                     if( ResultCode == CMessageBoxActivity.MESSAGEBOX_RESULT_ACCEPTED )
                     {
                          long CityId = intent.getLongExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_OBJECT_ID, -1 );
-                         if( CityId > 0 )
+                         Boolean bDeleteSelectedCity = intent.getBooleanExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_USER_DATA1, Boolean.valueOf( false ) ); 
+                         Integer iDeletedPosition = intent.getIntExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_USER_DATA2, Integer.valueOf( -1 ) ); 
+                         if( CityId > 0 && m_WeatherDAO.DeleteCity( CityId ) != -1 )
                          {
-                              int Result = m_WeatherDAO.DeleteCity( CityId );
-                              if( Result != -1 ) Log.d( CCityListActivity.class.getSimpleName(), "Delete City!" );
-                              if( Result != -1 ) LoadCityList();
+                              Log.d( CCityListActivity.class.getSimpleName(), "Delete City!" );
+                              LoadCityList();
+                              // On tablets, select the previous city
+                              if( bDeleteSelectedCity && m_bTablet )
+                              {
+                                   int iPosition = ( iDeletedPosition > 0 ) ? iDeletedPosition - 1 : 0;
+                                   m_ListView.performItemClick( m_ListView, iPosition, m_ListView.getItemIdAtPosition( iPosition ) );
+                                   m_ListView.setSelection( iPosition );
+                              }
                          }
                     }
+                    break;
+                    
+               case CApp.VIEWPAGER_RETURN_SELECTED_REQUEST_ID:
+                    m_ListView.setItemChecked( ResultCode, true );
                     break;
                     
                default:
@@ -308,13 +355,13 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
                FragmentManager frgManager = getSupportFragmentManager();
                FragmentTransaction tx = frgManager.beginTransaction();
                tx.replace( R.id.IDR_LAY_CITY_CONTAINER, Fragment );
-               tx.commit();
+               tx.commitAllowingStateLoss();
           }
           else
           {
                Intent intent = new Intent( CCityListActivity.this, CCityDetailsActivity.class );
                intent.putExtra( CCityDetailsFragment.IDS_CITY_ID_PARAM, id );
-               startActivity( intent );
+               startActivityForResult( intent, CApp.VIEWPAGER_RETURN_SELECTED_REQUEST_ID );
           }
      }
      
@@ -338,6 +385,8 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
           String Question = getString( R.string.IDS_DELETE_CITY_QUESTION, (String)view.getTag() );
           intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( Question  ) );
           intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_OBJECT_ID, id );
+          intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_USER_DATA1, Boolean.valueOf( iPosition == m_ListView.getCheckedItemPosition() ) );        
+          intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_USER_DATA2, Integer.valueOf( iPosition ) );        
           startActivityForResult( intent, CApp.MSGBOX_DELETE_CITY_REQUEST_ID );
           return true;
      }
@@ -395,7 +444,11 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
                          {
                               m_Adapter = new CCityListAdapter( CCityListActivity.this, m_WeatherDAO, cityCursor );
                               m_ListView.setAdapter( m_Adapter );
-                              if( m_bTablet ) m_ListView.performItemClick( m_ListView, 0, m_ListView.getItemIdAtPosition( 0 ) );
+                              
+                              int iPosition = ( m_CurrentSelectedCity == -1 ) ? 0 : m_CurrentSelectedCity;
+                              if( m_bTablet ) m_ListView.performItemClick( m_ListView, iPosition, m_ListView.getItemIdAtPosition( iPosition ) );
+                              else if( m_CurrentSelectedCity != -1 ) m_ListView.setItemChecked( iPosition, true );
+                              m_ListView.setSelection( iPosition );
                          }
                          else
                          {
@@ -422,6 +475,35 @@ private   CWeatherRetrieverBinder  m_ServiceBinder = null;
                String MessageText = getString( R.string.IDS_READ_CITIES_ERROR_MESSAGE );
                intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
                startActivityForResult( intent, CApp.MSGBOX_READ_CITIES_ERROR_REQUEST_ID );
+          }
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.SelectCity()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void SelectCity( long CityId )
+     {
+          if( CityId == -1 ) return;
+          
+          int iPosition = -1;
+          long Id = -1;
+          for( int i = 0; i < m_ListView.getCount(); i++ )
+          {
+               Id = m_ListView.getItemIdAtPosition( i );
+               if( Id == CityId )
+               {
+                    iPosition = i;
+                    break;
+               }
+          }
+          
+          if( iPosition != -1 )
+          {
+               if( m_bTablet ) m_ListView.performItemClick( m_ListView, iPosition, CityId );
+               else m_ListView.setItemChecked( iPosition, true );
+               m_ListView.setSelection( iPosition );
           }
      }
 
