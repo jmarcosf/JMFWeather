@@ -186,6 +186,18 @@ private int		m_MinTemperatureFahrenheit;
 
      /*********************************************************/
      /*                                                       */ 
+     /* CForecast.getWeatherCodeDescription()                 */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public String getWeatherCodeDescription( Context context )
+     {
+          String packageName = context.getPackageName();
+          int ResourceId = context.getResources().getIdentifier( "IDS_WEATHER_DESC_" + getWeatherCode(), "string", packageName );
+          return context.getString( ( ResourceId == 0 ) ? R.string.IDS_UNKNOWN : ResourceId );
+     }
+     
+     /*********************************************************/
+     /*                                                       */ 
      /* CForecast.SetViewIcon()                               */ 
      /*                                                       */ 
      /*********************************************************/

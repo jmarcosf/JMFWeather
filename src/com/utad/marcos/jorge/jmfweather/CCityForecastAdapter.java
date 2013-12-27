@@ -132,7 +132,7 @@ private CForecastList    m_ForecastList;
           else ForecastTemperature.setText( "" + Forecast.getMinTemperatureFahrenheit() + "/" + Forecast.getMaxTemperatureFahrenheit() + "ºF" );
 
           TextView ForecastDescription = (TextView)ItemView.findViewById( R.id.IDC_TXT_FORECAST_DESCRIPTION );
-          ForecastDescription.setText( Forecast.getWeatherDescription() );
+          ForecastDescription.setText( Forecast.getWeatherCodeDescription( m_Context ) );
 
           return ItemView;
      }

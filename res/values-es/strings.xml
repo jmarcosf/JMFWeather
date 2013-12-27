@@ -15,38 +15,38 @@
 /***************************************************************-->
 <resources>
     <string name="IDS_APP_NAME">JmfWeather</string>
-    <string name="IDS_SETTINGS">Settings</string>
-    <string name="IDS_SHARE">Share</string>
-    <string name="IDS_OK">OK</string>
-    <string name="IDS_CANCEL">Cancel</string>
-    <string name="IDS_YES">Yes</string>
+    <string name="IDS_SETTINGS">Preferencias</string>
+    <string name="IDS_SHARE">Compartir</string>
+    <string name="IDS_OK">Aceptar</string>
+    <string name="IDS_CANCEL">Cancelar</string>
+    <string name="IDS_YES">Si</string>
     <string name="IDS_NO">No</string>
-    <string name="IDS_RETRY">Retry</string>
+    <string name="IDS_RETRY">Reintentar</string>
     <string name="IDS_ERROR">Error</string>
-    <string name="IDS_WARNING">Warning</string>
-    <string name="IDS_UNKNOWN">Unknown</string>
+    <string name="IDS_WARNING">Atención</string>
+    <string name="IDS_UNKNOWN">Desconocido</string>
     <string name="IDS_CELSIUS">Celsius</string>
     <string name="IDS_FAHRENHEIT">Fahrenheit</string>
-    <string name="IDS_PRESSURE">Pressure</string>
-    <string name="IDS_HUMIDITY">Humidity</string>
-    <string name="IDS_VISIBILITY">Visibility</string>
-    <string name="IDS_WIND_DIRECTION">Wind Direction</string>
-    <string name="IDS_WIND_SPEED">Wind Speed</string>
-    <string name="IDS_ADD_CITY">Add City</string>
-    <string name="IDS_DELETE_CITY_TITLE">Delete City</string>
-    <string name="IDS_DELETE_CITY_QUESTION">Do you really want to delete the City &lt;b&gt;%1$s&lt;/b&gt;?</string>
-    <string name="IDS_SEARCH_HINT">Type City Name to add to the list</string>
-    <string name="IDS_SEARCHING_CITY">Searching &lt;b&gt;%1$s&lt;/b&gt;. Please wait&#8230;</string>
-    <string name="IDS_SELECT_CITY">Select City</string>
-    <string name="IDS_WRITING_CITY_TO_DATABASE">Writing City &lt;b&gt;%1$s&lt;/b&gt; to DataBase&#8230;</string>
-    <string name="IDS_NETWORK_ERROR_MESSAGE">There is not network connectivity.</string>
-    <string name="IDS_NO_CITIES_FOUND_ERROR_MESSAGE">No cities found!.</string>
-    <string name="IDS_READ_CITIES_ERROR_MESSAGE">An error occurred reading cities from database.</string>
-    <string name="IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE">No cities found. Use &lt;b&gt;Add City&lt;/b&gt; menu button to add your first city.</string>
-    <string name="IDS_WRITE_CITY_ERROR_MESSAGE">An error occurred writing city to database.</string>
-    <string name="IDS_DRAWER_MENU_TEXT">Este es un menú lateral implementado con un DrawerLayout. El contenido de este espacio es totalmente arbitrario.</string>
-    <string name="IDS_DRAWER_OPEN_TEXT">Se abre el menú</string>
-    <string name="IDS_DRAWER_CLOSE_TEXT">Se cierra el menú</string>
+    <string name="IDS_PRESSURE">Presión</string>
+    <string name="IDS_HUMIDITY">Humedad</string>
+    <string name="IDS_VISIBILITY">Visibilidad</string>
+    <string name="IDS_WIND_DIRECTION">Dirección del Viento</string>
+    <string name="IDS_WIND_SPEED">Velocidad del Viento</string>
+    <string name="IDS_ADD_CITY">Añadir Ciudad</string>
+    <string name="IDS_DELETE_CITY_TITLE">Borrar Ciudad</string>
+    <string name="IDS_DELETE_CITY_QUESTION">¿Está seguro de que desea borrar la Ciudad &lt;b&gt;%1$s&lt;/b&gt;?</string>
+    <string name="IDS_SEARCH_HINT">Teclee el Nombre de la Ciudad para añadirla a la lista</string>
+    <string name="IDS_SEARCHING_CITY">Buscando &lt;b&gt;%1$s&lt;/b&gt;. Por favor espere&#8230;</string>
+    <string name="IDS_SELECT_CITY">Seleccione la Ciudad</string>
+    <string name="IDS_WRITING_CITY_TO_DATABASE">Grabando la Ciudad &lt;b&gt;%1$s&lt;/b&gt; en la Base de Datos&#8230;</string>
+    <string name="IDS_NETWORK_ERROR_MESSAGE">No hay conectividad de red.</string>
+    <string name="IDS_NO_CITIES_FOUND_ERROR_MESSAGE">¡No se encontró ninguna ciudad!.</string>
+    <string name="IDS_READ_CITIES_ERROR_MESSAGE">Ha ocurrido un error al acceder a las ciudades de la Base de Datos.</string>
+    <string name="IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE">No hay ciudades. Utilice el botón &lt;b&gt;Añadir Ciudad&lt;/b&gt; del menú para añadir su primera ciudad.</string>
+    <string name="IDS_WRITE_CITY_ERROR_MESSAGE">Ha ocurrido un error al grabar en la Base de Datos.</string>
+    <string name="IDS_DRAWER_MENU_TEXT"></string>
+    <string name="IDS_DRAWER_OPEN_TEXT"></string>
+    <string name="IDS_DRAWER_CLOSE_TEXT"></string>
     
 	<!--**********************************************************/
 	/*                                                           */ 
@@ -54,19 +54,19 @@
 	/*                                                           */ 
 	/***********************************************************-->
     <string name="IDS_GENERAL">General</string>
-    <string name="IDS_PREF_TITLE_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Add current location on startup</string>
-    <string name="IDS_PREF_DESC_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Add current location city to list of cities automatically on application startup</string>
-    <string name="IDS_PREF_TITLE_DIVIDE_SCREEN_ON_TABLETS">Divide Screen on Tablets</string>
-    <string name="IDS_PREF_DESC_DIVIDE_SCREEN_ON_TABLETS">On Landscape Tablets divide the screen in two parts, one for cities and one for details</string>
+    <string name="IDS_PREF_TITLE_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Añadir ciudad actual en el inicio</string>
+    <string name="IDS_PREF_DESC_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Añadir la localidad actual automáticamente al iniciar la aplicación</string>
+    <string name="IDS_PREF_TITLE_DIVIDE_SCREEN_ON_TABLETS">Dividir la pantalla en Tablets</string>
+    <string name="IDS_PREF_DESC_DIVIDE_SCREEN_ON_TABLETS">En Tablets en posición horizontal divir la pantalla en dos partes, una para ciudades y otra para detalles</string>
     
-    <string name="IDS_PREF_TITLE_SYNC_FREQUENCY">Weather Sync Frequency</string>
+    <string name="IDS_PREF_TITLE_SYNC_FREQUENCY">Frecuencia de Actulización</string>
     <string-array name="IDS_ARRAY_SYNC_FREQUENCY_TITLES">
-	    <item>15 minutes</item>
-	    <item>30 minutes</item>
-	    <item>1 hour</item>
-	    <item>3 hours</item>
-	    <item>6 hours</item>
-	    <item>Never</item>
+	    <item>15 minutos</item>
+	    <item>30 minutos</item>
+	    <item>1 hora</item>
+	    <item>3 horas</item>
+	    <item>6 horas</item>
+	    <item>Nunca</item>
     </string-array>
     <string-array name="IDS_ARRAY_SYNC_FREQUENCY_VALUES">
         <item>15</item>
@@ -77,7 +77,7 @@
         <item>-1</item>
 	</string-array>
     
-    <string name="IDS_PREF_TITLE_DEGREES_TYPE">Weather Degrees Type</string>
+    <string name="IDS_PREF_TITLE_DEGREES_TYPE">Formato de los Grados</string>
     <string-array name="IDS_ARRAY_DEGREES_TYPE_TITLES">
 	    <item>Celsius</item>
 	    <item>Fahrenheit</item>
@@ -86,15 +86,15 @@
         <item>1</item>
         <item>0</item>
 	</string-array>
-	
+    
 	<!--**********************************************************/
 	/*                                                           */ 
 	/* Weather Code Strings                                      */ 
 	/*                                                           */ 
 	/***********************************************************-->
-   	<string name="IDS_WEATHER_DESC_113">Clear/Sunny</string>
-    <string name="IDS_WEATHER_DESC_116">Partly Cloudy</string>
-    <string name="IDS_WEATHER_DESC_119">Cloudy</string>
+   	<string name="IDS_WEATHER_DESC_113">Despejado/Soleado</string>
+    <string name="IDS_WEATHER_DESC_116">Parcialmente Nublado</string>
+    <string name="IDS_WEATHER_DESC_119">Nublado</string>
     <string name="IDS_WEATHER_DESC_122">Overcast</string>
     <string name="IDS_WEATHER_DESC_143">Mist</string>
     <string name="IDS_WEATHER_DESC_176">Patchy rain nearby</string>
@@ -104,7 +104,7 @@
     <string name="IDS_WEATHER_DESC_200">Thundery outbreaks in nearby</string>
     <string name="IDS_WEATHER_DESC_227">Blowing snow</string>
     <string name="IDS_WEATHER_DESC_230">Blizzard</string>
-    <string name="IDS_WEATHER_DESC_248">Fog</string>
+    <string name="IDS_WEATHER_DESC_248">Niebla</string>
     <string name="IDS_WEATHER_DESC_260">Freezing fog</string>
     <string name="IDS_WEATHER_DESC_263">Patchy light drizzle</string>
     <string name="IDS_WEATHER_DESC_266">Light drizzle</string>

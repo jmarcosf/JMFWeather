@@ -87,8 +87,8 @@ public class CCityDetailsFragment extends Fragment
 		CityName.setText( City.getName() );
 		CityCountry.setText( City.getCountry() );
           CityGeoPosition.setText( City.getLatitude() + " : " + City.getLongitude() );
-		
-          WeatherDesc.setText( City.getCondition().getWeatherDescription() );
+
+          WeatherDesc.setText( City.getCondition().getWeatherCodeDescription( getActivity() ) );
           if( ( (CBaseCityActivity)getActivity() ).m_bCelsius ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
 		else CityTemp.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
           Date upDate = City.getCondition().getObservationTime();

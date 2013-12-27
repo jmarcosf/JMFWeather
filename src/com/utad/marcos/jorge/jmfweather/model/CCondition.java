@@ -24,8 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.database.Cursor;
 
+import com.utad.marcos.jorge.jmfweather.R;
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDBContract;
 
 /**************************************************************/
@@ -181,6 +183,17 @@ private String		m_WeatherDescription;
 	public int 	getWeatherCode()			{ return m_WeatherCode; }
 	public String 	getWeatherDescription()		{ return m_WeatherDescription; }
 
+	/*********************************************************/
+	/*                                                       */ 
+	/* CCondition.getWeatherCodeDescription()                */ 
+	/*                                                       */ 
+	/*********************************************************/
+	public String getWeatherCodeDescription( Context context )
+	{
+	     String packageName = context.getPackageName();
+	     int ResourceId = context.getResources().getIdentifier( "IDS_WEATHER_DESC_" + getWeatherCode(), "string", packageName );
+          return context.getString( ( ResourceId == 0 ) ? R.string.IDS_UNKNOWN : ResourceId );
+	}
 }
 
 
