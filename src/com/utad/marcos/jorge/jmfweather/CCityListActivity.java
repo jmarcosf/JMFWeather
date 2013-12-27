@@ -14,6 +14,10 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ComponentName;
@@ -102,8 +106,16 @@ private   int                      m_CurrentSelectedCity = -1;
           };
           m_Drawer.setDrawerListener( m_DrawerToggle );
           
+          //Set WebView Help File
+          String DefaultFile = "jmfweather_help.html";
+          String LocaleFile = "jmfweather_help-" + Locale.getDefault().getLanguage() + ".html";
+          boolean bLocaleExists = false;
+          try { bLocaleExists = Arrays.asList( getResources().getAssets().list( "" ) ).contains( LocaleFile ); }
+          catch( IOException exception ) { exception.printStackTrace(); }
+          
+          String FileName = "file:///android_asset/" + ( ( bLocaleExists ) ? LocaleFile : DefaultFile );
           WebView webView = (WebView)findViewById( R.id.IDC_TXT_HELP );
-          if( webView != null ) webView.loadUrl("file:///android_asset/jmfweather_help.html");
+          if( webView != null ) webView.loadUrl( FileName );
           
           ServiceConnect();
      }
