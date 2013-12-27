@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -118,7 +119,7 @@ private   int                      m_CurrentSelectedCity = -1;
           super.onPostCreate( savedInstanceState );
           Log.d( CCityListActivity.class.getSimpleName(), "OnPostCreate()" );
           m_DrawerToggle.syncState();
-          if( savedInstanceState != null ) CApp.setCelsius( savedInstanceState.getBoolean( "Celsius" ) );
+          if( savedInstanceState != null ) m_bCelsius = savedInstanceState.getBoolean( "Celsius" );
           else CApp.getWeatherDegreesType();
      }
      
@@ -167,9 +168,9 @@ private   int                      m_CurrentSelectedCity = -1;
           switch( Item.getItemId() )
           {
                case R.id.IDM_DEGREES_CELSIUS:
-                    if( !CApp.getCelsius() )
+                    if( !m_bCelsius )
                     {
-                         CApp.setCelsius( true );
+                         m_bCelsius = true;
                          if( m_Adapter != null ) m_Adapter.notifyDataSetChanged();
                          if( m_bTablet )
                          {
@@ -180,9 +181,9 @@ private   int                      m_CurrentSelectedCity = -1;
                     return true;
 
                case R.id.IDM_DEGREES_FAHRENHEIT:
-                    if( CApp.getCelsius() )
+                    if( m_bCelsius )
                     {
-                         CApp.setCelsius( false );
+                         m_bCelsius = false;
                          if( m_Adapter != null ) m_Adapter.notifyDataSetChanged();
                          if( m_bTablet )
                          {
@@ -280,6 +281,32 @@ private   int                      m_CurrentSelectedCity = -1;
                     
                case CApp.VIEWPAGER_RETURN_SELECTED_REQUEST_ID:
                     CApp.setSelectedCityId( ResultCode );
+                    if( intent != null )
+                    {
+                         boolean bValue = intent.getBooleanExtra( CCityDetailsActivity.IDS_CELSIUS_PARAM, m_bCelsius );
+                         m_bCelsius = bValue;
+                    }
+
+                    break;
+                    
+               case CApp.SETTINGS_MODIFY_REQUEST_ID:
+                    super.onActivityResult( RequestCode, ResultCode, intent );
+                    if( ( ResultCode & CSettingsActivity.FLAG_PREF_DIVIDE_SCREEN_ON_TABLETS ) != 0 )
+                    {
+                         this.recreate();
+                    }
+                    else if( ( ResultCode & CSettingsActivity.FLAG_PREF_WEATHER_DEGREES_TYPE ) != 0 )
+                    {
+                         if( m_bTablet )
+                         {
+                              FragmentManager frgManager = getSupportFragmentManager();
+                              Fragment fragment = frgManager.findFragmentByTag( "WeatherFragment" );
+                              FragmentTransaction tx = frgManager .beginTransaction();
+                              tx.detach( fragment );
+                              tx.attach( fragment );
+                              tx.commitAllowingStateLoss();
+                         }
+                    }
                     break;
                     
                default:
@@ -348,18 +375,19 @@ private   int                      m_CurrentSelectedCity = -1;
                // Build Tablet Fragment
                CCityDetailsFragment Fragment = new CCityDetailsFragment();
                Bundle Params = new Bundle();
-               Params.putLong( CCityDetailsFragment.IDS_CITY_ID_PARAM, id );
+               Params.putLong( CCityDetailsActivity.IDS_CITY_ID_PARAM, id );
                Fragment.setArguments( Params );
 
                FragmentManager frgManager = getSupportFragmentManager();
                FragmentTransaction tx = frgManager.beginTransaction();
-               tx.replace( R.id.IDR_LAY_CITY_CONTAINER, Fragment );
+               tx.replace( R.id.IDR_LAY_CITY_CONTAINER, Fragment, "WeatherFragment" );
                tx.commitAllowingStateLoss();
           }
           else
           {
                Intent intent = new Intent( CCityListActivity.this, CCityDetailsActivity.class );
-               intent.putExtra( CCityDetailsFragment.IDS_CITY_ID_PARAM, id );
+               intent.putExtra( CCityDetailsActivity.IDS_CITY_ID_PARAM, id );
+               intent.putExtra( CCityDetailsActivity.IDS_CELSIUS_PARAM, m_bCelsius );
                startActivityForResult( intent, CApp.VIEWPAGER_RETURN_SELECTED_REQUEST_ID );
           }
      }

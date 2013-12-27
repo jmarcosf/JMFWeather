@@ -42,7 +42,6 @@ import com.utad.marcos.jorge.jmfweather.model.CCity;
 /**************************************************************/
 public class CCityDetailsFragment extends Fragment
 {
-public static final String IDS_CITY_ID_PARAM      = "CityIdParam";
 
      /*********************************************************/
      /*                                                       */ 
@@ -65,7 +64,7 @@ public static final String IDS_CITY_ID_PARAM      = "CityIdParam";
                            ? R.layout.layout_city_details_fragment_vert
                            : R.layout.layout_city_details_fragment_horz;
 		View view = inflater.inflate( ResourceId, container, false );
-		long CityId = getArguments().getLong( IDS_CITY_ID_PARAM );
+		long CityId = getArguments().getLong( CCityDetailsActivity.IDS_CITY_ID_PARAM );
 		
 		CWeatherDAO WeatherDAO = new CWeatherDAO( getActivity() );
 		CCity City = WeatherDAO.SelectCity( CityId );
@@ -90,7 +89,7 @@ public static final String IDS_CITY_ID_PARAM      = "CityIdParam";
           CityGeoPosition.setText( City.getLatitude() + " : " + City.getLongitude() );
 		
           WeatherDesc.setText( City.getCondition().getWeatherDescription() );
-          if( CApp.getCelsius() ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
+          if( ( (CBaseCityActivity)getActivity() ).m_bCelsius ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
 		else CityTemp.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
           Date upDate = City.getCondition().getObservationTime();
           SimpleDateFormat DateFormat = new SimpleDateFormat( "MMM d, kk:mm" );

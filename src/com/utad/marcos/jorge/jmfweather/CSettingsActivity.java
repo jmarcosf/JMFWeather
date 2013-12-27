@@ -34,6 +34,12 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 /**************************************************************/
 public class CSettingsActivity extends PreferenceActivity
 {
+public static final int  FLAG_PREF_INCLUDE_CURRENT_LOCALTION_ON_STARTUP    =    0x00000001;     
+public static final int  FLAG_PREF_DIVIDE_SCREEN_ON_TABLETS                =    0x00000002;     
+public static final int  FLAG_PREF_WEATHER_SYNC_FREQUECY                   =    0x00000004;
+public static final int  FLAG_PREF_WEATHER_DEGREES_TYPE                    =    0x00000008;
+
+private static int       ResultCode = 0;
 
      /*********************************************************/
      /*                                                       */ 
@@ -67,8 +73,22 @@ public class CSettingsActivity extends PreferenceActivity
           ListPreference Preference4 = (ListPreference)findPreference( "WeatherDegreesType" );
           Preference4.setOnPreferenceChangeListener( PreferenceChangeListener );
           SetDefaultListSummary( Preference4 );
+          
+          ResultCode = 0;
      }
 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CSettingsActivity.onBackPressed()                     */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public void onBackPressed()
+     {
+          setResult( ResultCode );
+          super.onBackPressed();
+     }
+     
      /*********************************************************/
      /*                                                       */ 
      /*                                                       */ 
@@ -115,17 +135,20 @@ public class CSettingsActivity extends PreferenceActivity
                {
                     int timeout = Integer.parseInt( stringValue ) * 60 * 1000;
                     CWeatherRetrieverService.StartAlarm( CApp.getAppContext(), timeout );
+                    ResultCode |= FLAG_PREF_WEATHER_SYNC_FREQUECY;
                }
                else if( preference.getKey().equals( "WeatherDegreesType" ) )
                {
-                    int Value = Integer.parseInt( stringValue );
-                    CApp.setCelsius( Value == 1 );
+                    ResultCode |= FLAG_PREF_WEATHER_DEGREES_TYPE;
                }
-//             else if( preference.getKey().equals( "DivideScreenOnTablets" ) )
-//             {
-//                  //I don't know how to tell main activity this preference has been changed.
-//             }
-               
+               else if( preference.getKey().equals( "DivideScreenOnTablets" ) )
+               {
+                    ResultCode |= FLAG_PREF_DIVIDE_SCREEN_ON_TABLETS;
+               }
+               else if( preference.getKey().equals( "IncludeCurrentLocationOnStartup" ) )
+               {
+                    ResultCode |= FLAG_PREF_INCLUDE_CURRENT_LOCALTION_ON_STARTUP;
+               }
                return true;
           }
       };

@@ -15,6 +15,7 @@
 package com.utad.marcos.jorge.jmfweather;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.utad.marcos.jorge.jmfweather.model.CForecast;
 import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 
@@ -126,7 +128,7 @@ private CForecastList    m_ForecastList;
           Forecast.SetViewIcon( m_Context, ForecastIcon );
           
           TextView ForecastTemperature = (TextView)ItemView.findViewById( R.id.IDC_TXT_FORECAST_TEMPERATURE );
-          if( CApp.getCelsius() ) ForecastTemperature.setText( "" + Forecast.getMinTemperatureCelsius() + "/" + Forecast.getMaxTemperatureCelsius() + "ºC" );
+          if( ( (CBaseCityActivity)m_Context ).m_bCelsius ) ForecastTemperature.setText( "" + Forecast.getMinTemperatureCelsius() + "/" + Forecast.getMaxTemperatureCelsius() + "ºC" );
           else ForecastTemperature.setText( "" + Forecast.getMinTemperatureFahrenheit() + "/" + Forecast.getMaxTemperatureFahrenheit() + "ºF" );
 
           TextView ForecastDescription = (TextView)ItemView.findViewById( R.id.IDC_TXT_FORECAST_DESCRIPTION );

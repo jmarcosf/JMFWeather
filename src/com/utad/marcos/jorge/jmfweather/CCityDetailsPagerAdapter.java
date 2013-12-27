@@ -67,7 +67,7 @@ private ArrayList< Long >     m_CityIdList;
 		CCityDetailsFragment Fragment = new CCityDetailsFragment();
 		Bundle Params = new Bundle();
 		long CityId = m_CityIdList.get( iPosition ).longValue();
-		Params.putLong( CCityDetailsFragment.IDS_CITY_ID_PARAM, CityId );
+		Params.putLong( CCityDetailsActivity.IDS_CITY_ID_PARAM, CityId );
 		Fragment.setArguments( Params );
 		return Fragment;
 	}
@@ -82,4 +82,15 @@ private ArrayList< Long >     m_CityIdList;
 	{
 	     return m_CityIdList.size();
 	}
+	
+	/*********************************************************/
+	/*                                                       */ 
+	/* CCityDetailsPagerAdapter.getItemPosition()            */ 
+	/*                                                       */ 
+	/*********************************************************/
+     @Override
+	public int getItemPosition( Object item )
+     {
+          return POSITION_NONE;
+     }	
 }

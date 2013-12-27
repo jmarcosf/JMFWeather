@@ -112,7 +112,7 @@ private   boolean        m_bTablet = false;
                CityCountry.setText( "" + City.getCountry() );
           
                TextView CityTemp = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_TEMPERATURE );
-               if( CApp.getCelsius() ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
+               if( ( (CBaseCityActivity)m_Context ).m_bCelsius ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
                else CityTemp.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
                
                TextView CityUpdate = (TextView)ItemView.findViewById( R.id.IDC_TXT_CITY_WEATHER_LAST_UPDATE );

@@ -38,8 +38,9 @@ public final static int  MSGBOX_INSERT_CITY_ERROR_REQUEST_ID               = 104
 
 public final static int  VIEWPAGER_RETURN_SELECTED_REQUEST_ID              = 200;
 
+public final static int  SETTINGS_MODIFY_REQUEST_ID                        = 300;
+
 private static Context   m_Context = null;
-private static boolean   m_bCelsius = true;
 private static long      m_SelectedCityId = -1;
 
      /*********************************************************/
@@ -109,14 +110,12 @@ private static long      m_SelectedCityId = -1;
      /* CApp.getWeatherDegreesType()                          */ 
      /*                                                       */ 
      /*********************************************************/
-     public static boolean getWeatherDegreesType()
+     public static int getWeatherDegreesType()
      {
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( m_Context );
           int DefaultValue = m_Context.getResources().getInteger( R.integer.g_WeatherDegreesTypeDefault );
           String DegreesPreference = preferences.getString( "WeatherDegreesType", "" + DefaultValue );
-          int Value = Integer.parseInt( DegreesPreference );
-          CApp.m_bCelsius = ( Value == 1 );
-          return CApp.m_bCelsius;
+          return Integer.parseInt( DegreesPreference );
      }
      
      /*********************************************************/
@@ -125,7 +124,6 @@ private static long      m_SelectedCityId = -1;
      /*                                                       */ 
      /*********************************************************/
      public static Context getAppContext()        { return CApp.m_Context; }
-     public static boolean getCelsius()           { return CApp.m_bCelsius; }
      public static long    getSelectedCityId()    { return CApp.m_SelectedCityId; }
      
      /*********************************************************/
@@ -133,6 +131,5 @@ private static long      m_SelectedCityId = -1;
      /* Class setters                                         */ 
      /*                                                       */ 
      /*********************************************************/
-     public static void setCelsius( boolean bValue )        { CApp.m_bCelsius = bValue; }
      public static void setSelectedCityId( long CityId )    { CApp.m_SelectedCityId = CityId; }
 }

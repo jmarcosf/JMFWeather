@@ -34,6 +34,9 @@ import android.view.MenuItem;
 /**************************************************************/
 public class CCityDetailsActivity extends CBaseCityActivity
 {
+public static final String         IDS_CITY_ID_PARAM      = "CityIdParam";
+public static final String         IDS_CELSIUS_PARAM      = "CelsiusParam";
+
 private   ArrayList< Long >        m_CityIdList;
 private   ViewPager                m_ViewPager = null;
 private   CCityDetailsPagerAdapter m_PagerAdapter = null;
@@ -55,7 +58,8 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
 		super.onCreate( savedInstanceState );
 		
 		Intent intent = this.getIntent();
-		long cityId = intent.getLongExtra( CCityDetailsFragment.IDS_CITY_ID_PARAM, 0 );
+		long cityId = intent.getLongExtra( IDS_CITY_ID_PARAM, 0 );
+          m_bCelsius = intent.getBooleanExtra( IDS_CELSIUS_PARAM, true );
           setContentView( R.layout.layout_city_details );
 		
           int iPosition = 0;
@@ -96,7 +100,8 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
      {
           int iPage = m_ViewPager.getCurrentItem();
           long CityId = m_CityIdList.get( iPage );
-          setResult( (int)CityId );
+          getIntent().putExtra( IDS_CELSIUS_PARAM, m_bCelsius );
+          setResult( (int)CityId, getIntent() );
           super.onBackPressed();
      }
      
@@ -110,25 +115,16 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
      {
      	switch( Item.getItemId() )
      	{
-//               case R.id.IDM_DEGREES_CELSIUS:
-//                    if( !CApp.getCelsius() )
-//                    {
-//                         CApp.setCelsius( true );
-//                         m_ViewPager.invalidate();
-//                         if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
-//                    }
-//                    return true;
-//
-//               case R.id.IDM_DEGREES_FAHRENHEIT:
-//                    if( CApp.getCelsius() )
-//                    {
-//                         CApp.setCelsius( false );
-//                         m_ViewPager.invalidate();
-//                         m_ViewPager.refreshDrawableState();
-//                         if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
-//                    }
-//                    return true;
-//                    
+               case R.id.IDM_DEGREES_CELSIUS:
+                    m_bCelsius = true;
+                    if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
+                    return true;
+
+               case R.id.IDM_DEGREES_FAHRENHEIT:
+                    m_bCelsius = false;
+                    if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
+                    return true;
+                    
      		case android.R.id.home:
      			Intent upIntent = NavUtils.getParentActivityIntent( this );
      			if( NavUtils.shouldUpRecreateTask( this, upIntent ) )
@@ -153,5 +149,29 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
      {
           getMenuInflater().inflate( R.menu.menu_city_details, menu );
           return true;
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityDetailsActivity.onActivityResult()               */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     protected void onActivityResult( int RequestCode, int ResultCode, Intent intent )
+     {
+          switch( RequestCode )
+          {
+               case CApp.SETTINGS_MODIFY_REQUEST_ID:
+                    super.onActivityResult( RequestCode, ResultCode, intent );
+                    if( ( ResultCode & CSettingsActivity.FLAG_PREF_WEATHER_DEGREES_TYPE ) != 0 )
+                    {
+                         if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                    
+               default:
+                    super.onActivityResult( RequestCode, ResultCode, intent );
+                    break;
+          }
      }
 }

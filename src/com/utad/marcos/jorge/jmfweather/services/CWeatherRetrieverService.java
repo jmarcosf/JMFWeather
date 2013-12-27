@@ -307,7 +307,8 @@ public static boolean                                  m_bFirstCall = true;
      /*********************************************************/
      public void LoadCityImages( CCity City )
      {
-          Log.d( CWeatherRetrieverService.class.getSimpleName(), "LoadCityImages()" );
+          if( City == null ) return;
+          Log.d( CWeatherRetrieverService.class.getSimpleName(), "LoadCityImages()-> " + City.getName() );
           if( City.getCondition() != null ) new CLoadImageTask().execute( City.getCondition().getIconUrl() );
           if( City.getForecastList() != null )
           {

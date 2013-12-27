@@ -35,10 +35,12 @@ import android.view.MenuItem;
 /**************************************************************/
 public class CBaseCityActivity extends ActionBarActivity
 {
-protected CWeatherDAO    m_WeatherDAO = null;
-protected boolean        g_bTablet = false;
-protected boolean        m_bTablet = false;
-protected int            m_Orientation = -1;
+protected CWeatherDAO    m_WeatherDAO                  = null;
+protected boolean        g_bTablet                     = false;
+protected boolean        m_bTablet                     = false;
+protected int            m_Orientation                 = -1;
+protected boolean        m_bCelsius                    = false;
+protected boolean        m_bDivideScreeenOnTablets     = false;
 
      /*********************************************************/
      /*                                                       */ 
@@ -59,7 +61,9 @@ protected int            m_Orientation = -1;
           Log.d( CBaseCityActivity.class.getSimpleName(), ( m_Orientation == Configuration.ORIENTATION_LANDSCAPE ) ? "LANDSCAPE" : "PORTRAIT" );
           m_WeatherDAO = new CWeatherDAO( this );
           g_bTablet = getResources().getBoolean( R.bool.g_bTablet );
-          m_bTablet = ( g_bTablet && CApp.IsDivideScreenOnTabletsEnabled() && m_Orientation != Configuration.ORIENTATION_PORTRAIT );
+          m_bDivideScreeenOnTablets = CApp.IsDivideScreenOnTabletsEnabled();
+          m_bTablet = ( g_bTablet && m_bDivideScreeenOnTablets && m_Orientation != Configuration.ORIENTATION_PORTRAIT );
+          m_bCelsius = ( CApp.getWeatherDegreesType() == 1 );
           getSupportActionBar().setDisplayHomeAsUpEnabled( true );
      }
 
@@ -84,7 +88,7 @@ protected int            m_Orientation = -1;
      protected void onSaveInstanceState( Bundle outState )
      {
           Log.d( CBaseCityActivity.class.getSimpleName(), "OnSaveInstanceState()" );
-          outState.putBoolean( "Celsius", CApp.getCelsius() );
+          outState.putBoolean( "Celsius", m_bCelsius );
           super.onSaveInstanceState( outState );
      }
 
@@ -99,7 +103,7 @@ protected int            m_Orientation = -1;
           super.onRestoreInstanceState( savedInstanceState );
           Log.d( CBaseCityActivity.class.getSimpleName(), "OnRestoreInstanceState()" );
           if( savedInstanceState == null ) Log.d( CBaseCityActivity.class.getSimpleName(), "savedInstanceState = null" );
-          if( savedInstanceState != null ) CApp.setCelsius( savedInstanceState.getBoolean( "Celsius" ) );
+          if( savedInstanceState != null ) m_bCelsius = savedInstanceState.getBoolean( "Celsius" );
      }
      
 	/*********************************************************/
@@ -131,7 +135,7 @@ protected int            m_Orientation = -1;
      
 			case R.id.IDM_SETTINGS:
 			     Intent intent = new Intent( this, CSettingsActivity.class );
-		          startActivity( intent );
+		          startActivityForResult( intent, CApp.SETTINGS_MODIFY_REQUEST_ID );
 			     return true;
 	
 			default:
@@ -149,6 +153,19 @@ protected int            m_Orientation = -1;
 	{
 		switch( RequestCode )
 		{
+		     case CApp.SETTINGS_MODIFY_REQUEST_ID:
+		          if( ( ResultCode & CSettingsActivity.FLAG_PREF_WEATHER_DEGREES_TYPE ) != 0 )
+		          {
+		               m_bCelsius = ( CApp.getWeatherDegreesType() == 1 );
+		          }
+                    
+		          if( ( ResultCode & CSettingsActivity.FLAG_PREF_DIVIDE_SCREEN_ON_TABLETS ) != 0 )
+	               {
+		               m_bDivideScreeenOnTablets = CApp.IsDivideScreenOnTabletsEnabled();
+	                    m_bTablet = ( g_bTablet && m_bDivideScreeenOnTablets && m_Orientation != Configuration.ORIENTATION_PORTRAIT );
+	               }
+		          break;
+		          
 			default:
 				super.onActivityResult( RequestCode, ResultCode, Data );
 				break;
