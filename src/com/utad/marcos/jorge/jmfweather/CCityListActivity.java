@@ -298,7 +298,6 @@ private   int                      m_CurrentSelectedCity = -1;
                          boolean bValue = intent.getBooleanExtra( CCityDetailsActivity.IDS_CELSIUS_PARAM, m_bCelsius );
                          m_bCelsius = bValue;
                     }
-
                     break;
                     
                case CApp.SETTINGS_MODIFY_REQUEST_ID:
@@ -516,9 +515,18 @@ private   int                      m_CurrentSelectedCity = -1;
           
           if( iPosition != -1 )
           {
-               if( m_bTablet ) m_ListView.performItemClick( m_ListView, iPosition, CityId );
-               else m_ListView.setItemChecked( iPosition, true );
-               m_ListView.setSelection( iPosition );
+               if( m_bTablet )
+               {
+                    m_ListView.performItemClick( m_ListView, iPosition, CityId );
+                    m_ListView.setSelection( iPosition );
+               }
+               else
+               {
+                    m_ListView.setItemChecked( iPosition, true );
+                    int iFirst = m_ListView.getFirstVisiblePosition();
+                    int iLast = m_ListView.getLastVisiblePosition();
+                    if( iPosition < iFirst || iPosition > iLast ) m_ListView.setSelection( iPosition );
+               }
           }
      }
 

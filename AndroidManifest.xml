@@ -64,11 +64,11 @@
 		/*                                                       */ 
 	    /*********************************************************/
 	    /*                                                       */ 
-	    /* City List Activity                                    */ 
+	    /* Splash Activity                                       */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <activity
-            android:name="com.utad.marcos.jorge.jmfweather.CCityListActivity"
+            android:name="com.utad.marcos.jorge.jmfweather.CSplashActivity"
             android:label="@string/IDS_APP_NAME" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -77,7 +77,16 @@
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value="com.utad.marcos.jorge.jmfweather.CCitySearchActivity" />
-            
+        </activity>
+        
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* City List Activity                                    */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <activity
+            android:name="com.utad.marcos.jorge.jmfweather.CCityListActivity"
+            android:label="@string/IDS_APP_NAME" >
         </activity>
         
    		<!--******************************************************/

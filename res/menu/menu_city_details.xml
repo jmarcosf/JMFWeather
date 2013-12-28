@@ -17,17 +17,17 @@
 
    	<item
         android:id="@+id/IDM_DEGREES_CELSIUS"
-        JmfWeather:showAsAction="always"
-        android:title="@string/IDS_CELSIUS" />
+        JmfWeather:showAsAction="ifRoom"
+        android:title="ºC" />
 
 	<item
         android:id="@+id/IDM_DEGREES_FAHRENHEIT"
-        JmfWeather:showAsAction="always"
-        android:title="@string/IDS_FAHRENHEIT" />
+        JmfWeather:showAsAction="ifRoom"
+        android:title="ºF" />
 	
 	<item
         android:id="@+id/IDM_SETTINGS"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/IDS_SETTINGS"
         android:icon="@android:drawable/ic_menu_preferences" />
 

@@ -54,7 +54,7 @@
 	/*                                                           */ 
 	/***********************************************************-->
     <string name="IDS_GENERAL">General</string>
-    <string name="IDS_PREF_TITLE_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Add current location on startup</string>
+    <string name="IDS_PREF_TITLE_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Add current location</string>
     <string name="IDS_PREF_DESC_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Add current location city to list of cities automatically on application startup</string>
     <string name="IDS_PREF_TITLE_DIVIDE_SCREEN_ON_TABLETS">Divide Screen on Tablets</string>
     <string name="IDS_PREF_DESC_DIVIDE_SCREEN_ON_TABLETS">On Landscape Tablets divide the screen in two parts, one for cities and one for details</string>

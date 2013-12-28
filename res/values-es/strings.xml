@@ -54,7 +54,7 @@
 	/*                                                           */ 
 	/***********************************************************-->
     <string name="IDS_GENERAL">General</string>
-    <string name="IDS_PREF_TITLE_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Añadir ciudad actual en el inicio</string>
+    <string name="IDS_PREF_TITLE_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Añadir ciudad actual</string>
     <string name="IDS_PREF_DESC_INCLUDE_CURRENT_LOCATION_ON_STARTUP">Añadir la localidad actual automáticamente al iniciar la aplicación</string>
     <string name="IDS_PREF_TITLE_DIVIDE_SCREEN_ON_TABLETS">Dividir la pantalla en Tablets</string>
     <string name="IDS_PREF_DESC_DIVIDE_SCREEN_ON_TABLETS">En Tablets en posición horizontal divir la pantalla en dos partes, una para ciudades y otra para detalles</string>

@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--**************************************************************/
 /*                                                               */ 
-/* selector_city_list_item_background.xml                        */ 
+/* layout_splash_activity.xml                                    */ 
 /* (c)2013 jmarcosf                                              */ 
 /*                                                               */ 
-/* Description: Defines colors & images of Cities on ListView    */ 
+/* Description: Splash Activity Layout                           */ 
 /*              JmfWeather Project                               */ 
 /*              Práctica asignatura Android Fundamental          */ 
 /*              U-Tad - Master Apps                              */ 
@@ -13,22 +12,15 @@
 /*        Date: December 2013                                    */ 
 /*                                                               */ 
 /***************************************************************-->
-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    
-    <item android:state_activated="true"
-        android:drawable="@drawable/image9p_city_list_item_selected">
-    </item>
-    
-    <item android:state_selected="true"
-        android:drawable="@drawable/image9p_city_list_item_selected">
-    </item>
-    
-    <item android:state_pressed="true">
-        <color android:color="@color/IDR_COL_LVITEM_PRESSED_BACKGROUND"/>
-    </item>
-    
-    <item>
-        <color android:color="#E6E6E6"/>
-    </item>
-
-</selector>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_logo_background" >
+ 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/img_logo_splash" />
+ 
+</RelativeLayout>

@@ -44,7 +44,7 @@
 		    android:layout_height="wrap_content"
 	        android:gravity="right"
 	        android:fontFamily="Times New Roman"
-	        android:textSize="30sp" />
+	        android:textSize="50sp" />
 	
 	    <!--******************************************************/
 	    /*                                                       */ 
@@ -57,7 +57,7 @@
 	        android:layout_height="wrap_content"
 	        android:gravity="right"
 	        android:fontFamily="Arial"
-	        android:textSize="14sp" />
+	        android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -84,8 +84,8 @@
 	    /*******************************************************-->
 	    <ImageView
 	        android:id="@+id/IDP_ICO_CITY_ICON"
-	        android:layout_width="40dp"
-	        android:layout_height="40dp" />
+	        android:layout_width="100dp"
+	        android:layout_height="100dp" />
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
@@ -96,11 +96,11 @@
 	        android:id="@+id/IDC_TXT_CITY_NAME"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:paddingTop="1dp"
-	        android:paddingLeft="10dp"
+	        android:paddingTop="5dp"
+	        android:paddingLeft="15dp"
 	        android:fontFamily="Arial"
 	        android:singleLine="true"
-	        android:textSize="22sp"
+	        android:textSize="35sp"
 	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
 	
 		<!--******************************************************/
@@ -112,10 +112,12 @@
 	        android:id="@+id/IDC_TXT_CITY_COUNTRY"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:paddingTop="2dp"
+	        android:layout_below="@id/IDC_TXT_CITY_NAME"
+	        android:paddingTop="5dp"
+	        android:paddingLeft="15dp"
 	        android:fontFamily="Arial"
-	        android:textSize="16sp"
-	        android:layout_below="@id/IDP_ICO_CITY_ICON" />
+	        android:textSize="22sp"
+	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
 	
 	</RelativeLayout>    
     

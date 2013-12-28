@@ -39,7 +39,7 @@ public static final int  FLAG_PREF_DIVIDE_SCREEN_ON_TABLETS                =    
 public static final int  FLAG_PREF_WEATHER_SYNC_FREQUECY                   =    0x00000004;
 public static final int  FLAG_PREF_WEATHER_DEGREES_TYPE                    =    0x00000008;
 
-private static int       ResultCode = 0;
+private static      int  ResultCode = 0;
 
      /*********************************************************/
      /*                                                       */ 
@@ -63,8 +63,11 @@ private static int       ResultCode = 0;
           CheckBoxPreference Preference1 = (CheckBoxPreference)findPreference( "IncludeCurrentLocationOnStartup" );
           Preference1.setOnPreferenceChangeListener( PreferenceChangeListener );
 
-          CheckBoxPreference Preference2 = (CheckBoxPreference)findPreference( "DivideScreenOnTablets" );
-          Preference2.setOnPreferenceChangeListener( PreferenceChangeListener );
+          if( getResources().getBoolean( R.bool.g_bTablet ) )
+          {
+               CheckBoxPreference Preference2 = (CheckBoxPreference)findPreference( "DivideScreenOnTablets" );
+               Preference2.setOnPreferenceChangeListener( PreferenceChangeListener );
+          }
 
           ListPreference Preference3 = (ListPreference)findPreference( "WeatherSyncFrequency" );
           Preference3.setOnPreferenceChangeListener( PreferenceChangeListener );

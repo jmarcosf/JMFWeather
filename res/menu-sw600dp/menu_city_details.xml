@@ -1,9 +1,9 @@
 <!--**************************************************************/
 /*                                                               */ 
-/* menu_city_list.xml                                            */ 
+/* menu_city_details.xml                                         */ 
 /* (c)2013 jmarcosf                                              */ 
 /*                                                               */ 
-/* Description: City List Activity Menu                          */ 
+/* Description: City Details Activity Menu                       */ 
 /*              JmfWeather Project                               */ 
 /*              Práctica asignatura Android Fundamental          */ 
 /*              U-Tad - Master Apps                              */ 
@@ -14,27 +14,21 @@
 /***************************************************************-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:JmfWeather="http://schemas.android.com/apk/res-auto" >
-    
+
    	<item
         android:id="@+id/IDM_DEGREES_CELSIUS"
-        JmfWeather:showAsAction="always"
-        android:title="ºC" />
+        JmfWeather:showAsAction="ifRoom"
+        android:title="@string/IDS_CELSIUS" />
 
 	<item
         android:id="@+id/IDM_DEGREES_FAHRENHEIT"
-        JmfWeather:showAsAction="always"
-        android:title="ºF" />
-
-	<item
-        android:id="@+id/IDM_ADD_CITY"
-        JmfWeather:showAsAction="always"
-        android:title="@string/IDS_ADD_CITY"
-        android:icon="@android:drawable/ic_menu_add"
-        android:actionViewClass="android.support.v7.widget.SearchView" />
-
+        JmfWeather:showAsAction="ifRoom"
+        android:title="@string/IDS_FAHRENHEIT" />
+	
 	<item
         android:id="@+id/IDM_SETTINGS"
-        android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="@string/IDS_SETTINGS"/>
+        android:title="@string/IDS_SETTINGS"
+        android:icon="@android:drawable/ic_menu_preferences" />
+
 </menu>

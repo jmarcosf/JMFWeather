@@ -28,19 +28,19 @@
     <RelativeLayout
         android:id="@+id/IDR_LAY_DETAILS_FORECAST"
         android:layout_width="match_parent"
-        android:layout_height="105dp"
+        android:layout_height="210dp"
         android:layout_alignParentBottom="true" >
 
         <GridView
             android:id="@+id/IDC_GRID_FORECAST"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:columnWidth="75dp"
+            android:columnWidth="120dp"
             android:gravity="center"
             android:horizontalSpacing="5dp"
             android:numColumns="5"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="2dp" />
+            android:verticalSpacing="5dp" />
 
     </RelativeLayout>
 
@@ -55,7 +55,7 @@
 	    android:layout_width="match_parent"
         android:layout_height="2dip"
         android:background="#C0C0C0"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="10dp"
         android:layout_above="@id/IDR_LAY_DETAILS_FORECAST"/>
     
     <!--**********************************************************/
@@ -67,7 +67,7 @@
     /***********************************************************-->
     <LinearLayout
         android:id="@+id/IDR_LAY_DETAILS_WEATHER_HEADER"
-        android:layout_width="100dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentTop="true"
@@ -84,10 +84,9 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:gravity="right"
-	        android:paddingTop="3dp"
 	        android:fontFamily="Arial"
 	        android:textStyle="bold"
-	        android:textSize="16sp" />
+	        android:textSize="20sp" />
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
@@ -100,7 +99,7 @@
 	        android:layout_height="wrap_content"
 	        android:gravity="right"
 	        android:fontFamily="Times New Roman"
-	        android:textSize="30sp" />
+	        android:textSize="75sp" />
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
@@ -114,7 +113,7 @@
 	        android:gravity="right"
 	        android:maxLines="2"
 	        android:fontFamily="Arial"
-	        android:textSize="14sp" />
+	        android:textSize="20sp" />
 	    
    	</LinearLayout>
     	
@@ -141,8 +140,8 @@
 	    /*******************************************************-->
 	    <ImageView
 	        android:id="@+id/IDP_ICO_WEATHER_IMAGE"
-	        android:layout_width="40dp"
-	        android:layout_height="40dp" />
+	        android:layout_width="100dp"
+	        android:layout_height="100dp" />
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
@@ -155,9 +154,9 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
 	        android:gravity="top"
-	        android:paddingLeft="10dp"
+	        android:paddingLeft="15dp"
 	        android:fontFamily="Arial"
-	        android:textSize="22sp"
+	        android:textSize="40sp"
 	        android:textStyle="bold"
 	        android:singleLine="true"
 	        android:layout_toRightOf="@id/IDP_ICO_WEATHER_IMAGE" />
@@ -173,10 +172,10 @@
 	        android:layout_height="wrap_content"
 	        android:layout_below="@id/IDC_TXT_CITY_NAME"
 	        android:paddingTop="1dp"
-	        android:paddingLeft="10dp"
+	        android:paddingLeft="15dp"
 	        android:fontFamily="Arial"
 	        android:textStyle="italic"
-	        android:textSize="16sp"
+	        android:textSize="28sp"
 	        android:layout_toRightOf="@id/IDP_ICO_WEATHER_IMAGE" />
 	    
 	    <!--******************************************************/
@@ -189,9 +188,9 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@id/IDP_ICO_WEATHER_IMAGE"
-	        android:paddingTop="28dp"
+	        android:paddingTop="15dp"
 	        android:fontFamily="Arial"
-	        android:textSize="12sp" />
+	        android:textSize="18sp" />
 
 	</RelativeLayout>
 	
