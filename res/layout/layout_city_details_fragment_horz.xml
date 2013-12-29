@@ -67,7 +67,7 @@
     /***********************************************************-->
     <LinearLayout
         android:id="@+id/IDR_LAY_DETAILS_WEATHER_HEADER"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentTop="true"

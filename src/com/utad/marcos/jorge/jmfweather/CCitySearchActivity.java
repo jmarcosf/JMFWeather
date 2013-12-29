@@ -32,7 +32,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
@@ -52,9 +52,10 @@ public class CCitySearchActivity extends Activity implements OnItemClickListener
 {
 private   CWeatherDAO         m_WeatherDAO = null;
 private   Dialog              m_Dialog;
+private   View                m_Frame;
+private   TextView            m_Message;
 private   ListView            m_ListView;
 private   CCitySearchAdapter  m_Adapter;
-private   ProgressBar         m_WaitClock;
 private   CCityList           m_CityList;
      
      /*********************************************************/
@@ -84,7 +85,9 @@ private   CCityList           m_CityList;
           m_ListView = (ListView)m_Dialog.findViewById( R.id.IDC_LV_SEARCH_CITY_LIST );
           m_ListView.setChoiceMode( ListView.CHOICE_MODE_SINGLE );
           m_ListView.setOnItemClickListener( this );
-          m_WaitClock = (ProgressBar)m_Dialog.findViewById( R.id.IDC_PB_WAIT_CLOCK );
+          
+          m_Frame = m_Dialog.findViewById( R.id.IDR_DLG_SEARCH );
+          m_Message = (TextView)m_Dialog.findViewById( R.id.IDC_TXT_MESSAGE );
      
           HandleIntent( getIntent() );
      }
@@ -149,7 +152,8 @@ private   CCityList           m_CityList;
      public void onItemClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
      {
           CCity City = m_CityList.getCityList().get( iPosition );
-          m_Dialog.setTitle( Html.fromHtml( getString( R.string.IDS_WRITING_CITY_TO_DATABASE, City.getName() ) ) );
+          m_Dialog.setTitle( R.string.IDS_WRITING_CITY_TITLE );
+          m_Message.setText( Html.fromHtml( getString( R.string.IDS_WRITING_CITY_TEXT, City.getName() ) ) );
           
           long CityId = m_WeatherDAO.GetCityId( City );
           if( CityId != -1 )
@@ -193,7 +197,8 @@ private   CCityList           m_CityList;
      {
          if( !Intent.ACTION_SEARCH.equals( intent.getAction() ) ) return;
          String Query = intent.getStringExtra( SearchManager.QUERY );
-         m_Dialog.setTitle( Html.fromHtml( getString( R.string.IDS_SEARCHING_CITY, Query ) ) );
+         m_Dialog.setTitle( R.string.IDS_SEARCHING_CITY_TITLE );
+         m_Message.setText( Html.fromHtml( getString( R.string.IDS_SEARCHING_CITY_TEXT, Query ) ) );
          m_Dialog.show();
          new CSearchCity().execute( Query );
      }
@@ -215,7 +220,7 @@ private   CCityList           m_CityList;
           @Override
           protected void onPreExecute()
           {
-               m_WaitClock.setVisibility( View.VISIBLE );
+               m_Frame.setVisibility( View.VISIBLE );
                m_ListView.setVisibility( View.GONE );
                m_CityList = null;
           }
@@ -247,7 +252,7 @@ private   CCityList           m_CityList;
           @Override
           protected void onPostExecute( Void Param )
           {
-               m_WaitClock.setVisibility( View.GONE );
+               m_Frame.setVisibility( View.GONE );
                if( m_CityList != null && m_CityList.getSize() > 0 )
                {
                     m_Adapter = new CCitySearchAdapter( CCitySearchActivity.this, m_CityList );
@@ -284,7 +289,7 @@ private   CCityList           m_CityList;
           @Override
           protected void onPreExecute()
           {
-               m_WaitClock.setVisibility( View.VISIBLE );
+               m_Frame.setVisibility( View.VISIBLE );
                m_ListView.setVisibility( View.GONE );
                m_CityList = null;
           }
@@ -319,7 +324,7 @@ private   CCityList           m_CityList;
           @Override
           protected void onPostExecute( Long Param )
           {
-               m_WaitClock.setVisibility( View.GONE );
+               m_Frame.setVisibility( View.GONE );
                CApp.setSelectedCityId( Param.longValue() );
                if( Param.longValue() == -1 )
                {

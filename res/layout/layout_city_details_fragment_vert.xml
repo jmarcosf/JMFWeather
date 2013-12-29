@@ -193,7 +193,6 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:gravity="right"
-	        android:maxLines="2"
 	        android:fontFamily="Arial"
 	        android:textSize="14sp" />
 	    

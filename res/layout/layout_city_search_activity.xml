@@ -30,16 +30,37 @@
 	    android:layout_height="match_parent"
 	    android:layout_gravity="center_horizontal" />
    	
-   	<!--**********************************************************/
-    /*                                                           */ 
-    /* Progress Bar Layout                                       */ 
-	/*                                                           */ 
-    /***********************************************************-->
-   	<ProgressBar
-	    android:id="@+id/IDC_PB_WAIT_CLOCK"
-	    android:layout_width="48dp"
-	    android:layout_height="48dp"
-	    android:layout_gravity="center"
-	    android:visibility="gone" />
+   	<LinearLayout
+   	    android:id="@+id/IDR_DLG_SEARCH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+	    android:visibility="gone" >
+   	    	    
+        <!--******************************************************/
+    	/*                                                       */ 
+    	/* MessageBox Question/Message Layout                    */ 
+		/*                                                       */ 
+    	/*******************************************************-->
+        <TextView
+            android:id="@+id/IDC_TXT_MESSAGE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+        
+	   	<!--**********************************************************/
+	    /*                                                           */ 
+	    /* Progress Bar Layout                                       */ 
+		/*                                                           */ 
+	    /***********************************************************-->
+	   	<ProgressBar
+		    android:id="@+id/IDC_PB_WAIT_CLOCK"
+		    android:layout_width="48dp"
+		    android:layout_height="48dp"
+		    android:layout_gravity="center" />
 
+   	</LinearLayout>
+   	
 </FrameLayout>
