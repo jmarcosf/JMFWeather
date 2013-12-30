@@ -123,7 +123,8 @@ public class CCityDetailsFragment extends Fragment implements OnTouchListener
      @Override
      public boolean onTouch( View view, MotionEvent event )
      {
-          if( !( (CBaseCityActivity)getActivity() ).g_bTablet || ( (CBaseCityActivity)getActivity() ).m_Orientation != Configuration.ORIENTATION_LANDSCAPE )
+          //Free World Weather Online Api supplies Forecast up to 5 days so they fix on landscape modes.
+          if( ( (CBaseCityActivity)getActivity() ).m_Orientation != Configuration.ORIENTATION_LANDSCAPE )
           {
                ( (ViewParent)view.getParent() ).requestDisallowInterceptTouchEvent( true );
           }

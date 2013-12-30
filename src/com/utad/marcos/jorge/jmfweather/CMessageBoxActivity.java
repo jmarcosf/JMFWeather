@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.TextView;
 
 /**************************************************************/
@@ -38,6 +39,7 @@ public static final int        MESSAGEBOX_TYPE_RETRYCANCEL  = 4;
 public static final String     MESSAGEBOX_PARAM_TYPE        = "MessageBoxParamType";
 public static final String     MESSAGEBOX_PARAM_TITLE       = "MessageBoxParamTitle";
 public static final String     MESSAGEBOX_PARAM_MESSAGE     = "MessageBoxParamMessage";
+public static final String     MESSAGEBOX_PARAM_ICON_ID     = "MessageBoxParamIconId";
 public static final String     MESSAGEBOX_PARAM_OBJECT_ID   = "MessageBoxParamObjectId";
 public static final String     MESSAGEBOX_PARAM_USER_DATA1  = "MessageBoxParamUserData1";
 public static final String     MESSAGEBOX_PARAM_USER_DATA2  = "MessageBoxParamUserData2";
@@ -58,14 +60,19 @@ public static final int        MESSAGEBOX_RESULT_ACCEPTED   = 1;
      protected void onCreate( Bundle savedInstanceState )
      {
           super.onCreate( savedInstanceState );
-          
+          requestWindowFeature( Window.FEATURE_LEFT_ICON );
+
           setContentView( R.layout.layout_message_box );
-          setTitle( getIntent().getExtras().getString( MESSAGEBOX_PARAM_TITLE ) );
+  
+          int IconId = getIntent().getExtras().getInt( MESSAGEBOX_PARAM_ICON_ID, -1 );
+          if( IconId != -1 ) setFeatureDrawableResource( Window.FEATURE_LEFT_ICON, IconId );
+          
+          setTitle( getIntent().getExtras().getCharSequence( MESSAGEBOX_PARAM_TITLE ) );
 
           findViewById( R.id.IDR_LAY_MESSAGE_BOX ).setOnClickListener( this );
           
           TextView MessageText = (TextView)findViewById( R.id.IDC_TXT_MESSAGE );
-          MessageText.setText( getIntent().getExtras().getString( MESSAGEBOX_PARAM_MESSAGE ) );
+          MessageText.setText( getIntent().getExtras().getCharSequence( MESSAGEBOX_PARAM_MESSAGE ) );
      
           findViewById( R.id.IDR_LAY_MESSAGE_BOX ).setOnClickListener( this );
           int Type = getIntent().getExtras().getInt( MESSAGEBOX_PARAM_TYPE, MESSAGEBOX_TYPE_OKONLY );

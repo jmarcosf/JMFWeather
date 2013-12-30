@@ -63,7 +63,7 @@ protected boolean        m_bDivideScreeenOnTablets     = false;
           g_bTablet = getResources().getBoolean( R.bool.g_bTablet );
           m_bDivideScreeenOnTablets = CApp.IsDivideScreenOnTabletsEnabled();
           m_bTablet = ( g_bTablet && m_bDivideScreeenOnTablets && m_Orientation != Configuration.ORIENTATION_PORTRAIT );
-          m_bCelsius = ( CApp.getWeatherDegreesType() == 1 );
+          m_bCelsius = ( CApp.getWeatherDegreesUnit() == 1 );
           getSupportActionBar().setDisplayHomeAsUpEnabled( true );
      }
 
@@ -154,12 +154,12 @@ protected boolean        m_bDivideScreeenOnTablets     = false;
 		switch( RequestCode )
 		{
 		     case CApp.SETTINGS_MODIFY_REQUEST_ID:
-		          if( ( ResultCode & CSettingsActivity.FLAG_PREF_WEATHER_DEGREES_TYPE ) != 0 )
+		          if( ( ResultCode & CSettingsActivity.PREF_FLAG_WEATHER_DEGREES_UNIT ) != 0 )
 		          {
-		               m_bCelsius = ( CApp.getWeatherDegreesType() == 1 );
+		               m_bCelsius = ( CApp.getWeatherDegreesUnit() == 1 );
 		          }
                     
-		          if( ( ResultCode & CSettingsActivity.FLAG_PREF_DIVIDE_SCREEN_ON_TABLETS ) != 0 )
+		          if( ( ResultCode & CSettingsActivity.PREF_FLAG_DIVIDE_SCREEN_ON_TABLETS ) != 0 )
 	               {
 		               m_bDivideScreeenOnTablets = CApp.IsDivideScreenOnTabletsEnabled();
 	                    m_bTablet = ( g_bTablet && m_bDivideScreeenOnTablets && m_Orientation != Configuration.ORIENTATION_PORTRAIT );
@@ -183,13 +183,14 @@ protected boolean        m_bDivideScreeenOnTablets     = false;
      /* CBaseCityActivity.MessageBox()                        */ 
      /*                                                       */ 
      /*********************************************************/
-	public void MessageBox( int RequestId, int Type, String Title, String Message, long ObjectId, Bundle OptionalParams )
+	public void MessageBox( int RequestId, int Type, CharSequence Title, CharSequence Message, int IconId, long ObjectId, Bundle OptionalParams )
 	{
           Intent intent = new Intent( this, CMessageBoxActivity.class );
           Bundle Params = new Bundle();
           Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, Type );
-          Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, Title );
-          Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Message );
+          Params.putCharSequence( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, Title );
+          Params.putCharSequence( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Message );
+          Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_ICON_ID, IconId );
           Params.putLong( CMessageBoxActivity.MESSAGEBOX_PARAM_OBJECT_ID, ObjectId );
           if( OptionalParams != null ) Params.putAll( OptionalParams );
           intent.putExtras( Params );
@@ -201,9 +202,9 @@ protected boolean        m_bDivideScreeenOnTablets     = false;
      /* CBaseCityActivity.MessageBox()                        */ 
      /*                                                       */ 
      /*********************************************************/
-     public void MessageBox( int RequestId, int Type, String Title, String Message, long ObjectId )
+     public void MessageBox( int RequestId, int Type, CharSequence Title, CharSequence Message, int IconId, long ObjectId )
      {
-          MessageBox( RequestId, Type, Title, Message, ObjectId, null );
+          MessageBox( RequestId, Type, Title, Message, IconId, ObjectId, null );
      }
      
      /*********************************************************/
@@ -211,8 +212,19 @@ protected boolean        m_bDivideScreeenOnTablets     = false;
      /* CBaseCityActivity.MessageBox()                        */ 
      /*                                                       */ 
      /*********************************************************/
-     public void MessageBox( int RequestId, int Type, String Title, String Message )
+     public void MessageBox( int RequestId, int Type, CharSequence Title, CharSequence Message, int IconId )
      {
-          MessageBox( RequestId, Type, Title, Message, -1, null );
+          MessageBox( RequestId, Type, Title, Message, IconId, -1, null );
+     }
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /* CBaseCityActivity.MessageBox()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void MessageBox( int RequestId, int Type, CharSequence Title, CharSequence Message )
+     {
+          MessageBox( RequestId, Type, Title, Message, -1, -1, null );
      }
 }
+                    

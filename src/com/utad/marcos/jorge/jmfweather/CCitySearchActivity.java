@@ -3,7 +3,7 @@
 /* CCitySearchActivity.java                                   */
 /* (c)2013 jmarcosf                                           */
 /*                                                            */
-/* Description: CCityListActivity Class                       */
+/* Description: CCitySearchActivity Class                     */
 /*              JmfWeather Project                            */
 /*              Práctica asignatura Android Fundamental       */ 
 /*              U-Tad - Master Apps                           */ 
@@ -206,7 +206,7 @@ private   CCityList           m_CityList;
      /*********************************************************/
      /*                                                       */
      /*                                                       */
-     /* CCityListActivity.CSearchCity AsyncTask Class         */
+     /* CCitySearchActivity.CSearchCity AsyncTask Class       */
      /*                                                       */
      /*                                                       */
      /*********************************************************/
@@ -266,7 +266,8 @@ private   CCityList           m_CityList;
                     Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
                     Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
                     String MessageText = getString( R.string.IDS_NO_CITIES_FOUND_ERROR_MESSAGE );
-                    Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ).toString() );
+                    Params.putCharSequence( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ) );
+                    Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_ICON_ID, android.R.drawable.ic_dialog_alert );
                     Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
                     intent.putExtras( Params );
                     startActivityForResult( intent, CApp.MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID );
@@ -277,7 +278,7 @@ private   CCityList           m_CityList;
      /*********************************************************/
      /*                                                       */
      /*                                                       */
-     /* CCityListActivity.CInsertCity AsyncTask Class         */
+     /* CCitySearchActivity.CInsertCity AsyncTask Class       */
      /*                                                       */
      /*                                                       */
      /*********************************************************/
@@ -334,7 +335,8 @@ private   CCityList           m_CityList;
                     Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
                     Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
                     String MessageText = getString( R.string.IDS_WRITE_CITY_ERROR_MESSAGE );
-                    Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ).toString() );
+                    Params.putCharSequence( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ) );
+                    Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_ICON_ID, android.R.drawable.ic_dialog_alert );
                     Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
                     intent.putExtras( Params );
                     startActivityForResult( intent, CApp.MSGBOX_INSERT_CITY_ERROR_REQUEST_ID );

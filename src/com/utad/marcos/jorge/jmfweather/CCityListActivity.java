@@ -132,7 +132,7 @@ private   int                      m_CurrentSelectedCity = -1;
           Log.d( CCityListActivity.class.getSimpleName(), "OnPostCreate()" );
           m_DrawerToggle.syncState();
           if( savedInstanceState != null ) m_bCelsius = savedInstanceState.getBoolean( "Celsius" );
-          else CApp.getWeatherDegreesType();
+          else CApp.getWeatherDegreesUnit();
      }
      
      /*********************************************************/
@@ -147,9 +147,10 @@ private   int                      m_CurrentSelectedCity = -1;
           Log.d( CCityListActivity.class.getSimpleName(), "OnResume()" );
           LoadCityList();
 
-          //if just inserted a new city, selected it
+          //if just inserted a new city, selected it. If not try current location nearby
           long CityId = CApp.getSelectedCityId();
           CApp.setSelectedCityId( -1 );
+          if( CityId == -2 ) CityId = m_WeatherDAO.GetCurrentLocationId();
           if( CityId != -1 ) SelectCity( CityId );
      }
 
@@ -165,6 +166,19 @@ private   int                      m_CurrentSelectedCity = -1;
           if( m_ServiceBinder != null ) m_ServiceBinder.getService().StopLoadingImages();
           ServiceDisconnect();
           super.onDestroy();
+     }
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityListActivity.onBackPressed()                     */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public void onBackPressed()
+     {
+          int iSelectedItem = m_ListView.getCheckedItemPosition();
+          if( iSelectedItem != -1 ) CApp.setSelectedCityId( m_ListView.getItemIdAtPosition( iSelectedItem ) );
+          super.onBackPressed();
      }
      
      /*********************************************************/
@@ -186,8 +200,8 @@ private   int                      m_CurrentSelectedCity = -1;
                          if( m_Adapter != null ) m_Adapter.notifyDataSetChanged();
                          if( m_bTablet )
                          {
-                              int SelectedItem = m_ListView.getCheckedItemPosition();
-                              if( SelectedItem != -1 ) m_ListView.performItemClick( m_ListView, SelectedItem, m_ListView.getItemIdAtPosition( SelectedItem ) );
+                              int iSelectedItem = m_ListView.getCheckedItemPosition();
+                              if( iSelectedItem != -1 ) m_ListView.performItemClick( m_ListView, iSelectedItem, m_ListView.getItemIdAtPosition( iSelectedItem ) );
                          }
                     }
                     return true;
@@ -199,8 +213,8 @@ private   int                      m_CurrentSelectedCity = -1;
                          if( m_Adapter != null ) m_Adapter.notifyDataSetChanged();
                          if( m_bTablet )
                          {
-                              int SelectedItem = m_ListView.getCheckedItemPosition();
-                              if( SelectedItem != -1 ) m_ListView.performItemClick( m_ListView, SelectedItem, m_ListView.getItemIdAtPosition( SelectedItem ) );
+                              int iSelectedItem = m_ListView.getCheckedItemPosition();
+                              if( iSelectedItem != -1 ) m_ListView.performItemClick( m_ListView, iSelectedItem, m_ListView.getItemIdAtPosition( iSelectedItem ) );
                          }
                     }
                     return true;
@@ -302,11 +316,11 @@ private   int                      m_CurrentSelectedCity = -1;
                     
                case CApp.SETTINGS_MODIFY_REQUEST_ID:
                     super.onActivityResult( RequestCode, ResultCode, intent );
-                    if( ( ResultCode & CSettingsActivity.FLAG_PREF_DIVIDE_SCREEN_ON_TABLETS ) != 0 )
+                    if( ( ResultCode & CSettingsActivity.PREF_FLAG_DIVIDE_SCREEN_ON_TABLETS ) != 0 )
                     {
                          this.recreate();
                     }
-                    else if( ( ResultCode & CSettingsActivity.FLAG_PREF_WEATHER_DEGREES_TYPE ) != 0 )
+                    else if( ( ResultCode & CSettingsActivity.PREF_FLAG_WEATHER_DEGREES_UNIT ) != 0 )
                     {
                          if( m_bTablet )
                          {
@@ -423,8 +437,10 @@ private   int                      m_CurrentSelectedCity = -1;
           MessageBox( CApp.MSGBOX_DELETE_CITY_REQUEST_ID,
                       CMessageBoxActivity.MESSAGEBOX_TYPE_YESNO,
                       getString( R.string.IDS_DELETE_CITY_TITLE ),
-                      Html.fromHtml( getString( R.string.IDS_DELETE_CITY_QUESTION, (String)view.getTag() ) ).toString(),
-                      id );
+                      Html.fromHtml( getString( R.string.IDS_DELETE_CITY_QUESTION, (String)view.getTag() ) ),
+                      android.R.drawable.ic_delete,
+                      id,
+                      Params );
           return true;
      }
 
@@ -475,14 +491,8 @@ private   int                      m_CurrentSelectedCity = -1;
                     MessageBox( CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID,
                                 CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY,
                                 getString( R.string.IDS_WARNING ),
-                                Html.fromHtml( getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE ) ).toString() );
-                    
-//                    Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
-//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
-//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_WARNING ) );
-//                    String MessageText = getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE );
-//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ) );
-//                    startActivityForResult( intent, CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID );
+                                Html.fromHtml( getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE ) ),
+                                android.R.drawable.ic_menu_info_details );
                }
           }
           else
@@ -490,14 +500,8 @@ private   int                      m_CurrentSelectedCity = -1;
                MessageBox( CApp.MSGBOX_READ_CITIES_ERROR_REQUEST_ID,
                            CMessageBoxActivity.MESSAGEBOX_TYPE_RETRYCANCEL,
                            getString( R.string.IDS_ERROR ),
-                           Html.fromHtml( getString( R.string.IDS_READ_CITIES_ERROR_MESSAGE ) ).toString() );
-      
-//               Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
-//               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_RETRYCANCEL );
-//               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
-//               String MessageText = getString( R.string.IDS_READ_CITIES_ERROR_MESSAGE );
-//               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ) );
-//               startActivityForResult( intent, CApp.MSGBOX_READ_CITIES_ERROR_REQUEST_ID );
+                           Html.fromHtml( getString( R.string.IDS_READ_CITIES_ERROR_MESSAGE ) ),
+                           android.R.drawable.ic_dialog_alert );
           }
      }
 

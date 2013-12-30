@@ -34,12 +34,17 @@ import com.utad.marcos.jorge.jmfweather.services.CWeatherRetrieverService;
 /**************************************************************/
 public class CSettingsActivity extends PreferenceActivity
 {
-public static final int  FLAG_PREF_INCLUDE_CURRENT_LOCALTION_ON_STARTUP    =    0x00000001;     
-public static final int  FLAG_PREF_DIVIDE_SCREEN_ON_TABLETS                =    0x00000002;     
-public static final int  FLAG_PREF_WEATHER_SYNC_FREQUECY                   =    0x00000004;
-public static final int  FLAG_PREF_WEATHER_DEGREES_TYPE                    =    0x00000008;
+public static final int       PREF_FLAG_INCLUDE_CURRENT_LOCATION_ON_STARTUP     =    0x00000001;     
+public static final int       PREF_FLAG_DIVIDE_SCREEN_ON_TABLETS                =    0x00000002;     
+public static final int       PREF_FLAG_WEATHER_SYNC_FREQUECY                   =    0x00000004;
+public static final int       PREF_FLAG_WEATHER_DEGREES_UNIT                    =    0x00000008;
 
-private static      int  ResultCode = 0;
+public static final String    PREF_NAME_INCLUDE_CURRENT_LOCATION_ON_STARTUP     =    "IncludeCurrentLocationOnStartup";
+public static final String    PREF_NAME_DIVIDE_SCREEN_ON_TABLETS                =    "DivideScreenOnTablets";     
+public static final String    PREF_NAME_WEATHER_SYNC_FREQUECY                   =    "WeatherSyncFrequency";
+public static final String    PREF_NAME_WEATHER_DEGREES_UNIT                    =    "WeatherDegreesUnit";
+
+private static      int       ResultCode = 0;
 
      /*********************************************************/
      /*                                                       */ 
@@ -60,20 +65,20 @@ private static      int  ResultCode = 0;
           
           addPreferencesFromResource( R.xml.preferences );
           
-          CheckBoxPreference Preference1 = (CheckBoxPreference)findPreference( "IncludeCurrentLocationOnStartup" );
+          CheckBoxPreference Preference1 = (CheckBoxPreference)findPreference( PREF_NAME_INCLUDE_CURRENT_LOCATION_ON_STARTUP );
           Preference1.setOnPreferenceChangeListener( PreferenceChangeListener );
 
           if( getResources().getBoolean( R.bool.g_bTablet ) )
           {
-               CheckBoxPreference Preference2 = (CheckBoxPreference)findPreference( "DivideScreenOnTablets" );
+               CheckBoxPreference Preference2 = (CheckBoxPreference)findPreference( PREF_NAME_DIVIDE_SCREEN_ON_TABLETS );
                Preference2.setOnPreferenceChangeListener( PreferenceChangeListener );
           }
 
-          ListPreference Preference3 = (ListPreference)findPreference( "WeatherSyncFrequency" );
+          ListPreference Preference3 = (ListPreference)findPreference( PREF_NAME_WEATHER_SYNC_FREQUECY );
           Preference3.setOnPreferenceChangeListener( PreferenceChangeListener );
           SetDefaultListSummary( Preference3 );
 
-          ListPreference Preference4 = (ListPreference)findPreference( "WeatherDegreesType" );
+          ListPreference Preference4 = (ListPreference)findPreference( PREF_NAME_WEATHER_DEGREES_UNIT );
           Preference4.setOnPreferenceChangeListener( PreferenceChangeListener );
           SetDefaultListSummary( Preference4 );
           
@@ -134,23 +139,23 @@ private static      int  ResultCode = 0;
                }
                else preference.setSummary( stringValue );
      
-               if( preference.getKey().equals( "WeatherSyncFrequency" ) )
+               if( preference.getKey().equals( PREF_NAME_INCLUDE_CURRENT_LOCATION_ON_STARTUP ) )
+               {
+                    ResultCode |= PREF_FLAG_INCLUDE_CURRENT_LOCATION_ON_STARTUP;
+               }
+               else if( preference.getKey().equals( PREF_NAME_DIVIDE_SCREEN_ON_TABLETS ) )
+               {
+                    ResultCode |= PREF_FLAG_DIVIDE_SCREEN_ON_TABLETS;
+               }
+               else if( preference.getKey().equals( PREF_NAME_WEATHER_SYNC_FREQUECY ) )
                {
                     int timeout = Integer.parseInt( stringValue ) * 60 * 1000;
                     CWeatherRetrieverService.StartAlarm( CApp.getAppContext(), timeout );
-                    ResultCode |= FLAG_PREF_WEATHER_SYNC_FREQUECY;
+                    ResultCode |= PREF_FLAG_WEATHER_SYNC_FREQUECY;
                }
-               else if( preference.getKey().equals( "WeatherDegreesType" ) )
+               else if( preference.getKey().equals( PREF_NAME_WEATHER_DEGREES_UNIT ) )
                {
-                    ResultCode |= FLAG_PREF_WEATHER_DEGREES_TYPE;
-               }
-               else if( preference.getKey().equals( "DivideScreenOnTablets" ) )
-               {
-                    ResultCode |= FLAG_PREF_DIVIDE_SCREEN_ON_TABLETS;
-               }
-               else if( preference.getKey().equals( "IncludeCurrentLocationOnStartup" ) )
-               {
-                    ResultCode |= FLAG_PREF_INCLUDE_CURRENT_LOCALTION_ON_STARTUP;
+                    ResultCode |= PREF_FLAG_WEATHER_DEGREES_UNIT;
                }
                return true;
           }

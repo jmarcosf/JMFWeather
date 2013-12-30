@@ -34,7 +34,7 @@
     <string name="IDS_WIND_SPEED">Velocidad del Viento</string>
     <string name="IDS_ADD_CITY">Añadir Ciudad</string>
     <string name="IDS_DELETE_CITY_TITLE">Borrar Ciudad</string>
-    <string name="IDS_DELETE_CITY_QUESTION">¿Está seguro de que desea borrar la Ciudad &lt;b&gt;%1$s&lt;/b&gt;?</string>
+    <string name="IDS_DELETE_CITY_QUESTION">¿Está seguro de que desea borrar &lt;b&gt;%1$s&lt;/b&gt;?</string>
     <string name="IDS_SEARCH_HINT">Teclee el Nombre de la Ciudad para añadirla a la lista</string>
     <string name="IDS_SEARCHING_CITY_TITLE">Buscando Ciudad</string>
     <string name="IDS_SEARCHING_CITY_TEXT">Buscando &lt;b&gt;%1$s&lt;/b&gt;. Por favor espere&#8230;</string>
@@ -79,12 +79,12 @@
         <item>-1</item>
 	</string-array>
     
-    <string name="IDS_PREF_TITLE_DEGREES_TYPE">Formato de los Grados</string>
-    <string-array name="IDS_ARRAY_DEGREES_TYPE_TITLES">
+    <string name="IDS_PREF_TITLE_DEGREES_UNIT">Unidad de los Grados</string>
+    <string-array name="IDS_ARRAY_DEGREES_UNIT_TITLES">
 	    <item>Celsius</item>
 	    <item>Fahrenheit</item>
     </string-array>
-    <string-array name="IDS_ARRAY_DEGREES_TYPE_VALUES">
+    <string-array name="IDS_ARRAY_DEGREES_UNIT_VALUES">
         <item>1</item>
         <item>0</item>
 	</string-array>

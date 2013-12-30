@@ -43,17 +43,25 @@ private static int  SPLASH_TIME_OUT = 2000;
      {
           requestWindowFeature( Window.FEATURE_NO_TITLE );
           super.onCreate( savedInstanceState );
-     
-          setContentView( R.layout.layout_splash_activity );
-          new Handler().postDelayed( new Runnable()
+          if( CApp.getSelectedCityId() == -2 )
           {
-               @Override
-               public void run()
+               setContentView( R.layout.layout_splash_activity );
+               new Handler().postDelayed( new Runnable()
                {
-                    Intent intent = new Intent( CSplashActivity.this, CCityListActivity.class );
-                    startActivity( intent );
-                    finish();
-               }
-          }, SPLASH_TIME_OUT );
+                    @Override
+                    public void run()
+                    {
+                         Intent intent = new Intent( CSplashActivity.this, CCityListActivity.class );
+                         startActivity( intent );
+                         finish();
+                    }
+               }, SPLASH_TIME_OUT );
+          }
+          else
+          {
+               Intent intent = new Intent( CSplashActivity.this, CCityListActivity.class );
+               startActivity( intent );
+               finish();
+          }
      }
 }

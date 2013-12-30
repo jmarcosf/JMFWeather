@@ -41,7 +41,7 @@ public final static int  VIEWPAGER_RETURN_SELECTED_REQUEST_ID              = 200
 public final static int  SETTINGS_MODIFY_REQUEST_ID                        = 300;
 
 private static Context   m_Context = null;
-private static long      m_SelectedCityId = -1;
+private static long      m_SelectedCityId = -2;
 
      /*********************************************************/
      /*                                                       */ 
@@ -75,7 +75,7 @@ private static long      m_SelectedCityId = -1;
      public static boolean IsLoadCurrentLocationOnStartupEnabled()
      {
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( m_Context );
-          boolean bEnabled = preferences.getBoolean( "IncludeCurrentLocationOnStartup", true );
+          boolean bEnabled = preferences.getBoolean( CSettingsActivity.PREF_NAME_INCLUDE_CURRENT_LOCATION_ON_STARTUP, true );
           return bEnabled;
      }
      
@@ -87,7 +87,7 @@ private static long      m_SelectedCityId = -1;
      public static boolean IsDivideScreenOnTabletsEnabled()
      {
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( m_Context );
-          boolean bEnabled = preferences.getBoolean( "DivideScreenOnTablets", false );
+          boolean bEnabled = preferences.getBoolean( CSettingsActivity.PREF_NAME_DIVIDE_SCREEN_ON_TABLETS, false );
           return bEnabled;
      }
      
@@ -100,21 +100,21 @@ private static long      m_SelectedCityId = -1;
      {
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( m_Context );
           int DefaultValue = m_Context.getResources().getInteger( R.integer.g_WeatherSyncFrequencyDefault );
-          String TimeoutPreference  = preferences.getString( "WeatherSyncFrequency", "" + DefaultValue );
+          String TimeoutPreference  = preferences.getString( CSettingsActivity.PREF_NAME_WEATHER_SYNC_FREQUECY, "" + DefaultValue );
           int Timeout = Integer.parseInt( TimeoutPreference ) * 60 * 1000;
           return Timeout;
      }
      
      /*********************************************************/
      /*                                                       */ 
-     /* CApp.getWeatherDegreesType()                          */ 
+     /* CApp.getWeatherDegreesUnit()                          */ 
      /*                                                       */ 
      /*********************************************************/
-     public static int getWeatherDegreesType()
+     public static int getWeatherDegreesUnit()
      {
           SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( m_Context );
-          int DefaultValue = m_Context.getResources().getInteger( R.integer.g_WeatherDegreesTypeDefault );
-          String DegreesPreference = preferences.getString( "WeatherDegreesType", "" + DefaultValue );
+          int DefaultValue = m_Context.getResources().getInteger( R.integer.g_WeatherDegreesUnitDefault );
+          String DegreesPreference = preferences.getString( CSettingsActivity.PREF_NAME_WEATHER_DEGREES_UNIT, "" + DefaultValue );
           return Integer.parseInt( DegreesPreference );
      }
      

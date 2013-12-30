@@ -163,7 +163,7 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
           {
                case CApp.SETTINGS_MODIFY_REQUEST_ID:
                     super.onActivityResult( RequestCode, ResultCode, intent );
-                    if( ( ResultCode & CSettingsActivity.FLAG_PREF_WEATHER_DEGREES_TYPE ) != 0 )
+                    if( ( ResultCode & CSettingsActivity.PREF_FLAG_WEATHER_DEGREES_UNIT ) != 0 )
                     {
                          if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
                     }

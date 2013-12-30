@@ -22,6 +22,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDoneException;
+import android.location.Location;
+import android.location.LocationManager;
 
 import com.utad.marcos.jorge.jmfweather.model.CCity;
 import com.utad.marcos.jorge.jmfweather.model.CCondition;
@@ -39,6 +41,7 @@ import com.utad.marcos.jorge.jmfweather.model.CForecastList;
 /**************************************************************/
 public class CWeatherDAO
 {
+private Context               m_Context;
 private CWeatherDBHelper		m_dbHelper;
 private SQLiteDatabase		m_db;
 
@@ -55,7 +58,8 @@ private SQLiteDatabase		m_db;
 	/*********************************************************/
 	public CWeatherDAO( Context context )
 	{
-		m_dbHelper = new CWeatherDBHelper( context );
+	     this.m_Context = context;
+		this.m_dbHelper = new CWeatherDBHelper( m_Context );
 	}
 	
 	/*********************************************************/
@@ -201,6 +205,38 @@ private SQLiteDatabase		m_db;
           }
           catch( SQLiteDoneException e ) {}
           return LocationId;
+     }
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CWeatherDAO.GetCurrentLocationId()                    */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public long GetCurrentLocationId()
+     {
+          if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
+
+          LocationManager locationManager = (LocationManager)m_Context.getSystemService( Context.LOCATION_SERVICE );
+          Location location = locationManager.getLastKnownLocation( LocationManager.GPS_PROVIDER );
+          long LocationId = -1;
+          
+          String strLatitude = Double.valueOf( location.getLatitude() ).toString();
+          String strLongitude = Double.valueOf( location.getLongitude() ).toString();
+          int idx1 = strLatitude.indexOf( '.' );
+          int idx2 = strLongitude.indexOf( '.' );
+
+          if( idx1 != -1 && idx2 != -1 )
+          {
+               String Query = "SELECT * FROM " + CWeatherDBContract.CCityTable.TABLE_NAME + " WHERE " + 
+                         CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " LIKE '" + strLatitude.substring( 0, idx1 + 2 ) + "%'" + " AND " +
+                         CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + " LIKE '" + strLongitude.substring( 0, idx2 + 2 ) + "%'";
+               try
+               {
+                    LocationId = DatabaseUtils.longForQuery( m_db, Query, null );
+               }
+               catch( SQLiteDoneException e ) {}
+          }
+          return LocationId;          
      }
 
      /*********************************************************/
