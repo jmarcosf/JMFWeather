@@ -14,7 +14,6 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,14 +37,12 @@ public static final int        MESSAGEBOX_TYPE_RETRYONLY    = 3;
 public static final int        MESSAGEBOX_TYPE_RETRYCANCEL  = 4;
 public static final String     MESSAGEBOX_PARAM_TYPE        = "MessageBoxParamType";
 public static final String     MESSAGEBOX_PARAM_TITLE       = "MessageBoxParamTitle";
-public static final String     MESSAGEBOX_PARAM_TEXT        = "MessageBoxParamText";
+public static final String     MESSAGEBOX_PARAM_MESSAGE     = "MessageBoxParamMessage";
 public static final String     MESSAGEBOX_PARAM_OBJECT_ID   = "MessageBoxParamObjectId";
 public static final String     MESSAGEBOX_PARAM_USER_DATA1  = "MessageBoxParamUserData1";
 public static final String     MESSAGEBOX_PARAM_USER_DATA2  = "MessageBoxParamUserData2";
 public static final int        MESSAGEBOX_RESULT_CANCELLED  = 0;
 public static final int        MESSAGEBOX_RESULT_ACCEPTED   = 1;
-
-private Dialog m_Dialog = null;
 
      /*********************************************************/
      /*                                                       */ 
@@ -62,58 +59,46 @@ private Dialog m_Dialog = null;
      {
           super.onCreate( savedInstanceState );
           
-          m_Dialog = new Dialog( this );
-          m_Dialog.setContentView( R.layout.layout_message_box );
-          m_Dialog.setTitle( getIntent().getCharSequenceExtra( MESSAGEBOX_PARAM_TITLE ) );
+          setContentView( R.layout.layout_message_box );
+          setTitle( getIntent().getExtras().getString( MESSAGEBOX_PARAM_TITLE ) );
+
+          findViewById( R.id.IDR_LAY_MESSAGE_BOX ).setOnClickListener( this );
+          
+          TextView MessageText = (TextView)findViewById( R.id.IDC_TXT_MESSAGE );
+          MessageText.setText( getIntent().getExtras().getString( MESSAGEBOX_PARAM_MESSAGE ) );
      
-          TextView MessageText = (TextView)m_Dialog.findViewById( R.id.IDC_TXT_MESSAGE );
-          MessageText.setText( getIntent().getCharSequenceExtra( MESSAGEBOX_PARAM_TEXT ) );
-     
-          m_Dialog.findViewById( R.id.IDR_LAY_MESSAGE_BOX ).setOnClickListener( this );
-          int Type = getIntent().getIntExtra( MESSAGEBOX_PARAM_TYPE, MESSAGEBOX_TYPE_OKONLY );
+          findViewById( R.id.IDR_LAY_MESSAGE_BOX ).setOnClickListener( this );
+          int Type = getIntent().getExtras().getInt( MESSAGEBOX_PARAM_TYPE, MESSAGEBOX_TYPE_OKONLY );
           switch( Type )
           {
                case MESSAGEBOX_TYPE_OKONLY:
-                    m_Dialog.findViewById( R.id.IDR_LAY_MESSAGEBOX_OKONLY_BUTTON ).setVisibility( View.VISIBLE );
-                    m_Dialog.findViewById( R.id.IDC_BTN_OKONLY_OK ).setOnClickListener( this );
+                    findViewById( R.id.IDR_LAY_MESSAGEBOX_OKONLY_BUTTON ).setVisibility( View.VISIBLE );
+                    findViewById( R.id.IDC_BTN_OKONLY_OK ).setOnClickListener( this );
                     break;
                     
                case MESSAGEBOX_TYPE_OKCANCEL:
-                    m_Dialog.findViewById( R.id.IDR_LAY_MESSAGEBOX_OKCANCEL_BUTTONS ).setVisibility( View.VISIBLE );
-                    m_Dialog.findViewById( R.id.IDC_BTN_OKCANCEL_OK ).setOnClickListener( this );
-                    m_Dialog.findViewById( R.id.IDC_BTN_OKCANCEL_CANCEL ).setOnClickListener( this );
+                    findViewById( R.id.IDR_LAY_MESSAGEBOX_OKCANCEL_BUTTONS ).setVisibility( View.VISIBLE );
+                    findViewById( R.id.IDC_BTN_OKCANCEL_OK ).setOnClickListener( this );
+                    findViewById( R.id.IDC_BTN_OKCANCEL_CANCEL ).setOnClickListener( this );
                     break;
                     
                case MESSAGEBOX_TYPE_YESNO:
-                    m_Dialog.findViewById( R.id.IDR_LAY_MESSAGEBOX_YESNO_BUTTONS ).setVisibility( View.VISIBLE );
-                    m_Dialog.findViewById( R.id.IDC_BTN_YESNO_YES ).setOnClickListener( this );
-                    m_Dialog.findViewById( R.id.IDC_BTN_YESNO_NO ).setOnClickListener( this );
+                    findViewById( R.id.IDR_LAY_MESSAGEBOX_YESNO_BUTTONS ).setVisibility( View.VISIBLE );
+                    findViewById( R.id.IDC_BTN_YESNO_YES ).setOnClickListener( this );
+                    findViewById( R.id.IDC_BTN_YESNO_NO ).setOnClickListener( this );
                     break;
                     
                case MESSAGEBOX_TYPE_RETRYONLY:
-                    m_Dialog.findViewById( R.id.IDR_LAY_MESSAGEBOX_RETRYONLY_BUTTON ).setVisibility( View.VISIBLE );
-                    m_Dialog.findViewById( R.id.IDC_BTN_RETRYONLY_RETRY ).setOnClickListener( this );
+                    findViewById( R.id.IDR_LAY_MESSAGEBOX_RETRYONLY_BUTTON ).setVisibility( View.VISIBLE );
+                    findViewById( R.id.IDC_BTN_RETRYONLY_RETRY ).setOnClickListener( this );
                     break;
                     
                case MESSAGEBOX_TYPE_RETRYCANCEL:
-                    m_Dialog.findViewById( R.id.IDR_LAY_MESSAGEBOX_RETRYCANCEL_BUTTONS ).setVisibility( View.VISIBLE );
-                    m_Dialog.findViewById( R.id.IDC_BTN_RETRYCANCEL_RETRY ).setOnClickListener( this );
-                    m_Dialog.findViewById( R.id.IDC_BTN_RETRYCANCEL_CANCEL ).setOnClickListener( this );
+                    findViewById( R.id.IDR_LAY_MESSAGEBOX_RETRYCANCEL_BUTTONS ).setVisibility( View.VISIBLE );
+                    findViewById( R.id.IDC_BTN_RETRYCANCEL_RETRY ).setOnClickListener( this );
+                    findViewById( R.id.IDC_BTN_RETRYCANCEL_CANCEL ).setOnClickListener( this );
                     break;
           }
-          m_Dialog.show();
-     }
-     
-     /*********************************************************/
-     /*                                                       */ 
-     /* CMessageBoxActivity.onDestroy()                       */ 
-     /*                                                       */ 
-     /*********************************************************/
-     @Override
-     protected void onDestroy()
-     {
-          m_Dialog.dismiss();
-          super.onDestroy();
      }
      
      /*********************************************************/

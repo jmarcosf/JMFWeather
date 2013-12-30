@@ -14,8 +14,6 @@
 /**************************************************************/
 package com.utad.marcos.jorge.jmfweather;
 
-import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -23,6 +21,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 
 /**************************************************************/
 /*                                                            */ 
@@ -171,4 +171,48 @@ protected boolean        m_bDivideScreeenOnTablets     = false;
 				break;
 		}
 	}
+	
+     /*********************************************************/
+     /*                                                       */ 
+     /*                                                       */ 
+     /* Class Methods                                         */ 
+     /*                                                       */ 
+     /*                                                       */ 
+     /*********************************************************/
+     /*                                                       */ 
+     /* CBaseCityActivity.MessageBox()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+	public void MessageBox( int RequestId, int Type, String Title, String Message, long ObjectId, Bundle OptionalParams )
+	{
+          Intent intent = new Intent( this, CMessageBoxActivity.class );
+          Bundle Params = new Bundle();
+          Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, Type );
+          Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, Title );
+          Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Message );
+          Params.putLong( CMessageBoxActivity.MESSAGEBOX_PARAM_OBJECT_ID, ObjectId );
+          if( OptionalParams != null ) Params.putAll( OptionalParams );
+          intent.putExtras( Params );
+          startActivityForResult( intent, RequestId );
+	}
+	
+     /*********************************************************/
+     /*                                                       */ 
+     /* CBaseCityActivity.MessageBox()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void MessageBox( int RequestId, int Type, String Title, String Message, long ObjectId )
+     {
+          MessageBox( RequestId, Type, Title, Message, ObjectId, null );
+     }
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /* CBaseCityActivity.MessageBox()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void MessageBox( int RequestId, int Type, String Title, String Message )
+     {
+          MessageBox( RequestId, Type, Title, Message, -1, null );
+     }
 }

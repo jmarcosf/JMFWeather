@@ -25,25 +25,20 @@
     /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/IDR_LAY_DETAILS_FORECAST"
         android:layout_width="match_parent"
         android:layout_height="210dp"
         android:layout_alignParentBottom="true"
+        android:orientation="vertical"
         android:padding="1dp" >
-
-        <GridView
-            android:id="@+id/IDC_GRID_FORECAST"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnWidth="120dp"
-            android:gravity="center"
-            android:horizontalSpacing="5dp"
-            android:numColumns="5"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="5dp" />
-
-    </RelativeLayout>
+	
+		<com.utad.marcos.jorge.jmfweather.utility.HorzListView
+            android:id="@+id/IDC_LV_FORECAST"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
+		        
+    </LinearLayout>
 
     <!--**********************************************************/
     /*                                                           */ 

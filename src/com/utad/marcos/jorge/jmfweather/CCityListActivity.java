@@ -417,15 +417,14 @@ private   int                      m_CurrentSelectedCity = -1;
      @Override
      public boolean onItemLongClick( AdapterView< ? > ParentView, View view, int iPosition, long id )
      {
-          Intent intent = new Intent( this, CMessageBoxActivity.class );
-          intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_YESNO );
-          intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_DELETE_CITY_TITLE ) );
-          String Question = getString( R.string.IDS_DELETE_CITY_QUESTION, (String)view.getTag() );
-          intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( Question  ) );
-          intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_OBJECT_ID, id );
-          intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_USER_DATA1, Boolean.valueOf( iPosition == m_ListView.getCheckedItemPosition() ) );        
-          intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_USER_DATA2, Integer.valueOf( iPosition ) );        
-          startActivityForResult( intent, CApp.MSGBOX_DELETE_CITY_REQUEST_ID );
+          Bundle Params = new Bundle();
+          Params.putBoolean( CMessageBoxActivity.MESSAGEBOX_PARAM_USER_DATA1, Boolean.valueOf( iPosition == m_ListView.getCheckedItemPosition() ) );        
+          Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_USER_DATA2, Integer.valueOf( iPosition ) );
+          MessageBox( CApp.MSGBOX_DELETE_CITY_REQUEST_ID,
+                      CMessageBoxActivity.MESSAGEBOX_TYPE_YESNO,
+                      getString( R.string.IDS_DELETE_CITY_TITLE ),
+                      Html.fromHtml( getString( R.string.IDS_DELETE_CITY_QUESTION, (String)view.getTag() ) ).toString(),
+                      id );
           return true;
      }
 
@@ -473,22 +472,32 @@ private   int                      m_CurrentSelectedCity = -1;
                }
                else if( !m_bEmptyTableWarningAlreadyShowed )
                {
-                    Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_WARNING ) );
-                    String MessageText = getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
-                    startActivityForResult( intent, CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID );
+                    MessageBox( CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID,
+                                CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY,
+                                getString( R.string.IDS_WARNING ),
+                                Html.fromHtml( getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE ) ).toString() );
+                    
+//                    Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
+//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
+//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_WARNING ) );
+//                    String MessageText = getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE );
+//                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ) );
+//                    startActivityForResult( intent, CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID );
                }
           }
           else
           {
-               Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
-               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_RETRYCANCEL );
-               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
-               String MessageText = getString( R.string.IDS_READ_CITIES_ERROR_MESSAGE );
-               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
-               startActivityForResult( intent, CApp.MSGBOX_READ_CITIES_ERROR_REQUEST_ID );
+               MessageBox( CApp.MSGBOX_READ_CITIES_ERROR_REQUEST_ID,
+                           CMessageBoxActivity.MESSAGEBOX_TYPE_RETRYCANCEL,
+                           getString( R.string.IDS_ERROR ),
+                           Html.fromHtml( getString( R.string.IDS_READ_CITIES_ERROR_MESSAGE ) ).toString() );
+      
+//               Intent intent = new Intent( CCityListActivity.this, CMessageBoxActivity.class );
+//               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_RETRYCANCEL );
+//               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
+//               String MessageText = getString( R.string.IDS_READ_CITIES_ERROR_MESSAGE );
+//               intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ) );
+//               startActivityForResult( intent, CApp.MSGBOX_READ_CITIES_ERROR_REQUEST_ID );
           }
      }
 

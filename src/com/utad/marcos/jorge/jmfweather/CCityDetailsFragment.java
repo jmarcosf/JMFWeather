@@ -22,14 +22,17 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.GridView;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.utad.marcos.jorge.jmfweather.db.CWeatherDAO;
 import com.utad.marcos.jorge.jmfweather.model.CCity;
+import com.utad.marcos.jorge.jmfweather.utility.HorzListView;
 
 /**************************************************************/
 /*                                                            */
@@ -40,7 +43,7 @@ import com.utad.marcos.jorge.jmfweather.model.CCity;
 /*                                                            */
 /*                                                            */
 /**************************************************************/
-public class CCityDetailsFragment extends Fragment
+public class CCityDetailsFragment extends Fragment implements OnTouchListener
 {
 
      /*********************************************************/
@@ -105,9 +108,25 @@ public class CCityDetailsFragment extends Fragment
           ImageView WeatherIcon = (ImageView)view.findViewById( R.id.IDP_ICO_WEATHER_IMAGE );
           City.SetViewIcon( getActivity(), WeatherIcon );
           
-          GridView ForecastGrid = (GridView)view.findViewById( R.id.IDC_GRID_FORECAST );
-          ForecastGrid.setAdapter( new CCityForecastAdapter( getActivity(), City.getForecastList() ) );
+          HorzListView ForecastList = (HorzListView)view.findViewById( R.id.IDC_LV_FORECAST );
+          ForecastList.setOnTouchListener( this );
+          ForecastList.setAdapter( new CCityForecastAdapter( getActivity(), City.getForecastList() ) );
           
 		return view;
 	}
+
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCityDetailsFragment.onTouch()                        */ 
+     /*                                                       */ 
+     /*********************************************************/
+     @Override
+     public boolean onTouch( View view, MotionEvent event )
+     {
+          if( !( (CBaseCityActivity)getActivity() ).g_bTablet || ( (CBaseCityActivity)getActivity() ).m_Orientation != Configuration.ORIENTATION_LANDSCAPE )
+          {
+               ( (ViewParent)view.getParent() ).requestDisallowInterceptTouchEvent( true );
+          }
+          return view.onTouchEvent( event );
+     }
 }

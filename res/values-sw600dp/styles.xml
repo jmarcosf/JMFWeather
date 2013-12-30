@@ -3,7 +3,7 @@
 /* styles.xml                                                    */ 
 /* (c)2013 jmarcosf                                              */ 
 /*                                                               */ 
-/* Description: Application Styles                               */ 
+/* Description: 600dp+ Application Styles                        */ 
 /*              JmfWeather Project                               */ 
 /*              Práctica asignatura Android Fundamental          */ 
 /*              U-Tad - Master Apps                              */ 
@@ -13,68 +13,6 @@
 /*                                                               */ 
 /***************************************************************-->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-
-	<!--**********************************************************/
-    /*                                                           */ 
-    /* Base application theme                                    */ 
-	/*                                                           */ 
-    /***********************************************************-->
-    <style name="IDR_APP_BASE_THEME" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowBackground">@color/IDR_COL_APPLICATION_BACKGROUND</item>
-    </style>
-
-	<!--**********************************************************/
-    /*                                                           */ 
-    /* Application theme                                         */ 
-	/*                                                           */ 
-    /***********************************************************-->
-    <style name="IDR_APP_THEME" parent="IDR_APP_BASE_THEME">
-    </style>
-
-	<!--**********************************************************/
-    /*                                                           */ 
-    /* Dialog Theme                                              */ 
-	/*                                                           */ 
-    /***********************************************************-->
-    <style name="IDR_STY_DIALOG_THEME" parent="@android:style/Theme.Translucent.NoTitleBar">
-    </style>
-
-	<!--**********************************************************/
-    /*                                                           */ 
-    /* City Listview Style                                       */ 
-	/*                                                           */ 
-    /***********************************************************-->
-    <style name="IDR_STY_CITY_LISTVIEW_STYLE" parent="@android:style/Widget.ListView">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:divider">@android:color/transparent</item>
-        <item name="android:dividerHeight">1dp</item>
-    </style>
-
-	<!--**********************************************************/
-    /*                                                           */ 
-    /* City Listview Item Style                                  */ 
-	/*                                                           */ 
-    /***********************************************************-->
-    <style name="IDR_STY_CITY_LISTVIEW_ITEM_STYLE">
-        <item name="android:background">@drawable/selector_city_list_item_background</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-    </style>
-
-	<!--**********************************************************/
-    /*                                                           */ 
-    /* City Search Listview Item Style                           */ 
-	/*                                                           */ 
-    /***********************************************************-->
-    <style name="IDR_STY_CITY_SEARCH_LISTVIEW_ITEM_STYLE">
-        <item name="android:background">@drawable/selector_city_list_item_background</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-    </style>
 
     <!--**********************************************************/
     /*                                                           */ 

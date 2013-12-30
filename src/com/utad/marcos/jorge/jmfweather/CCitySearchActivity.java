@@ -262,11 +262,13 @@ private   CCityList           m_CityList;
                }
                else
                {
-                    Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
+                    Bundle Params = new Bundle();
+                    Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
+                    Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
                     String MessageText = getString( R.string.IDS_NO_CITIES_FOUND_ERROR_MESSAGE );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
+                    Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ).toString() );
+                    Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
+                    intent.putExtras( Params );
                     startActivityForResult( intent, CApp.MSGBOX_NO_CITIES_FOUND_ERROR_REQUEST_ID );
                }
           }
@@ -328,11 +330,13 @@ private   CCityList           m_CityList;
                CApp.setSelectedCityId( Param.longValue() );
                if( Param.longValue() == -1 )
                {
-                    Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
+                    Bundle Params = new Bundle();
+                    Params.putInt( CMessageBoxActivity.MESSAGEBOX_PARAM_TYPE, CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY );
+                    Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_TITLE, getString( R.string.IDS_ERROR ) );
                     String MessageText = getString( R.string.IDS_WRITE_CITY_ERROR_MESSAGE );
-                    intent.putExtra( CMessageBoxActivity.MESSAGEBOX_PARAM_TEXT, Html.fromHtml( MessageText  ) );
+                    Params.putString( CMessageBoxActivity.MESSAGEBOX_PARAM_MESSAGE, Html.fromHtml( MessageText  ).toString() );
+                    Intent intent = new Intent( CCitySearchActivity.this, CMessageBoxActivity.class );
+                    intent.putExtras( Params );
                     startActivityForResult( intent, CApp.MSGBOX_INSERT_CITY_ERROR_REQUEST_ID );
                }
                else
