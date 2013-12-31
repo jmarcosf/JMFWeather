@@ -21,7 +21,7 @@
 	<!--**********************************************************/
     /*                                                           */ 
     /*                                                           */ 
-    /* City Details Forecast Layout                              */ 
+    /* City Weather Details - Forecast Layout                    */ 
     /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
@@ -38,29 +38,18 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent" />
 		        
-<!--         <GridView -->
-<!--             android:id="@+id/IDC_GRID_FORECAST" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="match_parent" -->
-<!--             android:columnWidth="50dp" -->
-<!--             android:gravity="center" -->
-<!--             android:horizontalSpacing="3dp" -->
-<!--             android:numColumns="5" -->
-<!--             android:stretchMode="columnWidth" -->
-<!--             android:verticalSpacing="2dp" /> -->
-
     </LinearLayout>
 
     <!--**********************************************************/
     /*                                                           */ 
     /*                                                           */ 
-    /* Grey Sperator Line                                        */ 
+    /* Grey Separator Line                                       */ 
     /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
     <View
 	    android:layout_width="match_parent"
-        android:layout_height="2dip"
+        android:layout_height="1dip"
         android:background="#C0C0C0"
         android:layout_marginBottom="3dp"
         android:layout_above="@id/IDR_LAY_DETAILS_FORECAST"/>
@@ -68,12 +57,12 @@
     <!--**********************************************************/
     /*                                                           */ 
     /*                                                           */ 
-    /* City Details Weather Header Layout                        */ 
+    /* City Weather Details - Condition Layout                   */ 
     /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
     <LinearLayout
-        android:id="@+id/IDR_LAY_DETAILS_WEATHER_HEADER"
+        android:id="@+id/IDR_LAY_DETAILS_CONDITION"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -83,11 +72,11 @@
     
    	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* City Weather Last Update                              */ 
+	    /* Last Update                                           */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_LAST_WEATHER_UPDATE"
+	        android:id="@+id/IDC_TXT_CONDITION_LAST_UPDATE"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:gravity="right"
@@ -98,11 +87,11 @@
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* Current Temperature                                   */ 
+	    /* Temperature                                           */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_TEMPERATURE"
+	        android:id="@+id/IDC_TXT_CONDITION_TEMPERATURE"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:gravity="right"
@@ -111,11 +100,11 @@
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* Current Weather Description                           */ 
+	    /* Description                                           */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_WEATHER_DESCRIPTION"
+	        android:id="@+id/IDC_TXT_CONDITION_DESCRIPTION"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:gravity="right"
@@ -128,36 +117,36 @@
     <!--**********************************************************/
     /*                                                           */ 
     /*                                                           */ 
-    /* City Details Location Header Layout                       */ 
+    /* City Weather Details - Location Layout                    */ 
     /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
     <RelativeLayout
-        android:id="@+id/IDR_LAY_DETAILS_LOCATION_HEADER"
+        android:id="@+id/IDR_LAY_DETAILS_LOCATION"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:gravity="left"
-        android:layout_toLeftOf="@id/IDR_LAY_DETAILS_WEATHER_HEADER" >
+        android:layout_toLeftOf="@id/IDR_LAY_DETAILS_CONDITION" >
     
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* City Icon                                             */ 
+	    /* Icon                                                  */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <ImageView
-	        android:id="@+id/IDP_ICO_WEATHER_IMAGE"
+	        android:id="@+id/IDP_ICO_LOCATION_IMAGE"
 	        android:layout_width="40dp"
 	        android:layout_height="40dp" />
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* City Name                                             */ 
+	    /* Name                                                  */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_NAME"
+	        android:id="@+id/IDC_TXT_LOCATION_NAME"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
@@ -167,38 +156,38 @@
 	        android:textSize="22sp"
 	        android:textStyle="bold"
 	        android:singleLine="true"
-	        android:layout_toRightOf="@id/IDP_ICO_WEATHER_IMAGE" />
+	        android:layout_toRightOf="@id/IDP_ICO_LOCATION_IMAGE" />
 	    	
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* City Country                                          */ 
+	    /* Country                                               */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_COUNTRY"
+	        android:id="@+id/IDC_TXT_LOCATION_COUNTRY"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/IDC_TXT_CITY_NAME"
+	        android:layout_below="@id/IDC_TXT_LOCATION_NAME"
 	        android:paddingTop="1dp"
 	        android:paddingLeft="10dp"
 	        android:fontFamily="Arial"
 	        android:textStyle="italic"
 	        android:textSize="16sp"
-	        android:layout_toRightOf="@id/IDP_ICO_WEATHER_IMAGE" />
+	        android:layout_toRightOf="@id/IDP_ICO_LOCATION_IMAGE" />
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* City GeoPosition                                      */ 
+	    /* GeoPosition                                      */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_GEOPISITION"
+	        android:id="@+id/IDC_TXT_LOCATION_GEOPISITION"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/IDP_ICO_WEATHER_IMAGE"
+	        android:layout_below="@id/IDP_ICO_LOCATION_IMAGE"
 	        android:paddingTop="28dp"
 	        android:fontFamily="Arial"
-	        android:textSize="12sp" />
+	        android:textSize="10sp" />
 
 	</RelativeLayout>
 	

@@ -21,7 +21,7 @@
 	<!--**********************************************************/
     /*                                                           */ 
     /*                                                           */ 
-    /* City Details Forecast Layout                              */ 
+    /* City Weather Details - Forecast Layout                    */ 
     /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
@@ -38,93 +38,151 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent" />
 		        
-<!--         <GridView -->
-<!--             android:id="@+id/IDC_GRID_FORECAST" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="match_parent" -->
-<!--             android:columnWidth="50dp" -->
-<!--             android:gravity="center" -->
-<!--             android:horizontalSpacing="3dp" -->
-<!--             android:numColumns="5" -->
-<!--             android:stretchMode="columnWidth" -->
-<!--             android:verticalSpacing="2dp" /> -->
-
     </LinearLayout>
 
-    <!--**********************************************************/
+ 	<!--**********************************************************/
     /*                                                           */ 
     /*                                                           */ 
-    /* Grey Sperator Line                                        */ 
+    /* Grey Separator Line                                       */ 
     /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
     <View
-        android:id="@+id/IDC_FORECAST_SEPARATOR"
+        android:id="@+id/IDR_FORECAST_SEPARATOR"
 	    android:layout_width="match_parent"
-        android:layout_height="2dip"
+        android:layout_height="1dip"
         android:background="#C0C0C0"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="10dp"
         android:layout_above="@id/IDR_LAY_DETAILS_FORECAST"/>
-    
+
     <!--**********************************************************/
     /*                                                           */ 
     /*                                                           */ 
-    /* City Details Location Header Layout                       */ 
+    /* City Weather Details - Condition Layout                   */ 
     /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
     <RelativeLayout
-        android:id="@+id/IDR_LAY_DETAILS_LOCATION_HEADER"
+        android:id="@+id/IDR_LAY_DETAILS_CONDITION"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:gravity="left" >
+        android:layout_height="80dp"
+        android:layout_above="@id/IDR_FORECAST_SEPARATOR"
+        android:padding="2dp" >
+    
+   	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* Last Update                                           */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CONDITION_LAST_UPDATE"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:fontFamily="Arial"
+	        android:textSize="14sp" />
+	    
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* Temperature                                           */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CONDITION_TEMPERATURE"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignTop="@id/IDC_TXT_CONDITION_LAST_UPDATE"
+	        android:gravity="center_horizontal"
+	        android:fontFamily="Times New Roman"
+	        android:textSize="32sp" />
+	    
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* Description                                           */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CONDITION_DESCRIPTION"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/IDC_TXT_CONDITION_TEMPERATURE"
+	        android:gravity="center_horizontal"
+			android:singleLine="true"
+	        android:fontFamily="Arial"
+	        android:textSize="14sp" />
+	    
+   	</RelativeLayout>    
+    
+    <!--**********************************************************/
+    /*                                                           */ 
+    /*                                                           */ 
+    /* Grey Separator Line                                       */ 
+    /*                                                           */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <View
+        android:id="@+id/IDR_CONDITION_SEPARATOR"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_above="@id/IDR_LAY_DETAILS_CONDITION"
+        android:layout_marginBottom="10dp"
+        android:background="#C0C0C0" />    
+    
+    <!--**********************************************************/
+    /*                                                           */ 
+    /*                                                           */ 
+    /* City Weather Details - Location Layout                    */ 
+    /*                                                           */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <RelativeLayout
+        android:id="@+id/IDR_LAY_DETAILS_LOCATION"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
     
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* City Icon                                             */ 
+	    /* Icon                                                  */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <ImageView
-	        android:id="@+id/IDP_ICO_WEATHER_IMAGE"
+	        android:id="@+id/IDP_ICO_LOCATION_IMAGE"
 	        android:layout_width="48dp"
 	        android:layout_height="48dp" />
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* City Name                                             */ 
+	    /* Name                                                  */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_NAME"
+	        android:id="@+id/IDC_TXT_LOCATION_NAME"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
+	        android:layout_toRightOf="@id/IDP_ICO_LOCATION_IMAGE"
 	        android:gravity="top"
 	        android:paddingLeft="10dp"
 	        android:fontFamily="Arial"
 	        android:textSize="22sp"
 	        android:textStyle="bold"
-	        android:singleLine="true"
-	        android:layout_toRightOf="@id/IDP_ICO_WEATHER_IMAGE" />
+	        android:singleLine="true" />
 	    	
 	    <!--******************************************************/
 	    /*                                                       */ 
-	    /* City Country                                          */ 
+	    /* Country                                               */ 
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_COUNTRY"
+	        android:id="@+id/IDC_TXT_LOCATION_COUNTRY"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/IDC_TXT_CITY_NAME"
-	        android:paddingTop="1dp"
+	        android:layout_below="@id/IDC_TXT_LOCATION_NAME"
+	        android:layout_toRightOf="@id/IDP_ICO_LOCATION_IMAGE"
+	        android:layout_alignBottom="@id/IDP_ICO_LOCATION_IMAGE"
 	        android:paddingLeft="10dp"
 	        android:fontFamily="Arial"
 	        android:textStyle="italic"
-	        android:textSize="16sp"
-	        android:layout_toRightOf="@id/IDP_ICO_WEATHER_IMAGE" />
+	        android:textSize="16sp" />
 	    
 	    <!--******************************************************/
 	    /*                                                       */ 
@@ -132,264 +190,226 @@
 		/*                                                       */ 
 	    /*******************************************************-->
 	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_GEOPISITION"
-	        android:layout_width="match_parent"
+	        android:id="@+id/IDC_TXT_LOCATION_GEOPISITION"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@id/IDC_TXT_CITY_COUNTRY"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignBottom="@id/IDP_ICO_LOCATION_IMAGE"
 	        android:gravity="right"
-	        android:paddingTop="34dp"
+	        android:paddingTop="5dp"
 	        android:fontFamily="Arial"
-	        android:textSize="12sp" />
+	        android:textSize="11sp" />
 
 	</RelativeLayout>    
-    
+
+ 	<!--**********************************************************/
+    /*                                                           */ 
+    /*                                                           */ 
+    /* Grey Separator Line                                       */ 
+    /*                                                           */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <View
+        android:id="@+id/IDR_LOCATION_SEPARATOR"
+	    android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#C0C0C0"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/IDR_LAY_DETAILS_LOCATION"/>
+
     <!--**********************************************************/
     /*                                                           */ 
     /*                                                           */ 
-    /* City Details Weather Header Layout                        */ 
+    /* City Weather Details - Data Container Layout              */ 
     /*                                                           */ 
 	/*                                                           */ 
     /***********************************************************-->
-    <LinearLayout
-        android:id="@+id/IDR_LAY_DETAILS_WEATHER_HEADER"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:gravity="right"
-        android:paddingTop="23dp"
-        android:paddingBottom="15dp"
-        android:orientation="vertical"
-        android:layout_below="@id/IDR_LAY_DETAILS_LOCATION_HEADER"
-        android:layout_above="@id/IDC_FORECAST_SEPARATOR" >
-    
-   	    <!--******************************************************/
-	    /*                                                       */ 
-	    /* City Weather Last Update                              */ 
-		/*                                                       */ 
-	    /*******************************************************-->
-	    <TextView
-	        android:id="@+id/IDC_TXT_LAST_WEATHER_UPDATE"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:gravity="right"
-	        android:fontFamily="Arial"
-	        android:textStyle="bold"
-	        android:textSize="16sp" />
-	    
-	    <!--******************************************************/
-	    /*                                                       */ 
-	    /* Current Temperature                                   */ 
-		/*                                                       */ 
-	    /*******************************************************-->
-	    <TextView
-	        android:id="@+id/IDC_TXT_CITY_TEMPERATURE"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:gravity="right"
-	        android:fontFamily="Times New Roman"
-	        android:textSize="30sp" />
-	    
-	    <!--******************************************************/
-	    /*                                                       */ 
-	    /* Current Weather Description                           */ 
-		/*                                                       */ 
-	    /*******************************************************-->
-	    <TextView
-	        android:id="@+id/IDC_TXT_WEATHER_DESCRIPTION"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:gravity="right"
-	        android:fontFamily="Arial"
-	        android:textSize="14sp" />
-	    
-   	</LinearLayout>    
-
-	<!--**********************************************************/
-    /*                                                           */ 
-    /*                                                           */ 
-    /* City Details Body Labels Layout                           */ 
-    /*                                                           */ 
-	/*                                                           */ 
-    /***********************************************************-->
-   	<LinearLayout 
-        android:id="@+id/IDR_LAY_DETAILS_DATA"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="left"
-        android:orientation="horizontal"
-        android:paddingTop="27dp"
-        android:paddingBottom="27dp"
-        android:layout_toLeftOf="@id/IDR_LAY_DETAILS_WEATHER_HEADER"
-        android:layout_below="@id/IDR_LAY_DETAILS_LOCATION_HEADER"
-        android:layout_above="@id/IDC_FORECAST_SEPARATOR" >    
-    
-		<!--*****************************************************/
-	    /*                                                      */ 
-	    /*                                                      */ 
-	    /* City Details Body Labels Layout                      */ 
-	    /*                                                      */ 
-		/*                                                      */ 
-	    /******************************************************-->
-	    <LinearLayout
-	        android:id="@+id/IDR_LAY_DETAILS_BODY_LABELS"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:orientation="vertical"  >
-		            
-	        <!--*************************************************/
-		    /*                                                  */ 
-		    /* Pressure                                         */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="@string/IDS_PRESSURE"
-		        android:fontFamily="Arial"
-		        android:textStyle="bold"
-		        android:textSize="12sp" />
-		
-		    <!--*************************************************/
-		    /*                                                  */ 
-		    /* Humidity                                         */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:paddingTop="5dp"
-		        android:text="@string/IDS_HUMIDITY"
-		        android:fontFamily="Arial"
-		        android:textStyle="bold"
-		        android:textSize="12sp" />
-		    
-		    <!--*************************************************/
-		    /*                                                  */ 
-		    /* Visibility                                       */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:paddingTop="5dp"
-		        android:text="@string/IDS_VISIBILITY"
-		        android:fontFamily="Arial"
-		        android:textStyle="bold"
-		        android:textSize="12sp" />
-		    
-		    <!--*************************************************/
-		    /*                                                  */ 
-		    /* Wind Direction                                   */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:paddingTop="5dp"
-		        android:text="@string/IDS_WIND_DIRECTION"
-		        android:fontFamily="Arial"
-		        android:textStyle="bold"
-		        android:textSize="12sp" />
-		    
-		    <!--*************************************************/
-		    /*                                                  */ 
-		    /* Wind Speed                                       */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:paddingTop="5dp"
-		        android:text="@string/IDS_WIND_SPEED"
-		        android:fontFamily="Arial"
-		        android:textStyle="bold"
-		        android:textSize="12sp" />
-		    
-	   	</LinearLayout>
-	   	
-		<!--*****************************************************/
-	    /*                                                      */ 
-	    /*                                                      */ 
-	    /* City Details Body Values Layout                      */ 
-	    /*                                                      */ 
-		/*                                                      */ 
-	    /******************************************************-->
-	    <LinearLayout
-	        android:id="@+id/IDR_LAY_DETAILS_BODY_VALUES"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:orientation="vertical" 
-	        android:layout_marginLeft="5dp" >
-		            
-	        <!--*************************************************/
-		    /*                                                  */ 
-		    /* Pressure                                         */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:id="@+id/IDC_TXT_PRESSURE"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="right"
-		        android:fontFamily="Arial"
-		        android:textSize="12sp" />
-		
-		    <!--*************************************************/
-		    /*                                                  */ 
-		    /* Humidity                                         */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:id="@+id/IDC_TXT_HUMIDITY"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="right"
-		        android:paddingTop="5dp"
-		        android:fontFamily="Arial"
-		        android:textSize="12sp" />
-		    
-		    <!--*************************************************/
-		    /*                                                  */ 
-		    /* Visibility                                       */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:id="@+id/IDC_TXT_VISIBILITY"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="right"
-		        android:paddingTop="5dp"
-		        android:fontFamily="Arial"
-		        android:textSize="12sp" />
-		    
-		    <!--*************************************************/
-		    /*                                                  */ 
-		    /* Wind Direction                                   */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:id="@+id/IDC_TXT_WIND_DIRECTION"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="right"
-		        android:paddingTop="5dp"
-		        android:fontFamily="Arial"
-		        android:textSize="12sp" />
-		    
-		    <!--*************************************************/
-		    /*                                                  */ 
-		    /* Wind Speed                                       */ 
-			/*                                                  */ 
-		    /**************************************************-->
-		    <TextView
-		        android:id="@+id/IDC_TXT_WIND_SPEED"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="right"
-		        android:paddingTop="5dp"
-		        android:fontFamily="Arial"
-		        android:textSize="12sp" />
-		    
-	   	</LinearLayout>
-   	</LinearLayout>
+        android:layout_above="@id/IDR_CONDITION_SEPARATOR"
+        android:layout_below="@id/IDR_LOCATION_SEPARATOR" >
+
+        <!--******************************************************/
+	    /*                                                       */ 
+	    /*                                                       */ 
+	    /* City Weather Details - Data Layout                    */ 
+	    /*                                                       */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+        <LinearLayout
+            android:id="@+id/IDR_LAY_DETAILS_DATA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+
+            <!--**************************************************/
+		    /*                                                   */ 
+		    /*                                                   */ 
+		    /* City Weather Details - Data Labels Layout         */ 
+		    /*                                                   */ 
+			/*                                                   */ 
+		    /***************************************************-->
+            <LinearLayout
+                android:id="@+id/IDR_LAY_DETAILS_DATA_LABELS"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Pressure                                      */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="Arial"
+                    android:text="@string/IDS_PRESSURE"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Humidity                                      */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="Arial"
+                    android:paddingTop="5dp"
+                    android:text="@string/IDS_HUMIDITY"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Visibility                                    */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="Arial"
+                    android:paddingTop="5dp"
+                    android:text="@string/IDS_VISIBILITY"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Wind Direction                                */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="Arial"
+                    android:paddingTop="5dp"
+                    android:text="@string/IDS_WIND_DIRECTION"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Wind Speed                                    */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="Arial"
+                    android:paddingTop="5dp"
+                    android:text="@string/IDS_WIND_SPEED"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!--**************************************************/
+		    /*                                                   */ 
+		    /*                                                   */ 
+		    /* City Weather Details - Data Values Layout         */ 
+		    /*                                                   */ 
+			/*                                                   */ 
+		    /***************************************************-->
+            <LinearLayout
+                android:id="@+id/IDR_LAY_DETAILS_DATA_VALUES"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="40dp" >
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Pressure                                      */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:id="@+id/IDC_TXT_DATA_PRESSURE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:fontFamily="Arial"
+                    android:textSize="12sp" />
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Humidity                                      */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:id="@+id/IDC_TXT_DATA_HUMIDITY"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:fontFamily="Arial"
+                    android:paddingTop="5dp"
+                    android:textSize="12sp" />
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Visibility                                    */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:id="@+id/IDC_TXT_DATA_VISIBILITY"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:fontFamily="Arial"
+                    android:paddingTop="5dp"
+                    android:textSize="12sp" />
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Wind Direction                                */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:id="@+id/IDC_TXT_DATA_WIND_DIRECTION"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:fontFamily="Arial"
+                    android:paddingTop="5dp"
+                    android:textSize="12sp" />
+
+                <!--**********************************************/
+			    /*                                               */ 
+			    /* Wind Speed                                    */ 
+				/*                                               */ 
+			    /***********************************************-->
+                <TextView
+                    android:id="@+id/IDC_TXT_DATA_WIND_SPEED"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:fontFamily="Arial"
+                    android:paddingTop="5dp"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </RelativeLayout>

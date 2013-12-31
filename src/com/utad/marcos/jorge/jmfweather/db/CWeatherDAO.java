@@ -216,25 +216,27 @@ private SQLiteDatabase		m_db;
      {
           if( m_db == null ) m_db = m_dbHelper.getReadableDatabase();
 
+          long LocationId = -1;
           LocationManager locationManager = (LocationManager)m_Context.getSystemService( Context.LOCATION_SERVICE );
           Location location = locationManager.getLastKnownLocation( LocationManager.GPS_PROVIDER );
-          long LocationId = -1;
-          
-          String strLatitude = Double.valueOf( location.getLatitude() ).toString();
-          String strLongitude = Double.valueOf( location.getLongitude() ).toString();
-          int idx1 = strLatitude.indexOf( '.' );
-          int idx2 = strLongitude.indexOf( '.' );
-
-          if( idx1 != -1 && idx2 != -1 )
+          if( location != null )
           {
-               String Query = "SELECT * FROM " + CWeatherDBContract.CCityTable.TABLE_NAME + " WHERE " + 
-                         CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " LIKE '" + strLatitude.substring( 0, idx1 + 2 ) + "%'" + " AND " +
-                         CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + " LIKE '" + strLongitude.substring( 0, idx2 + 2 ) + "%'";
-               try
+               String strLatitude = Double.valueOf( location.getLatitude() ).toString();
+               String strLongitude = Double.valueOf( location.getLongitude() ).toString();
+               int idx1 = strLatitude.indexOf( '.' );
+               int idx2 = strLongitude.indexOf( '.' );
+     
+               if( idx1 != -1 && idx2 != -1 )
                {
-                    LocationId = DatabaseUtils.longForQuery( m_db, Query, null );
+                    String Query = "SELECT * FROM " + CWeatherDBContract.CCityTable.TABLE_NAME + " WHERE " + 
+                              CWeatherDBContract.CCityTable.COLUMN_NAME_LATITUDE + " LIKE '" + strLatitude.substring( 0, idx1 + 2 ) + "%'" + " AND " +
+                              CWeatherDBContract.CCityTable.COLUMN_NAME_LONGITUDE + " LIKE '" + strLongitude.substring( 0, idx2 + 2 ) + "%'";
+                    try
+                    {
+                         LocationId = DatabaseUtils.longForQuery( m_db, Query, null );
+                    }
+                    catch( SQLiteDoneException e ) {}
                }
-               catch( SQLiteDoneException e ) {}
           }
           return LocationId;          
      }

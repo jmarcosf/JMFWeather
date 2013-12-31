@@ -75,39 +75,50 @@ public class CCityDetailsFragment extends Fragment implements OnTouchListener
 		WeatherDAO.SetCityForecast( City );
 		WeatherDAO.Close();
 
-		TextView CityName = (TextView)view.findViewById( R.id.IDC_TXT_CITY_NAME );
-		TextView CityCountry = (TextView)view.findViewById( R.id.IDC_TXT_CITY_COUNTRY );
-          TextView CityGeoPosition = (TextView)view.findViewById( R.id.IDC_TXT_CITY_GEOPISITION );
-          TextView WeatherDesc = (TextView)view.findViewById( R.id.IDC_TXT_WEATHER_DESCRIPTION );
-          TextView CityTemp = (TextView)view.findViewById( R.id.IDC_TXT_CITY_TEMPERATURE );
-          TextView LastWeatherUpdate = (TextView)view.findViewById( R.id.IDC_TXT_LAST_WEATHER_UPDATE );
-          TextView Pressure = (TextView)view.findViewById( R.id.IDC_TXT_PRESSURE );
-          TextView Humitidy = (TextView)view.findViewById( R.id.IDC_TXT_HUMIDITY );
-          TextView Visibility = (TextView)view.findViewById( R.id.IDC_TXT_VISIBILITY );
-          TextView WindDirection = (TextView)view.findViewById( R.id.IDC_TXT_WIND_DIRECTION );
-          TextView WindSpeed = (TextView)view.findViewById( R.id.IDC_TXT_WIND_SPEED );
-	
-		CityName.setText( City.getName() );
-		CityCountry.setText( City.getCountry() );
-          CityGeoPosition.setText( City.getLatitude() + " : " + City.getLongitude() );
+	     // Get Location Layout
+          ImageView LocationImage = (ImageView)view.findViewById( R.id.IDP_ICO_LOCATION_IMAGE );
+		TextView LocationName = (TextView)view.findViewById( R.id.IDC_TXT_LOCATION_NAME );
+		TextView LocationCountry = (TextView)view.findViewById( R.id.IDC_TXT_LOCATION_COUNTRY );
+          TextView LocationGeoPosition = (TextView)view.findViewById( R.id.IDC_TXT_LOCATION_GEOPISITION );
+          
+          // Get Data Layout
+          TextView DataPressure = (TextView)view.findViewById( R.id.IDC_TXT_DATA_PRESSURE );
+          TextView DataHumitidy = (TextView)view.findViewById( R.id.IDC_TXT_DATA_HUMIDITY );
+          TextView DataVisibility = (TextView)view.findViewById( R.id.IDC_TXT_DATA_VISIBILITY );
+          TextView DataWindDirection = (TextView)view.findViewById( R.id.IDC_TXT_DATA_WIND_DIRECTION );
+          TextView DataWindSpeed = (TextView)view.findViewById( R.id.IDC_TXT_DATA_WIND_SPEED );
+     
+          // Get Condition Layout
+          TextView ConditionLastUpdate = (TextView)view.findViewById( R.id.IDC_TXT_CONDITION_LAST_UPDATE );
+          TextView ConditionTemperature = (TextView)view.findViewById( R.id.IDC_TXT_CONDITION_TEMPERATURE );
+          TextView ConditionDescription = (TextView)view.findViewById( R.id.IDC_TXT_CONDITION_DESCRIPTION );
+          
+          // Set Location Info
+          if( LocationImage != null ) City.SetViewIcon( getActivity(), LocationImage );
+		if( LocationName != null ) LocationName.setText( City.getName() );
+		if( LocationCountry != null ) LocationCountry.setText( City.getCountry() );
+          if( LocationGeoPosition != null ) LocationGeoPosition.setText( City.getLatitude() + " : " + City.getLongitude() );
 
-          WeatherDesc.setText( City.getCondition().getWeatherCodeDescription( getActivity() ) );
-          if( ( (CBaseCityActivity)getActivity() ).m_bCelsius ) CityTemp.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
-		else CityTemp.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
+          // Set Data Info
+          if( DataPressure != null ) DataPressure.setText( "" + City.getCondition().getPressure() + " hPa" );
+          if( DataHumitidy != null ) DataHumitidy.setText( "" + City.getCondition().getHumidity() + "%");
+          if( DataVisibility != null ) DataVisibility.setText( "" + City.getCondition().getVisibility() + " Km" );
+          if( DataWindDirection != null ) DataWindDirection.setText( "" + City.getCondition().getWindDirectionDegrees() + "º " + City.getCondition().getWindDirectionCompass() );
+          if( DataWindSpeed != null ) DataWindSpeed.setText( "" + City.getCondition().getWindSpeedKmph() + " Kmph" );
+          
+          // Set Condition Info
           Date upDate = City.getCondition().getObservationTime();
           SimpleDateFormat DateFormat = new SimpleDateFormat( "MMM d, kk:mm" );
           String LastUpdate = ( upDate == null ) ? "null date" : DateFormat.format( upDate );
-          LastWeatherUpdate.setText( LastUpdate );
+          if( ConditionLastUpdate != null ) ConditionLastUpdate.setText( LastUpdate );
+          if( ConditionTemperature != null )
+          {
+               if( ( (CBaseCityActivity)getActivity() ).m_bCelsius ) ConditionTemperature.setText( "" + City.getCondition().getTemperatureCelsius() + "ºC" );
+     		else ConditionTemperature.setText( "" + City.getCondition().getTemperatureFahrenheit() + "ºF" );
+          }
+          if( ConditionDescription != null ) ConditionDescription.setText( City.getCondition().getWeatherCodeDescription( getActivity() ) );
 
-          if( Pressure != null ) Pressure.setText( "" + City.getCondition().getPressure() + " hPa" );
-          if( Humitidy != null ) Humitidy.setText( "" + City.getCondition().getHumidity() + "%");
-          if( Visibility != null ) Visibility.setText( "" + City.getCondition().getVisibility() + " Km" );
-          if( WindDirection != null ) WindDirection.setText( "" + City.getCondition().getWindDirectionDegrees() + "º " + City.getCondition().getWindDirectionCompass() );
-          if( WindSpeed != null ) WindSpeed.setText( "" + City.getCondition().getWindSpeedKmph() + " Kmph" );
-          
-          ImageView WeatherIcon = (ImageView)view.findViewById( R.id.IDP_ICO_WEATHER_IMAGE );
-          City.SetViewIcon( getActivity(), WeatherIcon );
-          
+          // Set Forecast Info
           HorzListView ForecastList = (HorzListView)view.findViewById( R.id.IDC_LV_FORECAST );
           ForecastList.setOnTouchListener( this );
           ForecastList.setAdapter( new CCityForecastAdapter( getActivity(), City.getForecastList() ) );
