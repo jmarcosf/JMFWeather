@@ -118,11 +118,13 @@ private   CCityDetailsPagerAdapter m_PagerAdapter = null;
                case R.id.IDM_DEGREES_CELSIUS:
                     m_bCelsius = true;
                     if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
+                    getIntent().putExtra( IDS_CELSIUS_PARAM, m_bCelsius );
                     return true;
 
                case R.id.IDM_DEGREES_FAHRENHEIT:
                     m_bCelsius = false;
                     if( m_PagerAdapter != null ) m_PagerAdapter.notifyDataSetChanged();
+                    getIntent().putExtra( IDS_CELSIUS_PARAM, m_bCelsius );
                     return true;
                     
      		case android.R.id.home:
