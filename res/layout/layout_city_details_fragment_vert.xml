@@ -193,10 +193,8 @@
 	        android:id="@+id/IDC_TXT_LOCATION_GEOPISITION"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:layout_alignBottom="@id/IDP_ICO_LOCATION_IMAGE"
-	        android:gravity="right"
-	        android:paddingTop="5dp"
+	        android:layout_below="@id/IDP_ICO_LOCATION_IMAGE"
+	        android:paddingTop="15dp"
 	        android:fontFamily="Arial"
 	        android:textSize="11sp" />
 
@@ -214,7 +212,7 @@
 	    android:layout_width="match_parent"
         android:layout_height="1dip"
         android:background="#C0C0C0"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/IDR_LAY_DETAILS_LOCATION"/>
 
     <!--**********************************************************/

@@ -44,7 +44,7 @@
     <string name="IDS_NETWORK_ERROR_MESSAGE">No hay conectividad de red.</string>
     <string name="IDS_NO_CITIES_FOUND_ERROR_MESSAGE">¡No se encontró ninguna ciudad!.</string>
     <string name="IDS_READ_CITIES_ERROR_MESSAGE">Ha ocurrido un error al acceder a las ciudades de la Base de Datos.</string>
-    <string name="IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE">No hay ciudades. Utilice el botón &lt;b&gt;Añadir Ciudad&lt;/b&gt; del menú para añadir su primera ciudad.</string>
+    <string name="IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE">&lt;p&gt;Bienvenido a &lt;b&gt;JmfWeather&lt;/b&gt;.&lt;/p&gt;Utilice el botón &lt;b&gt;Añadir Ciudad&lt;/b&gt; del menú para añadir su primera ciudad.</string>
     <string name="IDS_WRITE_CITY_ERROR_MESSAGE">Ha ocurrido un error al grabar en la Base de Datos.</string>
     <string name="IDS_DRAWER_MENU_TEXT"></string>
     <string name="IDS_DRAWER_OPEN_TEXT"></string>
@@ -61,7 +61,7 @@
     <string name="IDS_PREF_TITLE_DIVIDE_SCREEN_ON_TABLETS">Dividir la pantalla en Tablets</string>
     <string name="IDS_PREF_DESC_DIVIDE_SCREEN_ON_TABLETS">En Tablets en posición horizontal divir la pantalla en dos partes, una para ciudades y otra para detalles</string>
     
-    <string name="IDS_PREF_TITLE_SYNC_FREQUENCY">Frecuencia de Actulización</string>
+    <string name="IDS_PREF_TITLE_SYNC_FREQUENCY">Frecuencia de Actualización</string>
     <string-array name="IDS_ARRAY_SYNC_FREQUENCY_TITLES">
 	    <item>15 minutos</item>
 	    <item>30 minutos</item>

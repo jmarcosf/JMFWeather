@@ -490,9 +490,9 @@ private   int                      m_CurrentSelectedCity = -1;
                {
                     MessageBox( CApp.MSGBOX_CITY_TABLE_EMPTY_REQUEST_ID,
                                 CMessageBoxActivity.MESSAGEBOX_TYPE_OKONLY,
-                                getString( R.string.IDS_WARNING ),
+                                getString( R.string.IDS_APP_NAME ),
                                 Html.fromHtml( getString( R.string.IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE ) ),
-                                android.R.drawable.ic_menu_info_details );
+                                R.drawable.icon_main );
                }
           }
           else

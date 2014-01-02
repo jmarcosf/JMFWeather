@@ -44,7 +44,7 @@
     <string name="IDS_NETWORK_ERROR_MESSAGE">There is not network connectivity.</string>
     <string name="IDS_NO_CITIES_FOUND_ERROR_MESSAGE">No cities found!.</string>
     <string name="IDS_READ_CITIES_ERROR_MESSAGE">An error occurred reading cities from database.</string>
-    <string name="IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE">No cities found. Use &lt;b&gt;Add City&lt;/b&gt; menu button to add your first city.</string>
+    <string name="IDS_CITY_TABLE_EMPTY_ERROR_MESSAGE">&lt;p&gt;Welcome to &lt;b&gt;JmfWeather&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;Use &lt;b&gt;Add City&lt;/b&gt; menu button to add your first city.&lt;/p&gt;</string>
     <string name="IDS_WRITE_CITY_ERROR_MESSAGE">An error occurred writing city to database.</string>
     <string name="IDS_DRAWER_MENU_TEXT">Este es un menú lateral implementado con un DrawerLayout. El contenido de este espacio es totalmente arbitrario.</string>
     <string name="IDS_DRAWER_OPEN_TEXT">Se abre el menú</string>

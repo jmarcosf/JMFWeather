@@ -113,7 +113,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@id/IDC_TXT_CITY_NAME"
-	        android:paddingTop="5dp"
+	        android:paddingTop="10dp"
 	        android:paddingLeft="15dp"
 	        android:fontFamily="Arial"
 	        android:textSize="22sp"
