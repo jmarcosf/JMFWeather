@@ -1,0 +1,123 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* layout_city_list_item.xml                                     */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: City List Item Layout                            */ 
+/*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
+/*                                                               */ 
+/***************************************************************-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/IDR_STY_CITY_LISTVIEW_ITEM_STYLE" >
+
+    <!--**********************************************************/
+    /*                                                           */ 
+    /*                                                           */ 
+    /* City Weather Layout                                       */ 
+    /*                                                           */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <LinearLayout
+        android:id="@+id/IDR_LAY_CITY_LISTVIEW_ITEM_WEATHER"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:gravity="right" >
+    
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* Current Temperature                                   */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_TEMPERATURE"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+	        android:gravity="right"
+	        android:fontFamily="Times New Roman"
+	        android:textSize="30sp" />
+	
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* City Weather Last Update                              */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_WEATHER_LAST_UPDATE"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="3dp"
+	        android:gravity="right"
+	        android:fontFamily="Arial"
+	        android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!--**********************************************************/
+    /*                                                           */ 
+    /*                                                           */ 
+    /* City Info Layout                                          */ 
+    /*                                                           */ 
+	/*                                                           */ 
+    /***********************************************************-->
+   	<RelativeLayout 
+        android:id="@+id/IDR_LAY_CITY_LISTVIEW_ITEM_TITLE"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="left" 
+	    android:layout_toLeftOf="@+id/IDR_LAY_CITY_LISTVIEW_ITEM_WEATHER" >
+    
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* City Icon                                             */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <ImageView
+	        android:id="@+id/IDP_ICO_CITY_ICON"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp" />
+	    
+	    <!--******************************************************/
+	    /*                                                       */ 
+	    /* City Name                                             */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_NAME"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="10dp"
+	        android:fontFamily="Arial"
+	        android:singleLine="true"
+	        android:textSize="22sp"
+	        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON" />
+	
+		<!--******************************************************/
+	    /*                                                       */ 
+	    /* City Country                                          */ 
+		/*                                                       */ 
+	    /*******************************************************-->
+	    <TextView
+	        android:id="@+id/IDC_TXT_CITY_COUNTRY"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="2dp"
+	        android:fontFamily="Arial"
+	        android:textSize="16sp"
+	        android:layout_below="@id/IDP_ICO_CITY_ICON" />
+	
+	</RelativeLayout>    
+    
+</RelativeLayout>
+

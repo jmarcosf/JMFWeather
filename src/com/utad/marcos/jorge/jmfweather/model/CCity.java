@@ -157,12 +157,14 @@ private CForecastList    m_ForecastList;
      
      /*********************************************************/
      /*                                                       */ 
-     /* CCity.SetViewIcon()                                   */ 
+     /* CCity.GetViewIcon()                                   */ 
      /*                                                       */ 
      /*********************************************************/
-     public void SetViewIcon( Context context, ImageView view )
+     public Bitmap GetViewIcon( Context context )
      {
-          if( context != null && view != null && getCondition() != null )
+     Bitmap bitmap = null;
+     
+          if( getCondition() != null )
           {
                File CacheDirectory = context.getCacheDir();
                Uri uri = Uri.parse( getCondition().getIconUrl() );
@@ -170,13 +172,25 @@ private CForecastList    m_ForecastList;
                File ImageFile = new File( CacheDirectory, ImagePath );
                try
                {
-                    Bitmap IconBitmap = BitmapFactory.decodeStream( new FileInputStream( ImageFile ) );
-                    view.setImageBitmap( IconBitmap );
+                    bitmap = BitmapFactory.decodeStream( new FileInputStream( ImageFile ) );
                }
-               catch( FileNotFoundException exception )
-               {
-                    view.setImageResource( R.drawable.icon_main );
-               }
+               catch( FileNotFoundException exception ) {}
+          }
+          return bitmap;
+     }
+     
+     /*********************************************************/
+     /*                                                       */ 
+     /* CCity.SetViewIcon()                                   */ 
+     /*                                                       */ 
+     /*********************************************************/
+     public void SetViewIcon( Context context, ImageView view )
+     {
+          if( context != null && view != null )
+          {
+               Bitmap bitmap = GetViewIcon( context );
+               if( bitmap != null ) view.setImageBitmap( bitmap );
+               else view.setImageResource( R.drawable.icon_main );
           }
      }
 }

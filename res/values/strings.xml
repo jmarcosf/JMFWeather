@@ -15,6 +15,7 @@
 /***************************************************************-->
 <resources>
     <string name="IDS_APP_NAME">JmfWeather</string>
+    <string name="IDS_WIDGET">JmfWeather Widget</string>
     <string name="IDS_SETTINGS">Settings</string>
     <string name="IDS_SHARE">Share</string>
     <string name="IDS_OK">OK</string>

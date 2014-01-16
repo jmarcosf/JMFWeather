@@ -1,0 +1,22 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* widget_info.xml                                               */ 
+/* (c)2013 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: Widget Info                                      */ 
+/*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2013                                    */ 
+/*                                                               */ 
+/***************************************************************-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="100dp"
+    android:minHeight="40dp"
+    android:updatePeriodMillis="1800000"
+    android:previewImage="@drawable/img_widget_preview"
+    android:initialLayout="@layout/layout_widget_short"
+    android:resizeMode="horizontal" >
+</appwidget-provider>

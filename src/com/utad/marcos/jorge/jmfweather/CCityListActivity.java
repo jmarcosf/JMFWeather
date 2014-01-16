@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -331,6 +332,14 @@ private   int                      m_CurrentSelectedCity = -1;
                               tx.attach( fragment );
                               tx.commitAllowingStateLoss();
                          }
+                         
+                         Intent WidgetIntent = new Intent( this, CWidgetProvider.class );
+                         WidgetIntent.setAction( "android.appwidget.action.APPWIDGET_UPDATE" );
+                         // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+                         // since it seems the onUpdate() is only fired on that:
+                         int[] ids = AppWidgetManager.getInstance( getApplication() ).getAppWidgetIds( new ComponentName( getApplication(), CWidgetProvider.class ) );
+                         WidgetIntent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_IDS, ids );
+                         sendBroadcast( WidgetIntent );
                     }
                     break;
                     

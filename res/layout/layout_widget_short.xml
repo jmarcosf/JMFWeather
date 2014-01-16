@@ -1,0 +1,64 @@
+<!--**************************************************************/
+/*                                                               */ 
+/* layout_widget_short.xml                                       */ 
+/* (c)2014 jmarcosf                                              */ 
+/*                                                               */ 
+/* Description: Widget Short Layout                              */ 
+/*              JmfWeather Project                               */ 
+/*              Práctica asignatura Android Fundamental          */ 
+/*              U-Tad - Master Apps                              */ 
+/*              www.u-tad.com                                    */ 
+/*                                                               */ 
+/*        Date: December 2014                                    */ 
+/*                                                               */ 
+/***************************************************************-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/IDR_LAY_WIDGET"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="1dp" >
+
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* Icon                                                      */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <ImageView
+        android:id="@+id/IDP_ICO_CITY_ICON"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/icon_main" />
+    
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* Temperature                                               */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <TextView
+        android:id="@+id/IDC_TXT_CITY_TEMPERATURE"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON"
+        android:fontFamily="Times New Roman"
+        android:textSize="30sp" />
+    
+    <!--**********************************************************/
+    /*                                                           */ 
+    /* Name                                                      */ 
+	/*                                                           */ 
+    /***********************************************************-->
+    <TextView
+        android:id="@+id/IDC_TXT_CITY_NAME"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_toRightOf="@id/IDP_ICO_CITY_ICON"
+        android:layout_below="@id/IDC_TXT_CITY_TEMPERATURE"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="Arial"
+        android:singleLine="true"
+        android:textSize="12sp" />
+   
+</RelativeLayout>
+
